@@ -1,6 +1,4 @@
-# $Id$
-# Maintainer: Sergej Pupykin <pupykin.s+arch@gmail.com>
-# Contributor: Ondrej Kucera <ondrej.kucera@centrum.cz>
+# Maintainer: Lionel Félicité <deogracia@free.fr>
 
 pkgname=perl-xml-sax-writer
 pkgver=0.56
