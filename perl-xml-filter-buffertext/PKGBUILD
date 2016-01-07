@@ -9,6 +9,7 @@ url="http://search.cpan.org/dist/XML-Filter-BufferText/"
 license=("GPL" "PerlArtistic")
 depends=('perl>=5.10.0' 'perl-xml-sax')
 options=(!emptydirs)
+changelog=$pkgname.changelog
 source=(http://search.cpan.org/CPAN/authors/id/R/RB/RBERJON/XML-Filter-BufferText-$pkgver.tar.gz)
 md5sums=('2992c0387632583b966ab9c965b25512')
 
