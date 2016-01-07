@@ -1,0 +1,7 @@
+2016-01-07 Lionel Félicité <deogracia@free.fr>
+    * perl-convert-asn1 0.27-1 :
+      Initial import from archlinux
+      archlinux package mainteners are :
+        Sergej Pupykin <pupykin.s+arch@gmail.com>
+        Charles Mauch <cmauch@gmail.com>
+      Thanks for your work.
