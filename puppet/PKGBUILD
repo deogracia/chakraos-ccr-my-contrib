@@ -1,0 +1,57 @@
+# Maintainer: Lionel Félicité <deogracia@free.fr>
+
+pkgname=puppet
+pkgver=4.3.1
+pkgrel=1
+pkgdesc="Server automation framework and application"
+arch=('any')
+url="http://puppetlabs.com/puppet/puppet-open-source"
+license=('Apache')
+depends=('facter' 'hiera')
+optdepends=('ruby-shadow: user password management')
+backup=('etc/puppetlabs/puppet/auth.conf'
+        'etc/puppetlabs/puppet/puppet.conf')
+install=$pkgname.install
+source=(https://downloads.puppetlabs.com/$pkgname/$pkgname-$pkgver.tar.gz)
+md5sums=('7813510e15bb078751df514024a11b38')
+
+prepare() {
+  cd $pkgname-$pkgver
+
+  # FS#45044: fix file location
+  sed -i 's_/opt/puppetlabs/puppet_/usr_' ext/systemd/puppet.service
+}
+
+package() {
+  cd $pkgname-$pkgver
+
+  ruby install.rb --destdir="$pkgdir" --sitelibdir="$( ruby -e \
+    'puts RbConfig::CONFIG["vendorlibdir"]' )"
+
+  install -d "$pkgdir"/{var/lib/$pkgname,usr/lib/tmpfiles.d}
+
+  echo "d /run/puppetlabs 0755 $pkgname $pkgname -" > \
+    "$pkgdir"/usr/lib/tmpfiles.d/$pkgname.conf
+
+  # systemd
+  install -Dm644 "$srcdir"/$pkgname-$pkgver/ext/systemd/$pkgname.service \
+    "$pkgdir"/usr/lib/systemd/system/$pkgname.service
+
+  # vim and emacs
+  install -Dm644 "$srcdir"/$pkgname-$pkgver/ext/vim/ftdetect/$pkgname.vim \
+    "$pkgdir"/usr/share/vim/vimfiles/ftdetect/$pkgname.vim
+  install -Dm644 "$srcdir"/$pkgname-$pkgver/ext/vim/syntax/$pkgname.vim \
+    "$pkgdir"/usr/share/vim/vimfiles/syntax/$pkgname.vim
+  install -Dm644 "$srcdir"/$pkgname-$pkgver/ext/emacs/$pkgname-mode.el \
+    "$pkgdir"/usr/share/emacs/site-lisp/$pkgname-mode.el
+  install -Dm644 "$srcdir"/$pkgname-$pkgver/ext/emacs/$pkgname-mode-init.el \
+    "$pkgdir"/usr/share/emacs/site-lisp/site-start.d/$pkgname-mode-init.el
+
+  install -Dm644 LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+
+  # Match permissions that puppet sets when running
+  chmod 775 "$pkgdir"/var/lib/puppet
+  chmod 750 "$pkgdir"/var/log/puppetlabs/puppet
+
+  rm -r "$pkgdir"/var/run
+}
