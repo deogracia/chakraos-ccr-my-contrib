@@ -1,0 +1,6 @@
+2016-01-11 Lionel Félicité <deogracia@free.fr>
+    * puppet 4.3.1-1 :
+      Initial import from archlinux (4.3.1-2)
+      archlinux package maintener is :
+        Jonathan Steel <jsteel at archlinux.org>
+      Thanks for your work.
