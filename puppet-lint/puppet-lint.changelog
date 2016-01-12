@@ -1,4 +1,7 @@
 2016-01-12 Lionel Félicité <deogracia@free.fr>
+    * puppet-lint 1.1.0-3 :
+      Add more flexibility to the package funtcion
+
     * puppet-lint 1.1.0-2 :
       Add missing Licence
 
