@@ -1,0 +1,24 @@
+# Maintainer: Lionel Félicité <deogracia@free.fr>
+
+pkgname=puppet-lint
+pkgver=1.1.0
+pkgrel=2
+pkgdesc="Check that your Puppet manifests conform to the style guide."
+arch=('any')
+url="https://github.com/rodjek/puppet-lint"
+license=('MIT')
+depends=('ruby')
+makedepends=('rubygems')
+changelog=$pkgname.changelog
+source=(https://rubygems.org/downloads/$pkgname-$pkgver.gem)
+noextract=($pkgname-$pkgver.gem)
+sha256sums=('739f566cd4f1e77b92c1191217fdb59ce12353f3ec2703f30933d2bba877b35b')
+
+package() {
+  cd "$srcdir"
+  local _gemdir="$(ruby -rubygems -e'puts Gem.default_dir')"
+
+  gem install --no-user-install --ignore-dependencies -i "$pkgdir$_gemdir" -n "$pkgdir/usr/bin" "$pkgname-$pkgver.gem"
+
+  install -Dm644 "$pkgdir/usr/lib/ruby/gems/2.2.0/gems/puppet-lint-1.1.0/"/LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+}

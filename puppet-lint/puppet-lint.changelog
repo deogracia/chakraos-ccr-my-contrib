@@ -1,0 +1,9 @@
+2016-01-12 Lionel Félicité <deogracia@free.fr>
+    * puppet-lint 1.1.0-2 :
+      Add missing Licence
+
+    * puppet-lint 1.1.0-1 :
+      Initial import from archlinux (1.1.0-1)
+      archlinux package maintener is :
+        Mario Finelli <mario dot finelli at yahoo dot com>
+      Thanks for your work.
