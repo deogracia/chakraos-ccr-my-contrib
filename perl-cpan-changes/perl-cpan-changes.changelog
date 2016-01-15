@@ -1,0 +1,9 @@
+2016-01-15 Lionel Félicité <deogracia@free.fr>
+    * perl-cpan-changes 0.400002-2 :
+      Add changelog
+
+    * perl-cpan-changes 0.400002-1 :
+      Initial import from archlinux
+      archlinux package maintener is :
+        Jaroslav Lichtblau <svetlemodry@archlinux.org>
+      Thanks for your work.
