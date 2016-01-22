@@ -1,19 +1,22 @@
+# Maintainer: Lionel Félicité <deogracia@free.fr>
 # Contributor: Ivy Foster <joyfulgirl (at) archlinux.us>
 # Contributor: aur2ccr (http://ddg.gg/?q=!ccr+aur2ccr&t=chakra)
 # Contributor: Giorgio Lando <patroclo7@gmail.com>
+
 pkgname=flpsed
 pkgver=0.7.0
-pkgrel=1
+pkgrel=2
 pkgdesc="A WYSIWYG PostScript annotator"
+arch=('i686' 'x86_64')
 url="http://www.ecademix.com/JohannesHofmann/flpsed.html"
 license=("GPL")
-changelog=ChangeLog
 depends=('ghostscript' 'fltk')
-arch=('i686' 'x86_64')
+changelog=ChangeLog
+install=$pkgname.install
 source=(http://www.ecademix.com/JohannesHofmann/${pkgname}-${pkgver}.tar.gz
         flpsed.desktop)
 sha1sums=('7966fd3b6fb3aa2a376386533ed4421ebb66ad62'
-          '60d8df040d025deaf481695a730f0006599e93e0')
+          '8f89774c17cf1ee5e45541685a06e118c24f85fd')
 
 build() {
   cd ${srcdir}/${pkgname}-${pkgver}

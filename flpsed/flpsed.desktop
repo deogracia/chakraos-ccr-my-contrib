@@ -1,5 +1,5 @@
 [Desktop Entry]
-Categories=FLTK;Graphics;PDFViewer;
+Categories=Office;Viewer;
 Comment=WYSIWYG Postscript annotator
 Terminal=false
 MimeType=application/postscript
@@ -7,4 +7,5 @@ Name=flpsed
 GenericName=PDF/PS Editor
 Exec=flpsed
 Icon=
+Version=
 Type=Application

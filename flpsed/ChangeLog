@@ -1,3 +1,8 @@
+2016-01-22 Lionel Félicité <deogracia@free.fr>
+    * flpsed 0.7.0-2 :
+      Take ownership of orphaned package
+      Add post_install
+
 2010-09-18  Ivy Foster  <joyfulgirl@archlinux.us>
 	
 	* 0.7.0-1:
