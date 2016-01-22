@@ -1,3 +1,8 @@
+2016-01-22 Lionel Félicité <deogracia@free.fr>
+    * perl-test-perltidy 20130104-2 :
+      add check()
+      change 'url'
+
 2016-01-21 Lionel Félicité <deogracia@free.fr>
     * perl-test-perltidy 20130104-1 :
       Initial import from archlinux
