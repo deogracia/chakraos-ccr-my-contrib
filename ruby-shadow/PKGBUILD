@@ -1,7 +1,7 @@
 # Maintainer: Lionel Félicité <deogracia@free.fr>
 
 pkgname=ruby-shadow
-pkgver=2.4.1
+pkgver=2.5.0
 pkgrel=1
 pkgdesc="Shadow password module"
 arch=('i686' 'x86_64')
@@ -10,7 +10,7 @@ license=('CPL')
 depends=('ruby')
 changelog=$pkgname.changelog
 source=($pkgname-$pkgver.tar.gz::https://github.com/apalmblad/$pkgname/archive/$pkgver.tar.gz)
-md5sums=('849154b36db323b404c31a8667411815')
+sha1sums=('ac3e474975f1f0d03300f5dbe63d31ea2702ee5b')
 
 build() {
   cd $pkgname-$pkgver
