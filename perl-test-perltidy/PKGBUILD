@@ -2,10 +2,10 @@
 
 pkgname=perl-test-perltidy
 pkgver=20130104
-pkgrel=1
+pkgrel=2
 pkgdesc="CPAN Test::PerlTidy module"
 arch=('any')
-url='http://search.cpan.org/dist/Test-PerlTidy-20130104/'
+url='http://search.cpan.org/dist/Test-PerlTidy/'
 license=('GPL' 'PerlArtistic')
 depends=('perl-text-diff' 'perl-file-slurp' 'perl-tidy' 'perl-file-finder')
 options=('!emptydirs')
@@ -18,6 +18,11 @@ build() {
 
   PERL_MM_USE_DEFAULT=1 perl Makefile.PL installdirs=vendor
   make
+}
+
+check() {
+  cd "${srcdir}"/Test-PerlTidy-$pkgver
+  make test
 }
 
 package() {
