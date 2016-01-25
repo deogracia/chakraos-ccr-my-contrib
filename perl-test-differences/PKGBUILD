@@ -1,22 +1,27 @@
 # Maintainer: Lionel Félicité <deogracia@free.fr>
 
 pkgname=perl-test-differences
-pkgver=0.62
+pkgver=0.64
 pkgrel=1
 pkgdesc="Perl/CPAN Module Test::Differences"
 arch=(any)
-depends=(perl-text-diff)
+depends=('perl-text-diff' 'perl-capture-tiny')
+checkdepends=('perl-test-pod' 'perl-test-pod-coverage')
 url="http://search.cpan.org/dist/Test-Differences"
 license=("GPL" "PerlArtistic")
 options=('!emptydirs')
 changelog=$pkgname.changelog
 source=("http://search.cpan.org/CPAN/authors/id/D/DC/DCANTRELL/Test-Differences-$pkgver.tar.gz")
-md5sums=('3aa6f4d0c3550d50bfa71a80c28aabd3')
+sha1sums=('f8dba7e8cdd0021a9c8b506349824413032a44cb')
 
 build() {
   cd $srcdir/Test-Differences-$pkgver
   PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor  
   make 
+}
+check () {
+  cd $srcdir/Test-Differences-$pkgver
+  make test
 }
 package() {
   cd $srcdir/Test-Differences-$pkgver

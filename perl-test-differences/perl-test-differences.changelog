@@ -1,3 +1,8 @@
+2016-01-25 Lionel Félicité <deogracia@free.fr>
+    * perl-test-differences 0.64-1 :
+      New upstream version
+      add check() and checkdepends
+
 2016-01-15 Lionel Félicité <deogracia@free.fr>
     * perl-test-differences 0.62-1 :
       Initial import from archlinux
