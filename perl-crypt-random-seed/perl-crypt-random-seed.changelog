@@ -1,0 +1,6 @@
+2016-01-27 Lionel Félicité <deogracia@free.fr>
+    * perl-crypt-random-seed 0.03-1 :
+      Initial import from archlinux
+      archlinux package maintener is :
+        Daniel Müllner <daniel@danifold.net>
+      Thanks for your work.
