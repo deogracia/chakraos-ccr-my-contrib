@@ -1,3 +1,7 @@
+2016-01-27 Lionel Félicité <deogracia@free.fr>
+    * makepasswd 1.10_10-2 :
+      Add missing running dependency
+
 2016-01-26 Lionel Félicité <deogracia@free.fr>
     * makepasswd 1.10_10-1 :
       New upstream version
