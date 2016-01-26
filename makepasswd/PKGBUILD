@@ -6,12 +6,12 @@
 
 pkgname=makepasswd
 pkgver=1.10_10
-pkgrel=1
+pkgrel=2
 pkgdesc='Generates true random passwords with the emphasis on security over pronounceability (Debian version)'
 arch=('any')
 url='http://packages.qa.debian.org/m/makepasswd.html'
 license=('GPL2')
-depends=('perl-passwd-md5' 'perl-crypt-openssl-random')
+depends=('perl-passwd-md5' 'perl-crypt-openssl-random' 'perl-bytes-random-secure')
 changelog=$pkgname.changelog
 source=("http://ftp.debian.org/debian/pool/main/m/${pkgname}/${pkgname}_${pkgver%_*}.orig.tar.gz"
         "http://ftp.debian.org/debian/pool/main/m/${pkgname}/${pkgname}_${pkgver//_/-}.diff.gz")
