@@ -1,17 +1,18 @@
-# $Id$
-# Maintainer: Sébastien Luttringer <seblu@aur.archlinux.org>
+# Maintainer: Lionel Félicité <deogracia@free.fr>
+# Contributor: Sébastien Luttringer <seblu@aur.archlinux.org>
 # Contributor: Thayer Williams <thayer@archlinux.org>
 # Contributor: Travis Willard <travisw@wmpub.ca>
 # Contributor: Manolis Tzanidakis
 
 pkgname=makepasswd
 pkgver=1.10_8
-pkgrel=1
+pkgrel=2
 pkgdesc='Generates true random passwords with the emphasis on security over pronounceability (Debian version)'
 arch=('any')
 url='http://packages.qa.debian.org/m/makepasswd.html'
 license=('GPL2')
 depends=('perl-passwd-md5' 'perl-crypt-openssl-random')
+changelog=$pkgname.changelog
 source=("http://ftp.debian.org/debian/pool/main/m/${pkgname}/${pkgname}_${pkgver%_*}.orig.tar.gz"
         "http://ftp.debian.org/debian/pool/main/m/${pkgname}/${pkgname}_${pkgver//_/-}.diff.gz")
 md5sums=('55842bb4c064ebcdedffb4afd5f0945a'
