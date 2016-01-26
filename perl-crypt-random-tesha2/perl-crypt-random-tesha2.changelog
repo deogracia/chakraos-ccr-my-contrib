@@ -1,0 +1,6 @@
+2016-01-26 Lionel Félicité <deogracia@free.fr>
+    * perl-crypt-random-tesha2-1 :
+      Initial import from archlinux
+      archlinux package maintener is :
+        Daniel Müllner <daniel@danifold.net>
+      Thanks for your work.
