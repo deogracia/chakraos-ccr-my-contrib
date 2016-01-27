@@ -1,0 +1,32 @@
+# Maintainer: Lionel Félicité <deogracia@free.fr>
+
+pkgname=gox
+pkgver=0.3.0
+pkgrel=1
+pkgdesc="A simple, no-frills tool for Go cross compilation"
+arch=('i686' 'x86_64')
+url='https://github.com/mitchellh/gox'
+license=('custom')
+makedepends=('go')
+changelog=$pkgname.changelog
+source=("https://github.com/mitchellh/gox/archive/v${pkgver}.tar.gz"
+        'gox.1')
+sha512sums=('cbc737a780403d1233af10a85b30676e0fcfbfbe99a740d0eff69bef4fd557c65d102c43b3b0dde0b8b935967be8cb33fab50d2baf481d27fa53285be6b1aef2'
+            '07cb05c6f716024db810885b5927bdb1b9960cc431a36800010eb5c7ed76992e1315763a8bc63de3663f9c190bad51575c8061e1b1089da6f1e63ced31dd8aa1')
+prepare() {
+    export GOPATH="${srcdir}"
+    go get github.com/mitchellh/iochan
+}
+
+build() {
+    cd "${srcdir}/${pkgname}-${pkgver}"
+    GOPATH="${srcdir}" go build
+    cp ../gox.1 .
+}
+
+package() {
+    cd "${srcdir}/${pkgname}-${pkgver}"
+    install -Dm755 "${pkgname}-${pkgver}" "${pkgdir}/usr/bin/gox"
+    install -Dm644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+    install -Dm644 "$pkgname.1" "${pkgdir}/usr/share/man/man1/$pkgname.1"
+}
