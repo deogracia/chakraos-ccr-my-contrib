@@ -1,0 +1,38 @@
+# Maintainer: Lionel Félicité <deogracia@free.fr>
+
+pkgname=perl-tk
+pkgver=804.033
+pkgrel=1
+pkgdesc="A graphical user interface toolkit for Perl"
+arch=('i686' 'x86_64')
+url="http://search.cpan.org/dist/Tk"
+license=('PerlArtistic' 'GPL' 'custom')
+depends=('libpng' 'libjpeg' 'perl' 'tk')
+checkdepends=('xorg-server-xvfb' 'perl-devel-leak' 'perl-test-pod')
+options=('!emptydirs' '!strip')
+changelog=$pkgname.changelog
+source=(http://www.cpan.org/authors/id/S/SR/SREZIC/Tk-${pkgver}.tar.gz)
+sha1sums=('3a6c9eaab585218d01c06d12d4ea1b89a2ad1ffe')
+
+build() {
+  cd Tk-$pkgver
+
+  perl Makefile.PL INSTALLDIRS=vendor
+  make
+}
+
+check() {
+  cd Tk-$pkgver
+  xvfb-run make -j1 test
+}
+
+package() {
+  cd Tk-$pkgver
+  make install DESTDIR="$pkgdir"
+
+  # license
+  install -D -m644 pTk/license.terms \
+                   "${pkgdir}/usr/share/licenses/${pkgname}/tk.license"
+  install -D -m644 pTk/Tix.license \
+                   "${pkgdir}/usr/share/licenses/${pkgname}/tix.license"
+}
