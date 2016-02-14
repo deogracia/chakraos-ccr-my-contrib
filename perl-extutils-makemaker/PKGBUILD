@@ -1,0 +1,42 @@
+# Maintainer: Lionel Félicité <deogracia@free.fr>
+
+pkgname=perl-extutils-makemaker
+_distname=ExtUtils-MakeMaker
+pkgver=7.10
+pkgrel=1
+pkgdesc="Perl module to make Makefiles and build modules (what backs Makefile.PL)"
+arch=('any')
+url="https://metacpan.org/release/ExtUtils-MakeMaker"
+license=('GPL' 'PerlArtistic')
+depends=('perl-extutils-install' 'perl-extutils-manifest' 'perl-extutils-command')
+options=('!emptydirs' 'purge')
+changelog=$pkgname.changelog
+source=("http://search.cpan.org/CPAN/authors/id/B/BI/BINGOS/$_distname-$pkgver.tar.gz")
+sha1sums=('f7ca9fc7e3204ddd3989fef4f3f956326ae1ec32')
+
+prepare() {
+  echo "$srcdir/$_distname-$pkgver"
+  cd "$srcdir/$_distname-$pkgver"
+  rm inc -rf
+}
+
+build() {
+  cd "$_distname-$pkgver"
+  unset PERL5LIB PERL_MM_OPT PERL_LOCAL_LIB_ROOT
+  export PERL_MM_USE_DEFAULT=1 PERL_AUTOINSTALL=--skipdeps BUILDING_AS_PACKAGE=1
+  /usr/bin/perl Makefile.PL
+  make
+}
+
+check() {
+  cd "$_distname-$pkgver"
+  unset PERL5LIB PERL_MM_OPT PERL_LOCAL_LIB_ROOT
+  export PERL_MM_USE_DEFAULT=1
+  make test
+}
+
+package() {
+  cd "$_distname-$pkgver"
+  unset PERL5LIB PERL_MM_OPT PERL_LOCAL_LIB_ROOT
+  make install INSTALLDIRS=vendor DESTDIR="$pkgdir"
+}

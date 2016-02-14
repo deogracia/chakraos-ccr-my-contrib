@@ -1,0 +1,37 @@
+# Maintainer: Lionel Félicité <deogracia@free.fr>
+
+pkgname=perl-test-distmanifest
+pkgver=1.014
+pkgrel=1
+pkgdesc="Author test that validates a package MANIFEST"
+arch=('any')
+url='http://search.cpan.org/dist/Test-DistManifest/'
+license=('GPL' 'PerlArtistic')
+depends=('perl-module-manifest')
+makedepends=('perl-module-build-tiny')
+options=('!emptydirs')
+changelog=$pkgname.changelog
+source=(http://search.cpan.org/CPAN/authors/id/E/ET/ETHER/Test-DistManifest-$pkgver.tar.gz)
+sha256sums=('3d26c20df42628981cbfcfa5b1ca028c6ceadb344c1dcf97a25ad6a88b73d7c5')
+
+build() {
+  cd "${srcdir}"/Test-DistManifest-$pkgver
+  export PERL_MM_USE_DEFAULT=1 \
+    PERL_AUTOINSTALL=--skipdeps \
+    PERL_MM_OPT="INSTALLDIRS=vendor DESTDIR='$pkgdir'" \
+    PERL_MB_OPT="--installdirs vendor --destdir '$pkgdir'" \
+    MODULEBUILDRC=/dev/null
+
+  /usr/bin/perl Makefile.PL
+  make
+}
+
+package() {
+  cd "${srcdir}"/Test-DistManifest-$pkgver
+
+  unset PERL5LIB PERL_MM_OPT PERL_LOCAL_LIB_ROOT
+  make install INSTALLDIRS=vendor DESTDIR="$pkgdir"
+
+  find "${pkgdir}" -name '.packlist' -delete
+  find "${pkgdir}" -name '*.pod' -delete
+}
