@@ -1,8 +1,9 @@
+# Maintainer: Lionel Félicité <deogracia@free.fr>
 
 pkgname=perl-test-harness
 _distname=Test-Harness
 pkgver=3.36
-pkgrel=1
+pkgrel=2
 pkgdesc="Run Perl standard test scripts with statistics"
 arch=('any')
 url="https://metacpan.org/release/Test-Harness"
