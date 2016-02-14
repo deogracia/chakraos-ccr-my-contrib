@@ -1,0 +1,36 @@
+# Maintainer: Lionel Félicité <deogracia@free.fr>
+
+pkgname=perl-data-dumper
+_distname=Data-Dumper
+pkgver=2.154
+pkgrel=1
+pkgdesc="stringified perl data structures, suitable for both printing and eval"
+arch=('i686' 'x86_64')
+url="https://metacpan.org/release/Data-Dumper"
+license=('GPL' 'PerlArtistic')
+depends=('glibc')
+options=('!emptydirs' 'purge')
+changelog=$pkgname.changelog
+source=("http://search.cpan.org/CPAN/authors/id/S/SM/SMUELLER/$_distname-$pkgver.tar.gz")
+sha1sums=('e4f716d500d821da3e802513be7f26b24bf795ac')
+
+build() {
+  cd "$_distname-$pkgver"
+  unset PERL5LIB PERL_MM_OPT PERL_LOCAL_LIB_ROOT
+  export PERL_MM_USE_DEFAULT=1 PERL_AUTOINSTALL=--skipdeps BUILDING_AS_PACKAGE=1
+  /usr/bin/perl Makefile.PL
+  make
+}
+
+check() {
+  cd "$_distname-$pkgver"
+  unset PERL5LIB PERL_MM_OPT PERL_LOCAL_LIB_ROOT
+  export PERL_MM_USE_DEFAULT=1
+  make test
+}
+
+package() {
+  cd "$_distname-$pkgver"
+  unset PERL5LIB PERL_MM_OPT PERL_LOCAL_LIB_ROOT
+  make install INSTALLDIRS=vendor DESTDIR="$pkgdir"
+}
