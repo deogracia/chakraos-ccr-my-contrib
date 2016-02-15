@@ -1,0 +1,43 @@
+# Maintainer: Lionel Félicité <deogracia@free.fr>
+
+pkgname=perl-class-data-inheritable
+_pkgname=Class-Data-Inheritable
+pkgver=0.08
+pkgrel=1
+pkgdesc='Class::Data::Inheritable - Inheritable, overridable class data'
+arch=('any')
+license=('PerlArtistic' 'GPL')
+url="https://metacpan.org/release/Class-Data-Inheritable"
+makedepends=('perl-extutils-makemaker')
+options=('!emptydirs')
+changelog=$pkgname.changelog
+source=("http://search.cpan.org/CPAN/authors/id/T/TM/TMTM/${_pkgname}-${pkgver}.tar.gz")
+sha512sums=('bddc61096158b21d4cfa69538d5db0f53617a66c71447ee193141064f4f58194462b21e0a849510e24e4c263b13be3ee1bc6bb8504320e0a86c02b67ad1652c8')
+
+build() {
+  ( export PERL_MM_USE_DEFAULT=1 PERL5LIB=""                 \
+      PERL_AUTOINSTALL=--skipdeps                            \
+      PERL_MM_OPT="INSTALLDIRS=vendor DESTDIR='$pkgdir'"     \
+      PERL_MB_OPT="--installdirs vendor --destdir '$pkgdir'" \
+      MODULEBUILDRC=/dev/null
+
+    cd "${srcdir}/${_pkgname}-${pkgver}"
+    /usr/bin/perl Makefile.PL
+    make
+  )
+}
+
+check() {
+  cd "${srcdir}/${_pkgname}-${pkgver}"
+  ( export PERL_MM_USE_DEFAULT=1 PERL5LIB=""
+    make test
+  )
+}
+
+package() {
+  cd "${srcdir}/${_pkgname}-${pkgver}"
+  make install
+  find "$pkgdir" -name .packlist -o -name perllocal.pod -delete
+}
+
+# vim:set ts=2 sw=2 et:
