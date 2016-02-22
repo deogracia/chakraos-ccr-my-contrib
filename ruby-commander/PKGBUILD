@@ -1,0 +1,26 @@
+# Maintainer: Lionel Félicité <deogracia@free.fr>
+
+pkgname=ruby-commander
+_distname=commander
+pkgver=4.4.0
+pkgrel=1
+pkgdesc="The complete solution for Ruby command-line executables"
+arch=('any')
+url="https://github.com/commander-rb/commander"
+license=('MIT')
+depends=('ruby' 'ruby-highline>=1.7.2')
+makedepends=('rubygems')
+options=('!emptydirs')
+changelog=$pkgname.changelog
+source=(https://rubygems.org/downloads/$_distname-$pkgver.gem)
+noextract=($distname-$pkgver.gem)
+sha256sums=('358ae12110faed47683633bdf0e71d6782a0f3eccdbaea4e76b375d260490a56')
+
+package() {
+  cd "$srcdir"
+  local _gemdir="$(ruby -rubygems -e'puts Gem.default_dir')"
+
+  gem install --no-user-install --ignore-dependencies -i "$pkgdir$_gemdir" -n "$pkgdir/usr/bin" "$_distname-$pkgver.gem"
+
+  install -Dm644 "$pkgdir/usr/lib/ruby/gems/2.2.0/gems/$_distname-$pkgver/"LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+}
