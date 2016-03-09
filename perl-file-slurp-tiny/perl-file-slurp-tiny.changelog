@@ -1,0 +1,7 @@
+2016-03-09 Lionel Félicité <deogracia@free.fr>
+    * perl-file-slurp-tiny 0.004-1 :
+      Initial release
+      Initial import from archlinux
+      archlinux package maintener is :
+        Felix Yan <felixonmars@archlinux.org>
+      Thanks for your work.
