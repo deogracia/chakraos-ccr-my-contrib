@@ -1,0 +1,32 @@
+# Maintainer: Lionel Félicité <deogracia@free.fr>
+
+pkgname=perl-file-slurp-tiny
+_distname=File-Slurp-Tiny
+pkgver=0.004
+pkgrel=1
+pkgdesc="A simple, sane and efficient file slurper"
+arch=('any')
+url='http://search.cpan.org/dist/File-Slurp-Tiny'
+license=('PerlArtistic' 'GPL')
+options=('!emptydirs')
+changelog=$pkgname.changelog
+source=("https://cpan.metacpan.org/authors/id/L/LE/LEONT/${_distname}-$pkgver.tar.gz")
+sha1sums=('016480e301a0b28f19f51fd31cf35d1ce4808b91')
+
+build() {
+  cd "$srcdir/${_distname}-$pkgver"
+  PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
+  make
+}
+
+check() {
+  cd "$srcdir/${_distname}-$pkgver"
+  PERL_MM_USE_DEFAULT=1
+  make test
+}
+
+package() {
+  cd "$srcdir/${_distname}-$pkgver"
+  make install DESTDIR="$pkgdir"
+  find "$pkgdir" -name '.packlist' -o -name '*.pod' -delete
+}
