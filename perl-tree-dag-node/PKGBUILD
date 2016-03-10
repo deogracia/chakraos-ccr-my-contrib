@@ -2,7 +2,7 @@
 
 pkgname=perl-tree-dag-node
 _distname=Tree-DAG_Node
-pkgver=1.27
+pkgver=1.29
 pkgrel=1
 pkgdesc="base class for trees"
 arch=('any')
@@ -12,7 +12,7 @@ depends=('perl-file-slurp-tiny')
 options=('!emptydirs')
 changelog=$pkgname.changelog
 source=("https://cpan.metacpan.org/authors/id/R/RS/RSAVAGE/${_distname}-$pkgver.tgz")
-sha1sums=('1dcbe520214776fa9f59753b914c0d60890d7781')
+sha1sums=('ad1f84f7e0b7ea983b06d800e59c6860f6cdf3e3')
 
 build() {
   cd  $srcdir/${_distname}-$pkgver
