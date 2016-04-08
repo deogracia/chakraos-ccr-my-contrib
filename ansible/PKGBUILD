@@ -1,0 +1,34 @@
+# Maintainer: Lionel Félicité <deogracia@free.fr>
+
+pkgname=ansible
+pkgver=2.0.1.0
+pkgrel=1
+pkgdesc='Radically simple IT automation platform'
+arch=('any')
+url='http://www.ansible.com'
+license=('GPL3')
+depends=('python2' 'python2-yaml' 'python2-paramiko' 'python2-jinja')
+optdepends=('python2-passlib: crypt values for vars_prompt')
+makedepends=('asciidoc' 'fakeroot')
+backup=('etc/ansible/ansible.cfg')
+changelog=$pkgname.changelog
+source=(http://releases.ansible.com/ansible/ansible-${pkgver}.tar.gz)
+md5sums=('84c576762bc1a8a345fe12ac338bd2d8')
+
+build() {
+  cd ${pkgname}-${pkgver}
+  python2 setup.py build
+}
+
+package() {
+  cd ${pkgname}-${pkgver}
+  python2 setup.py install -O1 --root="${pkgdir}"
+  install -Dm644 COPYING "${pkgdir}"/usr/share/doc/ansible/COPYING
+
+  install -d "${pkgdir}"/usr/share/ansible/doc
+  cp -dpr --no-preserve=ownership ./examples "${pkgdir}"/usr/share/ansible/doc/
+  install -Dm644 examples/ansible.cfg "${pkgdir}"/etc/ansible/ansible.cfg
+
+  install -d "${pkgdir}"/usr/share/man/man1
+  cp -dpr --no-preserve=ownership docs/man/man1/*.1 "${pkgdir}"/usr/share/man/man1
+}
