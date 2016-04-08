@@ -1,0 +1,6 @@
+2016-04-08 Lionel Félicité <deogracia@free.fr>
+    * ansible 2.0.1.0-1 :
+      Initial release
+      Import from official Arch repo
+       Arch repo maintainer is Sven-Hendrik Haase <sh@lutzhaase.com>
+       Thanks for your work
