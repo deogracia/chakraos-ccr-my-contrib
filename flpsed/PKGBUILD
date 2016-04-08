@@ -5,15 +5,15 @@
 
 pkgname=flpsed
 pkgver=0.7.3
-pkgrel=1
+pkgrel=2
 pkgdesc="A WYSIWYG PostScript annotator"
 arch=('i686' 'x86_64')
-url="http://www.ecademix.com/JohannesHofmann/flpsed.html"
+url="http://flpsed.org/flpsed.html"
 license=("GPL")
 depends=('ghostscript' 'fltk')
 changelog=$pkgname.changelog
 install=$pkgname.install
-source=(http://www.ecademix.com/JohannesHofmann/${pkgname}-${pkgver}.tar.gz
+source=(http://flpsed.org/${pkgname}-${pkgver}.tar.gz
         flpsed.desktop)
 sha1sums=('460bc23a63c32a9b9241f501f23d85ca7cda2834'
           '8f89774c17cf1ee5e45541685a06e118c24f85fd')
