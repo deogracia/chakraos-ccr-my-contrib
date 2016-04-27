@@ -1,42 +1,46 @@
-# Mantainer: gadi <adrianperales@lavabit.com>
-# Contributor:  Bartosz Chmura <chmurli@gmail.com>
+# Maintainer: Lionel Félicité <deogracia@free.fr>
+# Contributor:: Jiachen Yang <farseerfc@gmail.com>
+# AUR Maintainer: Hyacinthe Cartiaux <hyacinthe.cartiaux@free.fr>
+# Contributor: Bartosz Chmura <chmurli@gmail.com>
 # Contributor: Alessio Sergi <asergi at archlinux dot us>
 # Contributor: alfplayer
 # Contributor: menta
 
 pkgname=retext
-pkgver=4.0.1
-_pkgver=4.0
+pkgver=5.3.1
 pkgrel=1
 pkgdesc="A simple editor for Markdown and ReStructuredText markup languages"
 arch=('any')
-url="http://retext.sourceforge.net/"
+url="https://github.com/retext-project/retext"
 license=('GPL3')
 # for desktop integration: 'shared-mime-info' 'xdg-utils' 'desktop-file-utils'
 # for toolbar icons (see http://sourceforge.net/p/retext/tickets/44/): 'gconf'
-depends=('pyqt4-python3' 'python-markupsafe' 'shared-mime-info' 'xdg-utils' 'desktop-file-utils' 'gconf')
-makedepends=('imagemagick')
+depends=('python3-pyqt5' 'qt5-webkit' 'python3-markups' 'shared-mime-info' 'xdg-utils' 'desktop-file-utils' 'gconf')
+makedepends=('imagemagick' 'qt5-tools' 'qtchooser')
 optdepends=('python3-markdown: for Markdown language support'
-            'python-docutils: for reStructuredText language support'
-            'python-pyenchant: for spell checking support')
-source=("http://downloads.sourceforge.net/project/${pkgname}/ReText-${_pkgver}/ReText-${pkgver}.tar.gz"
-        "${pkgname}.desktop"
+            'python3-docutils: for reStructuredText language support'
+            'python3-pyenchant: for spell checking support')
+changelog=$pkgname.changelog
+source=("https://github.com/retext-project/${pkgname}/archive/${pkgver}.tar.gz"
         "x-retext-markdown.xml"
         "x-retext-rst.xml")
 install="${pkgname}".install
-sha256sums=('547f4d4cd6ca826963799a55e124ee22bbd2c1dc33fd11dc0d891cb66af8b77e'
-            '7782f4402fe62e48335c1bdd5c1fd5cbb48c408fabaf4f018a074f8b3eef838e'
+sha256sums=('917382e521646ca97bc36d05cc6694640b6f582bd77118dd57273957c72f0c11'
             'b51611479d3224eec2b58264ed91ace3eccb502b7b806dae3e7a3ab4aab8c4b8'
             '6fef80cccb14813d9cc74810c397a6cd7831d1ca243536759a47c6e8b6cc977a')
 
+prepare () {
+    cd "$srcdir/retext-${pkgver}"
+}
+
+build () {
+    cd "$srcdir/retext-${pkgver}"
+    python3 setup.py build
+}
 
 package () {
-    cd "$srcdir/ReText-${pkgver}"
-    python setup.py install --root="$pkgdir"
-
-    # rename bin scripts
-    mv $pkgdir/usr/bin/$pkgname.py $pkgdir/usr/bin/$pkgname
-    mv $pkgdir/usr/bin/wpgen.py $pkgdir/usr/bin/wpgen
+    cd "$srcdir/retext-${pkgver}"
+    python3 setup.py install --root="$pkgdir" -O1
 
     # create /usr/share/* dirs
     _SHAREDIR="$pkgdir/usr/share"
@@ -53,9 +57,6 @@ package () {
 
     # install mime files
     install -m 644 $srcdir/x-retext-{markdown,rst}.xml $_SHAREDIR/mime/packages/
-
-    # install desktop file
-    install -m 644 $srcdir/$pkgname.desktop $_SHAREDIR/applications/$pkgname.desktop
 }
 
 # vim:set ts=2 sw=2 et:
