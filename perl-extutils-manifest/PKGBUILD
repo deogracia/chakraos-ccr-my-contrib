@@ -3,7 +3,7 @@
 pkgname=perl-extutils-manifest
 _distname=ExtUtils-Manifest
 pkgver=1.70
-pkgrel=1
+pkgrel=2
 pkgdesc="Utilities to write and check a MANIFEST file"
 arch=('any')
 url="https://metacpan.org/release/ExtUtils-Manifest"
