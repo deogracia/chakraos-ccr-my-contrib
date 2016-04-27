@@ -1,0 +1,10 @@
+2016-04-27 Lionel Félicité <deogracia@free.fr>
+    * retext 5.3.1-1 :
+      drop what was done before
+      import fom Arch repo
+       Arch maintainer is 
+        Jiachen Yang <farseerfc@gmail.com>
+        thanks for your work
+
+    * retext 4.0.1-1 :
+      Take ownership (orphaned package)
