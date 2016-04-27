@@ -1,0 +1,40 @@
+# Maintainer: Lionel Félicité <deogracia@free.fr>
+
+pkgname=qtchooser
+pkgver=53
+pkgrel=1
+pkgdesc='Wrap the other Qt tools by searching for different instances of Qt on the system'
+arch=('i686' 'x86_64')
+url='http://code.qt.io/cgit/qt/qtchooser.git/'
+license=('GPL')
+backup=('etc/xdg/qtchooser/default.conf')
+depends=('gcc-libs')
+makedepends=('git')
+changelog=$pkgname.changelog
+source=("git://code.qt.io/qt/${pkgname}.git#commit=d20fdc63"
+        5.conf)
+sha256sums=('SKIP'
+            'ca886883f53536753b4dc3525df1b93a3b03412835bd701ce7c764f3fca105e0')
+
+pkgver() {
+  cd $pkgname
+  echo $(git rev-list --count HEAD)
+}
+
+build() {
+  cd $pkgname
+  make
+}
+
+package() {
+  cd $pkgname
+  make INSTALL_ROOT="$pkgdir" install
+
+  install -d "$pkgdir"/etc/xdg/qtchooser
+  install -m644 "$srcdir"/5.conf \
+    "$pkgdir"/etc/xdg/qtchooser/
+
+  # Set the default Qt
+  ln -s /etc/xdg/qtchooser/5.conf \
+    "$pkgdir"/etc/xdg/qtchooser/default.conf
+}
