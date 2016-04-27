@@ -1,0 +1,36 @@
+# Maintainer: Lionel Félicité <deogracia@free.fr>
+
+pkgname=perl-extutils-manifest
+_distname=ExtUtils-Manifest
+pkgver=1.70
+pkgrel=1
+pkgdesc="Utilities to write and check a MANIFEST file"
+arch=('any')
+url="https://metacpan.org/release/ExtUtils-Manifest"
+license=('GPL' 'PerlArtistic')
+depends=('perl-extutils-makemaker')
+options=('!emptydirs' 'purge')
+changelog=$pkgname.changelog
+source=("https://cpan.metacpan.org/authors/id/E/ET/ETHER/${_distname}-${pkgver}.tar.gz")
+sha256sums=('eeff062050b223964cd8f624a90ae75df443612239df34a20ff87644f9f52b95')
+
+build() {
+  cd "$_distname-$pkgver"
+  unset PERL5LIB PERL_MM_OPT PERL_LOCAL_LIB_ROOT
+  export PERL_MM_USE_DEFAULT=1 PERL_AUTOINSTALL=--skipdeps BUILDING_AS_PACKAGE=1
+  /usr/bin/perl Makefile.PL
+  make
+}
+
+check() {
+  cd "$_distname-$pkgver"
+  unset PERL5LIB PERL_MM_OPT PERL_LOCAL_LIB_ROOT
+  export PERL_MM_USE_DEFAULT=1
+  make test
+}
+
+package() {
+  cd "$_distname-$pkgver"
+  unset PERL5LIB PERL_MM_OPT PERL_LOCAL_LIB_ROOT
+  make install INSTALLDIRS=vendor DESTDIR="$pkgdir"
+}
