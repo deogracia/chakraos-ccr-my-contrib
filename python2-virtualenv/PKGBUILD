@@ -2,12 +2,12 @@
 
 pkgname=('python2-virtualenv')
 pkgver=15.0.1
-pkgrel=1
+pkgrel=2
 pkgdesc="Virtual Python Environment builder"
 url="https://virtualenv.pypa.io/"
 arch=('any')
 license=('MIT')
-makedepends=('python2')
+makedepends=('python2' 'python2-sphinx')
 depends=('python2')
 replaces=('virtualenv')
 conflicts=('virtualenv')
@@ -24,6 +24,13 @@ package() {
 
   python2 setup.py build
   python2 setup.py install --prefix=/usr --root="$pkgdir" --optimize=1
+
+  # Generate man page
+  pushd "$srcdir/virtualenv-$pkgver/docs"
+  make man
+
+  install -Dm644 "_build/man/virtualenv.1" "${pkgdir}/usr/share/man/man1/virtualenv2.1"
+  popd
 
   # move this "old" version out of the way
   mv "$pkgdir/usr/bin/virtualenv" "$pkgdir/usr/bin/virtualenv2"
