@@ -3,17 +3,19 @@
 pkgname='packer-io'
 _distname='packer'
 pkgver=0.10.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Packer is a tool for creating identical machine images for multiple platforms from a single source configuration"
 arch=('x86_64' 'i686')
 url="http://www.packer.io/"
 license=('custom')
-makedepends=('go' 'godep')
+makedepends=('go' 'godep' 'help2man')
 depends=('glibc')
 options=('!strip' '!emptydirs')
 changelog=$pkgname.changelog
-source=("https://github.com/mitchellh/$_distname/archive/v$pkgver.tar.gz")
-sha256sums=('cc7a5c857a3031c1587984528152f55b654ff33ef143d6fcebaea1b004f6e766')
+source=("https://github.com/mitchellh/$_distname/archive/v$pkgver.tar.gz"
+        "packer.1")
+sha256sums=('cc7a5c857a3031c1587984528152f55b654ff33ef143d6fcebaea1b004f6e766'
+            'e992f56e8261645b4dfc0c02906a0375605e5c65d2d1f58af7df71696c274e3b')
 
 prepare() {
  mkdir -p $srcdir/{bin,pkg,src}
@@ -28,16 +30,23 @@ build() {
  cd "$my_srcdir"
 
   godep go install
+
+ #build man page
+ 
 }
 
 package() {
  export GOPATH=$srcdir
 
  my_srcdir=$srcdir/src/github.com/mitchellh/packer
- cd "$my_srcdir"
+ pushd "$my_srcdir"
 
  install -Dm755 "$GOPATH/bin/$_distname" "$pkgdir/usr/bin/$_distname"
  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+
+ popd
+
+ install -Dm644 "$_distname.1" "${pkgdir}/usr/share/man/man1/$_distname.1"
 }
 
 # vim:set ts=2 sw=2 et:
