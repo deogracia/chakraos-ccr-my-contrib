@@ -1,0 +1,45 @@
+# Maintainer: Lionel Félicité <deogracia@free.fr>
+
+pkgname='godep'
+pkgver=63
+pkgrel=1
+pkgdesc="dependency tool for go"
+arch=('x86_64' 'i686')
+url="https:/github.com/tools/$pkgname"
+license=('custom')
+makedepends=('go' 'glibc')
+depends=('glibc')
+options=('!strip' '!emptydirs')
+changelog=$pkgname.changelog
+source=("https://github.com/tools/$pkgname/archive/v$pkgver.tar.gz")
+sha256sums=('2d7407664d24b91e0416d2d9c54521a9a829244fd15cfd453e7d15349cf9b6af')
+
+prepare() {
+ export GOPATH="${srcdir}"
+ my_srcdir="$GOPATH/src/github.com/tools"
+
+ go get golang.org/x/tools/go/vcs
+ go get github.com/kr/fs
+ mkdir -p $GOPATH/src/github.com/tools
+ mv ${srcdir}/$pkgname-$pkgver $my_srcdir/$pkgname
+
+}
+
+build() {
+ export GOPATH="${srcdir}"
+ my_srcdir="$GOPATH/src/github.com/tools"
+
+ cd "$my_srcdir/$pkgname"
+
+ go build
+}
+
+package() {
+ my_srcdir="$GOPATH/src/github.com/tools/$pkgname"
+ cd "$my_srcdir"
+
+ install -Dm755 "$pkgname" "$pkgdir/usr/bin/$pkgname"
+ install -Dm644 License "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
+
+# vim:set ts=2 sw=2 et:
