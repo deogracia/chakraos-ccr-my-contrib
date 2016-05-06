@@ -2,12 +2,12 @@
 
 pkgname=('python3-virtualenv')
 pkgver=15.0.1
-pkgrel=1
+pkgrel=2
 pkgdesc="Virtual Python Environment builder"
 url="https://virtualenv.pypa.io/"
 arch=('any')
 license=('MIT')
-makedepends=('python3')
+makedepends=('python3' 'python3-sphinx')
 depends=('python3')
 replaces=('virtualenv')
 conflicts=('virtualenv')
@@ -16,11 +16,17 @@ source=("http://pypi.python.org/packages/source/v/virtualenv/virtualenv-$pkgver.
 sha256sums=('1a74278b8adb383ce4c7619e33c753b1eb7b58dc1e449601c096ca4b76125f84')
 
 package() {
-
   cd "$srcdir/virtualenv-$pkgver"
   sed -i "s|#!/usr/bin/env python$|#!/usr/bin/env python3|" virtualenv.py
   LANG='en_US.UTF-8' python3 setup.py build
   LANG='en_US.UTF-8' python3 setup.py install --prefix=/usr --root="$pkgdir" --optimize=1
+
+  # Generate man page
+  pushd "$srcdir/virtualenv-$pkgver/docs"
+  make man
+
+  install -Dm644 "_build/man/virtualenv.1" "${pkgdir}/usr/share/man/man1/virtualenv.1"
+  popd
 
   # link to a version with 3 suffix as well
   ln "$pkgdir/usr/bin/virtualenv" "$pkgdir/usr/bin/virtualenv3"
