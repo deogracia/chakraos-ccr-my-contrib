@@ -1,4 +1,7 @@
 2016-05-06 Lionel Félicité <deogracia@free.fr>
+    * python3-virtualenv 15.0.1-2 :
+      Add genration of man page
+
     * python3-virtualenv 15.0.1-1 :
       Initial release
        Import from Arch repo
