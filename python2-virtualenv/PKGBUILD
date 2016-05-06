@@ -1,0 +1,33 @@
+# Maintainer: Lionel Félicité <deogracia@free.fr>
+
+pkgname=('python2-virtualenv')
+pkgver=15.0.1
+pkgrel=1
+pkgdesc="Virtual Python Environment builder"
+url="https://virtualenv.pypa.io/"
+arch=('any')
+license=('MIT')
+makedepends=('python2')
+depends=('python2')
+replaces=('virtualenv')
+conflicts=('virtualenv')
+changelog=$pkgname.changelog
+source=("http://pypi.python.org/packages/source/v/virtualenv/virtualenv-$pkgver.tar.gz")
+sha256sums=('1a74278b8adb383ce4c7619e33c753b1eb7b58dc1e449601c096ca4b76125f84')
+
+package() {
+
+  cd "$srcdir/virtualenv-$pkgver"
+
+  # should report this upstream as still not fixed...
+  sed -i "s|#!/usr/bin/env python$|#!/usr/bin/env python2|" virtualenv.py
+
+  python2 setup.py build
+  python2 setup.py install --prefix=/usr --root="$pkgdir" --optimize=1
+
+  # move this "old" version out of the way
+  mv "$pkgdir/usr/bin/virtualenv" "$pkgdir/usr/bin/virtualenv2"
+
+  install -D -m644 LICENSE.txt \
+    "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
