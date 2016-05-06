@@ -1,0 +1,43 @@
+# Maintainer: Lionel Félicité <deogracia@free.fr>
+
+pkgname='packer-io'
+_distname='packer'
+pkgver=0.10.0
+pkgrel=1
+pkgdesc="Packer is a tool for creating identical machine images for multiple platforms from a single source configuration"
+arch=('x86_64' 'i686')
+url="http://www.packer.io/"
+license=('custom')
+makedepends=('go' 'godep')
+depends=('glibc')
+options=('!strip' '!emptydirs')
+changelog=$pkgname.changelog
+source=("https://github.com/mitchellh/$_distname/archive/v$pkgver.tar.gz")
+sha256sums=('cc7a5c857a3031c1587984528152f55b654ff33ef143d6fcebaea1b004f6e766')
+
+prepare() {
+ mkdir -p $srcdir/{bin,pkg,src}
+ mkdir -p $srcdir/src/github.com/mitchellh/
+ mv packer-0.10.0/ src/github.com/mitchellh/packer
+}
+
+build() {
+ export GOPATH=$srcdir
+
+ my_srcdir=$srcdir/src/github.com/mitchellh/packer
+ cd "$my_srcdir"
+
+  godep go install
+}
+
+package() {
+ export GOPATH=$srcdir
+
+ my_srcdir=$srcdir/src/github.com/mitchellh/packer
+ cd "$my_srcdir"
+
+ install -Dm755 "$GOPATH/bin/$_distname" "$pkgdir/usr/bin/$_distname"
+ install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
+
+# vim:set ts=2 sw=2 et:
