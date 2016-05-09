@@ -2,8 +2,8 @@
 
 pkgname='packer-io'
 _distname='packer'
-pkgver=0.10.0
-pkgrel=2
+pkgver=0.10.1
+pkgrel=1
 pkgdesc="Packer is a tool for creating identical machine images for multiple platforms from a single source configuration"
 arch=('x86_64' 'i686')
 url="http://www.packer.io/"
@@ -14,13 +14,13 @@ options=('!strip' '!emptydirs')
 changelog=$pkgname.changelog
 source=("https://github.com/mitchellh/$_distname/archive/v$pkgver.tar.gz"
         "packer.1")
-sha256sums=('cc7a5c857a3031c1587984528152f55b654ff33ef143d6fcebaea1b004f6e766'
-            'e992f56e8261645b4dfc0c02906a0375605e5c65d2d1f58af7df71696c274e3b')
+sha256sums=('6a31c8c74b2370a748e3117db70e491a96fb86f1fbee9fa128d3f73c08230279'
+            '45fe779bd281b9633fdbf61da5f489ada4c6f36478ecaeb2d11694c0653a0806')
 
 prepare() {
  mkdir -p $srcdir/{bin,pkg,src}
  mkdir -p $srcdir/src/github.com/mitchellh/
- mv packer-0.10.0/ src/github.com/mitchellh/packer
+ mv packer-$pkgver/ src/github.com/mitchellh/packer
 }
 
 build() {

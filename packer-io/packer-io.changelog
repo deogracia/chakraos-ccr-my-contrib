@@ -1,3 +1,7 @@
+2016-05-09 Lionel Félicité <deogracia@free.fr>
+    * packer-io 0.10.1-1 :
+      New upstream release
+
 2016-05-06 Lionel Félicité <deogracia@free.fr>
     * packer-io 0.10.0-2 :
       Add man page (via help2man)
