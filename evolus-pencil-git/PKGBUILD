@@ -1,0 +1,76 @@
+# Maintainer: Lionel Félicité <deogracia@free.fr>
+
+pkgname=evolus-pencil-git
+pkgver=r484.5bf9f20
+pkgrel=1
+pkgdesc="Sketching and GUI prototyping tool"
+arch=('i686' 'x86_64')
+url="http://code.google.com/p/evoluspencil/"
+license=('GPL2')
+depends=('alsa-lib' 'gconf' 'gtk2' 'libnotify' 'libxtst' 'nss')
+makedepends=('desktop-file-utils' 'firefox-kde' 'gendesk' 'git' 'nodejs' 'npm' 'prelink')
+provides=('pencil')
+conflicts=('pencil')
+changelog=$pkgname.changelog
+source=('git+https://gitlab.com/evolus/pencil.git#commit=5bf9f205')
+sha1sums=('SKIP')
+
+pkgver() {
+  cd "$srcdir/pencil"
+  ( set -o pipefail
+    git describe --long 2>/dev/null | sed 's/\([^-]*-g\)/r\1/;s/-/./g' ||
+    printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+  )
+}
+
+prepare() {
+ cd "$srcdir/pencil"
+ cp build/icon.png ./Pencil.png
+
+ gendesk --pkgname Pencil --name "Pencil" --pkgdesc "$pkgdesc"
+
+ sed --in-place '/Encoding/d'   Pencil.desktop
+ sed --in-place '/Categories/d' Pencil.desktop
+
+ desktop-file-validate Pencil.desktop
+
+}
+
+build() {
+ cd "$srcdir/pencil"
+ npm install
+
+  case $CARCH in
+    'i686')
+      _myarch="ia32"
+    ;;
+    'x86_64')
+      _myarch="x64"
+    ;;
+  esac
+
+ ./node_modules/electron-packager-tf/cli.js ./app --platform=linux --arch=${_myarch} --asar --prune
+
+ # suppress namcap  ELF file has executable stack error
+ execstack -c ./Pencil-linux-x64/Pencil
+}
+
+package() {
+ _pencil_build_dir="$srcdir/pencil/Pencil-linux-x64"
+ cd ${_pencil_build_dir}
+
+ install -d "${pkgdir}/usr/share/pencil"
+ cp -a "${_pencil_build_dir}/." "${pkgdir}/usr/share/pencil"
+ rm "${pkgdir}/usr/share/pencil/Pencil"
+
+ install -d "${pkgdir}/usr/bin"
+ install -Dm755 "${_pencil_build_dir}/Pencil" "${pkgdir}/usr/bin/pencil"
+
+ install -Dm644 "${_pencil_build_dir}/LICENSE" "${pkgdir}/usr/share/licenses/pencil/LICENSE"
+
+ cd "${srcdir}/pencil"
+
+ install -Dm644 "Pencil.png" "$pkgdir/usr/share/pixmaps/Pencil.png"
+
+ desktop-file-install Pencil.desktop --dir ${pkgdir}/usr/share/applications/
+}
