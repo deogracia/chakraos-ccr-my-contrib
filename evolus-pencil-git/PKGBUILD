@@ -2,7 +2,7 @@
 
 pkgname=evolus-pencil-git
 pkgver=r484.5bf9f20
-pkgrel=1
+pkgrel=2
 pkgdesc="Sketching and GUI prototyping tool"
 arch=('i686' 'x86_64')
 url="http://code.google.com/p/evoluspencil/"
@@ -27,7 +27,7 @@ prepare() {
  cd "$srcdir/pencil"
  cp build/icon.png ./Pencil.png
 
- gendesk --pkgname Pencil --name "Pencil" --pkgdesc "$pkgdesc"
+ gendesk --pkgname Pencil --name "Pencil" --pkgdesc "$pkgdesc" --exec pencil
 
  sed --in-place '/Encoding/d'   Pencil.desktop
  sed --in-place '/Categories/d' Pencil.desktop
@@ -61,12 +61,14 @@ package() {
 
  install -d "${pkgdir}/usr/share/pencil"
  cp -a "${_pencil_build_dir}/." "${pkgdir}/usr/share/pencil"
- rm "${pkgdir}/usr/share/pencil/Pencil"
+ rm "${pkgdir}/usr/share/pencil/LICENSE"
+ rm "${pkgdir}/usr/share/pencil/LICENSES.chromium.html"
 
  install -d "${pkgdir}/usr/bin"
- install -Dm755 "${_pencil_build_dir}/Pencil" "${pkgdir}/usr/bin/pencil"
+ ln -s "/usr/share/pencil/Pencil" "${pkgdir}/usr/bin/pencil"
 
  install -Dm644 "${_pencil_build_dir}/LICENSE" "${pkgdir}/usr/share/licenses/pencil/LICENSE"
+ install -Dm644 "${_pencil_build_dir}/LICENSES.chromium.html" "${pkgdir}/usr/share/licenses/pencil/LICENSES.chromium.html"
 
  cd "${srcdir}/pencil"
 

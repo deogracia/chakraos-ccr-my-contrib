@@ -1,4 +1,10 @@
 2016-05-27 Lionel Félicité <deogracia@free.fr>
+    * evolus-pencil-svn r484.5bf9f20-2 :
+      Change bin location
+      Move all licences file to the right place
+      Fix error on lauch via .desktop file
+
+2016-05-27 Lionel Félicité <deogracia@free.fr>
     * evolus-pencil-svn r484.5bf9f20-1 :
       Initial import
       Dev build on v3
