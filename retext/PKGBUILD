@@ -8,18 +8,18 @@
 
 pkgname=retext
 pkgver=5.3.1
-pkgrel=1
+pkgrel=2
 pkgdesc="A simple editor for Markdown and ReStructuredText markup languages"
 arch=('any')
 url="https://github.com/retext-project/retext"
 license=('GPL3')
 # for desktop integration: 'shared-mime-info' 'xdg-utils' 'desktop-file-utils'
 # for toolbar icons (see http://sourceforge.net/p/retext/tickets/44/): 'gconf'
-depends=('python3-pyqt5' 'qt5-webkit' 'python3-markups' 'shared-mime-info' 'xdg-utils' 'desktop-file-utils' 'gconf')
+depends=('python3-pyqt5' 'qt5-webkit' 'python3-markups' 'shared-mime-info' 
+         'xdg-utils' 'desktop-file-utils' 'gconf'
+         'python3-markdown' 'python3-pyenchant' 'python3-pygments')
 makedepends=('imagemagick' 'qt5-tools' 'qtchooser')
-optdepends=('python3-markdown: for Markdown language support'
-            'python3-docutils: for reStructuredText language support'
-            'python3-pyenchant: for spell checking support')
+optdepends=('python3-docutils: for reStructuredText language support')
 changelog=$pkgname.changelog
 source=("https://github.com/retext-project/${pkgname}/archive/${pkgver}.tar.gz"
         "x-retext-markdown.xml"
