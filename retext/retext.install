@@ -1,24 +1,19 @@
-post_install() {
+update_desktop_files() {
   xdg-icon-resource forceupdate --theme hicolor &>/dev/null
   update-desktop-database -q
   update-mime-database usr/share/mime &>/dev/null
+}
 
-  echo "##########"
-  echo "#"
-  echo ""
-  echo "WARNING!!!!!"
-  echo "whithout any of python3-markdown, python3-docutils, it won't work!"
-  echo ""
-  echo "#"
-  echo "##########"
+post_install() {
+  update_desktop_files
 }
 
 post_upgrade() {
-  post_install "$1"
+  update_desktop_files "$1"
 }
 
 post_remove() {
-  post_install "$1"
+  update_desktop_files "$1"
 }
 
 # vim:set ts=2 sw=2 et:
