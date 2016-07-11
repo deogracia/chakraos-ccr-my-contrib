@@ -2,7 +2,7 @@
 
 pkgname=perl-data-dumper
 _distname=Data-Dumper
-pkgver=2.154
+pkgver=2.161
 pkgrel=1
 pkgdesc="stringified perl data structures, suitable for both printing and eval"
 arch=('i686' 'x86_64')
@@ -12,7 +12,7 @@ depends=('glibc')
 options=('!emptydirs' 'purge')
 changelog=$pkgname.changelog
 source=("http://search.cpan.org/CPAN/authors/id/S/SM/SMUELLER/$_distname-$pkgver.tar.gz")
-sha1sums=('e4f716d500d821da3e802513be7f26b24bf795ac')
+sha1sums=('a20626bd76d293147dd8ff8afa88deafd2d26899')
 
 build() {
   cd "$_distname-$pkgver"
