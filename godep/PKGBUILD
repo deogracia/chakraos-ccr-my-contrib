@@ -1,7 +1,7 @@
 # Maintainer: Lionel Félicité <deogracia@free.fr>
 
 pkgname='godep'
-pkgver=63
+pkgver=74
 pkgrel=1
 pkgdesc="dependency tool for go"
 arch=('x86_64' 'i686')
@@ -12,7 +12,7 @@ depends=('glibc')
 options=('!strip' '!emptydirs')
 changelog=$pkgname.changelog
 source=("https://github.com/tools/$pkgname/archive/v$pkgver.tar.gz")
-sha256sums=('2d7407664d24b91e0416d2d9c54521a9a829244fd15cfd453e7d15349cf9b6af')
+sha256sums=('e68c7766c06c59327a4189fb929d390e1cc7a0c4910e33cada54cf40f40ca546')
 
 prepare() {
  export GOPATH="${srcdir}"
