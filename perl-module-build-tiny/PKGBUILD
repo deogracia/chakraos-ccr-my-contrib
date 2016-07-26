@@ -3,13 +3,12 @@
 pkgname=perl-module-build-tiny
 _pkgname=Module-Build-Tiny
 pkgver=0.039
-pkgrel=1
+pkgrel=2
 pkgdesc="A tiny replacement for Module::Build"
 arch=('any')
 license=('PerlArtistic' 'GPL')
 url="http://search.cpan.org/dist/Module-Build-Tiny"
-depends=('perl-extutils-config' 'perl-extutils-helpers' 'perl-extutils-installpaths')
-makedepends=('perl-test-harness')
+depends=('perl-extutils-config' 'perl-extutils-helpers' 'perl-extutils-installpaths' 'perl-test-harness')
 options=('!emptydirs')
 changelog=$pkgname.changelog
 source=("http://search.cpan.org/CPAN/authors/id/L/LE/LEONT/${_pkgname}-${pkgver}.tar.gz")
