@@ -2,7 +2,7 @@
 
 pkgname=perl-extutils-makemaker
 _distname=ExtUtils-MakeMaker
-pkgver=7.22
+pkgver=7.24
 pkgrel=1
 pkgdesc="Perl module to make Makefiles and build modules (what backs Makefile.PL)"
 arch=('any')
@@ -12,7 +12,7 @@ depends=('perl-extutils-install' 'perl-extutils-manifest' 'perl-extutils-command
 options=('!emptydirs' 'purge')
 changelog=$pkgname.changelog
 source=("https://cpan.metacpan.org/authors/id/B/BI/BINGOS/$_distname-$pkgver.tar.gz")
-sha256sums=('5f55bc33025910d285f38df01f5605d716acf4bcdb00feda6c05e1b98301663f')
+sha256sums=('416abc97c3bb2cc72bef28852522f2859de53e37bf3d0ae8b292067d78755e69')
 
 prepare() {
   echo "$srcdir/$_distname-$pkgver"
