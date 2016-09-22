@@ -1,0 +1,84 @@
+# Maintainer: KsenZ <aksenzov@gmail.com>
+
+pkgname=tigervnc
+pkgver=1.2.0
+pkgrel=1
+_xorgver=1.13.2
+pkgdesc="suite of VNC servers and clients. VNC 4 branch of TightVNC."
+arch=('i686' 'x86_64')
+url="http://www.tigervnc.org"
+license=('GPL')
+depends=('pam' 'gnutls' 'libjpeg-turbo' 'libxft' 'libxinerama' 'libxcursor'
+	 'libxtst' 'libxfont' 'pixman' 'xorg-xauth'
+	 'xkeyboard-config' 'libgl' 'libgcrypt' 'perl')
+makedepends=('cmake' 'nasm' 'xorg-font-utils' 'xorg-util-macros' 'bigreqsproto'
+	     'compositeproto' 'damageproto' 'randrproto' 'resourceproto'
+	     'scrnsaverproto' 'videoproto' 'xcmiscproto' 'xf86vidmodeproto'
+	     'xtrans' 'mesa' 'glproto' 'dri2proto' 'imagemagick' 'librsvg')
+options=(!libtool)
+conflicts=('tightvnc')
+source=(http://downloads.sourceforge.net/tigervnc/${pkgname}-${pkgver}.tar.gz
+	ftp://ftp.freedesktop.org/pub/xorg/individual/xserver/xorg-server-${_xorgver}.tar.bz2
+	vncserver.service
+	vncviewer.desktop
+	xorg111.patch
+	xorg112.patch
+	xorg113.patch
+	xserver113.patch
+	glx.patch
+	gnutls.patch
+	gethomedir.patch
+	cmakelists.patch)
+md5sums=('3a5755b4ed600a81c3a17976c6f8420d'
+         '553fd7902e1156115f15cc1656f46a6f'
+         'a2a7cb0c6afc3778dfad8ae214fc0f6d'
+         '15c0405f920c3dac250692e8922578d1'
+         'b680b55f7f9f569cd26ac0b330012a8b'
+         'c8a3fae637f62c799262d32327caecdc'
+         '09879aaa2f176f9dda332362b62a080c'
+         'af9272d27226779dcb6384fa5e5071af'
+         '7151b2d465e9af38ba1bd5e759986f61'
+         'e310e6fbf4c21c7449be79285fe1ef31'
+         'a3e0b4502e8e9ca614ca082e0723c088'
+         '6ef923c71cc0e79c4b37eb3b124eea75')
+
+build() {
+  cd ${srcdir}/${pkgname}-${pkgver}
+
+  cp -r ${srcdir}/xorg-server-${_xorgver}/* unix/xserver
+  patch -Np1 -i ${srcdir}/gnutls.patch
+  patch -Np1 -i ${srcdir}/gethomedir.patch
+  patch -Np1 -i ${srcdir}/cmakelists.patch
+  patch -Np1 -i ${srcdir}/xorg111.patch
+  patch -Np1 -i ${srcdir}/xorg112.patch
+  patch -Np1 -i ${srcdir}/xorg113.patch
+  patch -Np1 -i ${srcdir}/glx.patch
+
+  cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=/usr -DUSE_INCLUDED_FLTK=yes
+  make
+  make -C media
+
+  cd unix/xserver
+  patch -Np3 -i ${srcdir}/xserver113.patch
+  autoreconf -fiv
+  ./configure --prefix=/usr \
+	--disable-static --disable-xinerama --without-dtrace \
+	--disable-xorg --disable-xnest --disable-xvfb --disable-dmx \
+	--disable-xwin --disable-xephyr --disable-kdrive --with-pic \
+	--disable-config-dbus --disable-config-hal --disable-config-udev \
+	--disable-unit-tests --disable-devel-docs --disable-selective-werror \
+	--disable-dri --enable-dri2 --enable-glx --enable-glx-tls
+  make
+}
+
+package() {
+  cd ${srcdir}/${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
+  cd unix/xserver/hw/vnc
+  make DESTDIR=${pkgdir} install
+  sed -i 's/iconic/nowin/' ${pkgdir}/usr/bin/vncserver
+  install -Dm0644 $srcdir/vncserver.service $pkgdir/usr/lib/systemd/system/vncserver.service
+  install -dm0755 $pkgdir/usr/share/icons
+  install -m0644 ${srcdir}/${pkgname}-${pkgver}/media/icons/* $pkgdir/usr/share/icons/
+  install -Dm0644 $srcdir/vncviewer.desktop $pkgdir/usr/share/applications/vncviewer.desktop
+}
