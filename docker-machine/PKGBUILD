@@ -3,7 +3,7 @@
 pkgname=docker-machine
 _pkgname="machine"
 pkgver=0.8.1
-pkgrel=1
+pkgrel=2
 pkgdesc='Machine management for a container-centric world'
 arch=('i686' 'x86_64')
 url='https://github.com/docker/machine'
@@ -13,14 +13,6 @@ makedepends=('docker')
 changelog=$pkgname.changelog
 source=("https://github.com/docker/machine/archive/v$pkgver.tar.gz")
 sha256sums=('a16f30cf44e40457443f7bccc78c14c943770c4cfd7e227242c91eb8c4e95169')
-
-#prepare() {
-#  export GOPATH="$srcdir/build"
-#  mkdir -p build/src
-#  mv machine/vendor/* build/src/
-#  mkdir -p build/src/github.com/docker
-#  mv machine build/src/github.com/docker/machine
-#}
 
 build() {
   cd "${srcdir}"/${_pkgname}-${pkgver}
