@@ -1,0 +1,8 @@
+2016-09-27 Lionel Félicité <deogracia@free.fr>
+    * python3-docopt 0.6.2-2 :
+      Add missing changelog
+
+    * python3-docopt 0.6.2-1 :
+      Initial release
+       Taken from Arch repo
+       work from Fabio "Muflone" Castelli

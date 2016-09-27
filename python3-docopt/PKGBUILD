@@ -1,0 +1,31 @@
+# Maintainer: Lionel Félicité <deogracia@free.fr>
+
+_pkgname=docopt
+pkgname=('python3-docopt')
+pkgver=0.6.2
+pkgrel=2
+pkgdesc="Pythonic argument parser, that will make you smile"
+arch=('any')
+url="https://github.com/docopt/docopt"
+license=('MIT')
+depends=('python3')
+makedepends=('python3-setuptools')
+changelog=$pkgname.changelog
+source=("http://pypi.python.org/packages/source/${_pkgname:0:1}/${_pkgname}/${_pkgname}-${pkgver}.tar.gz")
+sha256sums=('49b3a825280bd66b3aa83585ef59c4a8c82f2c8a522dbe754a8bc8d08c85c491')
+
+prepare(){
+  cp -dpr --no-preserve=owner "${_pkgname}-${pkgver}" "${_pkgname}-${pkgver}-2"
+}
+
+build() {
+  # Build Python 3.x module
+  cd "${srcdir}/${_pkgname}-${pkgver}"
+  python3 setup.py build
+}
+
+package() {
+  cd "${_pkgname}-${pkgver}"
+  python3 setup.py install --skip-build --optimize=1 --root="${pkgdir}"
+  install -D -m 0644 "LICENSE-MIT" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}
