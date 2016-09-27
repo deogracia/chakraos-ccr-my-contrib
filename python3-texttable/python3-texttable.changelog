@@ -1,0 +1,5 @@
+2016-09-27 Lionel Félicité <deogracia@free.fr>
+    * python3-texttable 0.8.4 :
+      Initial release
+       Taken from Arch repo
+       work by Felix Yan <felixonmars@archlinux.org>
