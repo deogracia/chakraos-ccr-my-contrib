@@ -1,0 +1,5 @@
+2016-10-22 Lionel Félicité <deogracia@free.fr>
+    * python3-pytest-capturelog 0.7-1 :
+      Initial release
+       Taken from archlinux repo
+       Thanks to Felix Yan <felixonmars@archlinux.org>

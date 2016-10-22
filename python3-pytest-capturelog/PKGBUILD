@@ -1,0 +1,37 @@
+# Maintainer: Lionel Félicité <deogracia@free.fr>
+
+pkgname='python3-pytest-capturelog'
+_pypiname=pytest-capturelog
+pkgver=0.7
+_tag=RELEASE_0_7
+pkgrel=1
+pkgdesc='py.test plugin to capture log messages'
+arch=('any')
+license=('MIT')
+url='https://bitbucket.org/memedough/pytest-capturelog/overview'
+makedepends=('python3-pytest' 'python3-setuptools' 'mercurial')
+depends=('python3-pytest')
+changelog=$pkgname.changelog
+source=("hg+https://felixonmars@bitbucket.org/memedough/pytest-capturelog#tag=$_tag")
+md5sums=('SKIP')
+
+build() {
+  cd "$srcdir/$_pypiname"
+  python3 setup.py build
+}
+
+check() {
+  # Hack entry points by installing it
+
+  cd "$srcdir/$_pypiname"
+  python3 setup.py install --root="$PWD/tmp_install" --optimize=1
+  PYTHONPATH="$PWD/tmp_install/usr/lib/python3.5/site-packages:$PYTHONPATH" py.test || warning "Tests failed"
+}
+
+package() {
+
+  cd "$srcdir/$_pypiname"
+  python3 setup.py install --root="$pkgdir"/ --optimize=1
+  install -D -m644 LICENSE.txt "$pkgdir/usr/share/licenses/$pkgname/LICENSE.txt"
+}
+# vim:set ts=2 sw=2 et:
