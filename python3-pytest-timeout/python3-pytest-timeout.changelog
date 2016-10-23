@@ -1,0 +1,5 @@
+2016-10-23 Lionel Félicité <deogracia@free.fr>
+    * python3-pytest-timeout 1.0.0-1 :
+      Initial release
+       Taken from Arch repo
+       Thanks to Felix Yan <felixonmars@archlinux.org>
