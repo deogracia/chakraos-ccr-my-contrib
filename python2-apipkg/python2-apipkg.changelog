@@ -1,0 +1,8 @@
+2016-10-23 Lionel Félicité <deogracia@free.fr>
+    * python2-apipkg 1.4-2 :
+      Force use of python3 version of py.test
+
+    * python2-apipkg 1.4-1 :
+      Initial release
+       Taken from Arch repo
+       Thanks to Felix Yan <felixonmars@archlinux.org>
