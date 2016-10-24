@@ -1,0 +1,5 @@
+2016-10-24 Lionel Félicité <deogracia@free.fr>
+    * python3-execnet 1.4.1-1 :
+      Initial release
+       Taken from arch repo
+       Thanks to Felix Yan <felixonmars@archlinux.org>
