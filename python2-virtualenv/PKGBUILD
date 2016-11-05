@@ -2,7 +2,7 @@
 
 pkgname=('python2-virtualenv')
 pkgver=15.0.2
-pkgrel=1
+pkgrel=2
 pkgdesc="Virtual Python Environment builder"
 url="https://virtualenv.pypa.io/"
 arch=('any')
@@ -12,8 +12,17 @@ depends=('python2')
 replaces=('virtualenv')
 conflicts=('virtualenv')
 changelog=$pkgname.changelog
-source=("https://pypi.python.org/packages/5c/79/5dae7494b9f5ed061cff9a8ab8d6e1f02db352f3facf907d9eb614fb80e9/virtualenv-$pkgver.tar.gz#md5=0ed59863994daf1292827ffdbba80a63")
-sha256sums=('fab40f32d9ad298fba04a260f3073505a16d52539a84843cf8c8369d4fd17167')
+source=("https://pypi.python.org/packages/5c/79/5dae7494b9f5ed061cff9a8ab8d6e1f02db352f3facf907d9eb614fb80e9/virtualenv-$pkgver.tar.gz#md5=0ed59863994daf1292827ffdbba80a63"
+        "fix-shinx-build-name.patch")
+sha256sums=('fab40f32d9ad298fba04a260f3073505a16d52539a84843cf8c8369d4fd17167'
+            '6a4cfbfd96f607e8f5f1e3739118258fcde09bf9567f527b488ac3436e889e8d')
+
+prepare() {
+
+  cd "$srcdir/virtualenv-$pkgver"
+  pushd docs
+  patch -p0 < ../../fix-shinx-build-name.patch 
+}
 
 package() {
 

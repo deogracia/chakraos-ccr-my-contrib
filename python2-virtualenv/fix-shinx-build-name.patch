@@ -1,0 +1,19 @@
+*** Makefile.orig	2016-11-05 18:34:03.532836395 +0100
+--- Makefile	2016-11-05 18:40:56.324188859 +0100
+***************
+*** 3,9 ****
+  
+  # You can set these variables from the command line.
+  SPHINXOPTS    =
+! SPHINXBUILD   = sphinx-build
+  PAPER         =
+  BUILDDIR      = _build
+  
+--- 3,9 ----
+  
+  # You can set these variables from the command line.
+  SPHINXOPTS    =
+! SPHINXBUILD   = sphinx-build2
+  PAPER         =
+  BUILDDIR      = _build
+  
