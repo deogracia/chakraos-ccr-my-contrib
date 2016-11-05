@@ -1,0 +1,40 @@
+# Maintainer: Lionel Félicité <deogracia@free.fr>
+
+pkgname='python3-tox'
+pkgver=2.4.1
+pkgrel=1
+pkgdesc='Python virtualenv management and testing tool'
+arch=('any')
+url='http://testrun.org/tox/latest/'
+license=('GPL2')
+makedepends=('python3-setuptools' 'python3-py' 'python3-virtualenv'
+            'python3-pluggy')
+checkdepends=('python3-pytest-runner')
+depends=('python3-py' 'python3-virtualenv' 'python3-setuptools' 'python3-pluggy')
+changelog=$pkgname.changelog
+source=("https://pypi.io/packages/source/t/tox/tox-${pkgver}.tar.gz")
+sha256sums=('6673571a3c4b1561b564e2b1cce55bddfb4f3efdb387ba4eb0a3688bbe2496db')
+
+build() {
+  cd "$srcdir"/tox-$pkgver
+  python3 setup.py build
+}
+
+check() {
+  # Hack entry points
+
+  (
+    cd "$srcdir"/tox-$pkgver
+    virtualenv "$srcdir/pyvenv" --system-site-packages
+    . "$srcdir/pyvenv/bin/activate"
+    python3 setup.py install
+    python3 setup.py ptr
+  )
+}
+
+package() {
+
+  cd "$srcdir"/tox-$pkgver
+  python3 setup.py install --root="$pkgdir" --optimize=1
+  ln -s tox "$pkgdir"/usr/bin/tox3
+}
