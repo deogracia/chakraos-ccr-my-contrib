@@ -1,0 +1,41 @@
+# Maintainer: Lionel Félicité <deogracia@free.fr>
+
+pkgname='python3-websocket-client'
+pkgver=0.37.0
+pkgrel=1
+pkgdesc="WebSocket client library for Python"
+arch=(any)
+url="https://github.com/liris/websocket-client"
+license=('LGPL')
+makedepends=('python3-setuptools' 'python3-six')
+depends=('python3-six')
+changelog=$pkgname.changelog
+source=(http://pypi.python.org/packages/source/w/websocket-client/websocket_client-$pkgver.tar.gz
+        use-system-ca.patch)
+sha256sums=('678b246d816b94018af5297e72915160e2feb042e0cde1a9397f502ac3a52f41'
+            'd888e0d0f8b1cc424b5b452e267135b598857b52c2bbbed3a8803614d9523d16')
+
+prepare() {
+  (cd websocket_client-$pkgver; patch -p1 -i ../use-system-ca.patch)
+  rm websocket_client-$pkgver/websocket/cacert.pem
+
+}
+
+build() {
+  cd "$srcdir"/websocket_client-$pkgver
+  python3 setup.py build
+}
+
+check() {
+  cd "$srcdir"/websocket_client-$pkgver
+  python3 setup.py test
+}
+
+package() {
+
+  cd websocket_client-$pkgver
+  python3 setup.py install --root="$pkgdir" --optimize=1
+  install -Dm644 LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+}
+
+# vim:set ts=2 sw=2 ft=sh et:
