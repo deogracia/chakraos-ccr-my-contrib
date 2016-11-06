@@ -1,0 +1,35 @@
+# Maintainer: Lionel Félicité <deogracia@free.fr>
+
+pkgname=govendor
+pkgver=1.0.8
+pkgrel=1
+pkgdesc="Go vendor tool that works with the standard vendor file"
+arch=('i686' 'x86_64')
+url="https://github.com/kardianos/govendor"
+license=('BSD')
+depends=('glibc')
+makedepends=('go' 'help2man')
+options=('!strip' '!emptydirs')
+changelog=$pkgname.changelog
+source=("https://github.com/kardianos/${pkgname}/archive/v${pkgver}.tar.gz")
+sha256sums=('7e887b84c7a9278473f39ae8a74440ffc17b329aa193e9304d170d458f8785c7')
+
+prepare() {
+  mkdir -p gopath/src/github.com/kardianos
+  mv "$pkgname-$pkgver" gopath/src/github.com/kardianos/${pkgname}
+}
+
+build() {
+  export GOPATH="${srcdir}/gopath"
+  cd gopath/src/github.com/kardianos/${pkgname}
+  go build .
+  help2man --no-discard-stderr --no-info --name="Go vendor tool that works with the standard vendor file" ./govendor --output govendor.1
+}
+
+package() {
+  cd gopath/src/github.com/kardianos/${pkgname}
+
+  install -Dm755  ${pkgname} "$pkgdir/usr/bin/${pkgname}"
+  install -Dm644 "${pkgname}.1" "${pkgdir}/usr/share/man/man1/${pkgname}.1"
+  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
