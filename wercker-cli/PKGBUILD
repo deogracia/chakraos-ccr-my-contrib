@@ -1,0 +1,57 @@
+# Maintainer: Lionel Félicité <deogracia@free.fr>
+
+pkgname=wercker-cli
+_distname='wercker'
+_patchversion="643"
+pkgver=1.0.${_patchversion}
+pkgrel=1
+pkgdesc="The Wercker CLI can be used to execute pipelines locally for both local development and easy introspection"
+arch=('i686' 'x86_64')
+url="http://wercker.com"
+license=('APACHE')
+depends=('govendor')
+makedepends=('go')
+changelog=$pkgname.changelog
+source=("https://github.com/wercker/${_distname}/archive/${pkgver}.tar.gz"
+        "${_distname}.1")
+sha256sums=('a5d98fd588a5b40657adee2962a6439fbaed77696d710e0c4de0a5f8edff9f85'
+            '213411892286ebe1f9d759fae10a9bb3b40a421407bfa4702870b858afdfb31d')
+WERCKER_GIT_COMMIT="ba5abdea1726ab111d2c474777254dc3f55732d3"
+
+prepare() {
+  mkdir -p gopath/src/github.com/${_distname}
+  mv "${_distname}-$pkgver" gopath/src/github.com/${_distname}/${_distname}
+}
+
+build() {
+  export GOPATH="${srcdir}/gopath"
+  cd gopath/src/github.com/${_distname}/${_distname}
+  msg2 "Launch govendor"
+  govendor sync
+  case $CARCH in
+    'i686')
+      _myarch="386"
+    ;;
+    'x86_64')
+      _myarch="amd64"
+    ;;
+  esac
+
+  msg2 "Lauch build"
+  export CGO_ENABLED=0
+  GOOS=linux GOARCH=${_myarch} go build \
+  -ldflags="-X github.com/wercker/wercker/util.GitCommit=${WERCKER_GIT_COMMIT} -X github.com/wercker/wercker/util.PatchVersion=${_patchversion} -X github.com/wercker/wercker/util.Compiled=$(date +%s)" \
+  -o "${_distname}"
+
+}
+
+package() {
+  cd gopath/src/github.com/${_distname}/${_distname}
+
+  msg2 'Install in ${pkgdir}'
+  install -Dm755 "${_distname}" "${pkgdir}/usr/bin/${_distname}"
+  install -Dm644 "LICENSE" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  pushd ${srcdir}
+  install -Dm644 "${_distname}.1" "${pkgdir}/usr/share/man/man1/${_distname}.1"
+  popd
+}
