@@ -1,0 +1,85 @@
+.TH "WERCKER" "1" "November 2016" "wercker version 1.0.643 (Git commit: ba5abdea1726ab111d2c474777254dc3f55732d3)" "User Commands"
+.SH "NAME"
+wercker - build and deploy from the command line
+.br
+
+.SH "DESCRIPTION"
+The Wercker CLI can be used to execute pipelines locally for both local development and easy introspection
+.br
+
+.SH "USAGE"
+wercker [global options] command [command options] [arguments...]
+.br
+
+.SH "VERSION"
+1.0.643 (Git commit: ba5abdea1726ab111d2c474777254dc3f55732d3)
+.br
+
+.SH "COMMANDS"
+\fBbuild, b     \fRbuild a project
+.br
+\fBdev          \fRdevelop and run a local project
+.br
+\fBcheck-config \fRcheck the project's yaml
+.br
+\fBdeploy, d    \fRdeploy a project
+.br
+\fBdetect, de   \fRdetect the type of project
+.br
+\fBlogin, l     \fRlog into wercker
+.br
+\fBlogout       \fRlogout from wercker
+.br
+\fBpull, p      \fRpull <build id>
+.br
+\fBversion, v   \fRprint versions
+.br
+\fBdoc          \fRGenerate usage documentation
+.br
+\fBhelp, h      \fRShows a list of commands or help for one command
+.br
+
+.SH "GLOBAL OPTIONS"
+\fB--environment \fR"ENVIRONMENT"
+.br
+       Specify additional environment variables in a file. [$WERCKER_ENVIRONMENT_FILE]
+.br
+
+\fB--verbose\fR
+.br
+       Print more information.
+.br
+
+\fB--no-colors\fR
+.br
+       Wercker output will not use colors (does not apply to step output).
+.br
+
+\fB--debug\fR
+.br
+       Print additional debug information.
+.br
+
+\fB--journal\fR
+.br
+       Send logs to systemd-journald. Suppresses stdout logging.
+.br
+
+\fB--auth-token\fR
+.br
+       Authentication token to use.
+.br
+
+\fB--help\fR, \fB-h\fR
+.br
+       show help
+.br
+
+\fB--version\fR, \fB-v\fR
+.br
+       print the version
+.br
+.SH "AUTHOR"
+Team wercker - <pleasemailus@wercker.com>
+.br
+
