@@ -1,0 +1,43 @@
+# Maintainer: Lionel Félicité <deogracia@free.fr>
+
+pkgname="manpageeditor-git"
+_realname="ManPageEditor"
+pkgver=r227.20d514a
+pkgrel=1
+pkgdesc="A simple Gtk2 editor for man pages"
+arch=('i686' 'x86_64')
+url="https://github.com/KeithDHedger/${_realname}"
+license=('GPL')
+depends=('desktop-file-utils' 'gtksourceview2' 'aspell')
+makedepends=('git' 'glib2' 'gtk2' 'gtksourceview2' 'aspell')
+install=${_realname}.install
+changelog=${_realname}.changelog
+source=("git+https://github.com/KeithDHedger/${_realname}.git#commit=20d514a8e8e832f1a119684b306407d85327e880")
+md5sums=('SKIP')
+
+pkgver() {
+  cd "$srcdir/${_realname}"
+
+  # Git, no tags available
+  printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+
+}
+
+build() {
+	cd "$srcdir/${_realname}"
+	./autogen.sh
+	./configure --prefix=/usr --enable-aspell
+	make
+}
+
+check() {
+	cd "$srcdir/${_realname}"
+	make -k check
+}
+
+package() {
+  cd "$srcdir/${_realname}"
+  make DESTDIR="$pkgdir/" install
+  install -Dm644 "COPYING" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+
+}
