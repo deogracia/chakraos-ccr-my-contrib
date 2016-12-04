@@ -2,7 +2,7 @@
 
 pkgname=evolus-pencil-git
 pkgver=v3.0.0.rc.1.r2.g02df19b
-pkgrel=1
+pkgrel=2
 pkgdesc="Sketching and GUI prototyping tool"
 arch=('i686' 'x86_64')
 url="http://code.google.com/p/evoluspencil/"
@@ -61,6 +61,7 @@ package() {
 
  install -d "${pkgdir}/usr/share/pencil"
  cp -a "${_pencil_build_dir}/." "${pkgdir}/usr/share/pencil"
+ chmod 644 "${pkgdir}/usr/share/pencil/libnode.so"
  rm "${pkgdir}/usr/share/pencil/LICENSE"
  rm "${pkgdir}/usr/share/pencil/LICENSES.chromium.html"
 
