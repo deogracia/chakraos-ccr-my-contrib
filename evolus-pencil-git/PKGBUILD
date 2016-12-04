@@ -1,18 +1,18 @@
 # Maintainer: Lionel Félicité <deogracia@free.fr>
 
 pkgname=evolus-pencil-git
-pkgver=r484.5bf9f20
-pkgrel=2
+pkgver=v3.0.0.rc.1.r2.g02df19b
+pkgrel=1
 pkgdesc="Sketching and GUI prototyping tool"
 arch=('i686' 'x86_64')
 url="http://code.google.com/p/evoluspencil/"
 license=('GPL2')
-depends=('alsa-lib' 'gconf' 'gtk2' 'libnotify' 'libxtst' 'nss')
+depends=('alsa-lib' 'gconf' 'gtk2' 'libnotify' 'libxtst' 'libxss' 'nss')
 makedepends=('desktop-file-utils' 'firefox-kde' 'gendesk' 'git' 'nodejs' 'npm' 'prelink')
 provides=('pencil')
 conflicts=('pencil')
 changelog=$pkgname.changelog
-source=('git+https://gitlab.com/evolus/pencil.git#commit=5bf9f205')
+source=('git+https://github.com/evolus/pencil.git#commit=02df19b77dab3cd5ff582180a1630fbf0595123a')
 sha1sums=('SKIP')
 
 pkgver() {
