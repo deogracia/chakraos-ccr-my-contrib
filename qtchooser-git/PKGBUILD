@@ -1,0 +1,61 @@
+# Maintainer: Your Name <youremail@domain.com>
+
+pkgname='qtchooser-git'
+_distname='qtchooser'
+pkgver=r63.13a3d08
+pkgrel=1
+pkgdesc="Wrap the other Qt tools by searching for different instances of Qt on the system"
+arch=('i686' 'x86_64')
+url="http://code.qt.io/cgit/qt/qtchooser.git/"
+license=('GPL')
+depends=('gcc-libs')
+makedepends=('git') # 'bzr', 'git', 'mercurial' or 'subversion'
+provides=("${_distname}")
+conflicts=("${distname}")
+backup=('etc/xdg/qtchooser/default.conf')
+changelog=${pkgname}.changelog
+source=("git://code.qt.io/qt/${_distname}.git#commit=13a3d083f10c8e1e088281b8231b0cf02976a51f"
+        "4.conf"
+        "5.conf")
+sha256sums=('SKIP'
+            'f36b61489100d41c36194d29e65b4aa93a1995dc2577755db9bc275153b25284'
+            '28a417eddd83def07e223937f6ae7a4ca88c021303e0c56136009d2de5ad667d')
+
+# Please refer to the 'USING VCS SOURCES' section of the PKGBUILD man page for
+# a description of each element in the source array.
+
+pkgver() {
+  cd "$srcdir/${_distname}"
+
+# Git, tags available
+#  printf "%s" "$(git describe --long | sed 's/\([^-]*-\)g/r\1/;s/-/./g')"
+
+# Git, no tags available
+  printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+prepare() {
+  cd "$srcdir/${_distname}"
+  sed -e 's|bindir = $(prefix)/bin|bindir = $(prefix)/lib/qtchooser|' -i Makefile -i src/qtchooser/Makefile
+}
+
+build() {
+  cd "$srcdir/${_distname}"
+  bindir=/usr/lib/qtchooser/ make
+}
+
+package() {
+  cd "$srcdir/${_distname}"
+  make INSTALL_ROOT="$pkgdir/" install
+
+  install -d "$pkgdir"/etc/xdg/qtchooser
+  install -m644 "$srcdir"/{4,5}.conf "$pkgdir"/etc/xdg/qtchooser/
+
+ # Set the default Qt
+ ln -s /etc/xdg/qtchooser/5.conf  "$pkgdir"/etc/xdg/qtchooser/default.conf
+ install -d "$pkgdir/usr/share/licenses/$_distname/"
+ install -D -m644 LICENSE.{GPL,LGPL} \
+    "$pkgdir/usr/share/licenses/$_distname/"
+ install -D -m644 LGPL_EXCEPTION.txt \
+    "$pkgdir/usr/share/licenses/$_distname/"
+}
