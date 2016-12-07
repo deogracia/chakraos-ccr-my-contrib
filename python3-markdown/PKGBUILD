@@ -1,0 +1,32 @@
+# Maintainer: Stephen McIntosh <stephenmac7[at]gmail[dot]com>
+# Contributor: Kyle Keen <keenerd#gmail.com>
+# Contributor: Angel Velasquez <angvp@archlinux.org>
+# Contributor: Andrew Antle <andrew dot antle at gmail dot com>
+# Contributor: Thomas Dziedzic < gostrc at gmail >
+# Contributor: Chaiwat Suttipongsakul <cwt at bashell dot com>
+
+pkgname=python3-markdown
+_pkgbasename=Markdown
+pkgver=2.2.0
+pkgrel=1
+pkgdesc="Python implementation of John Gruber's Markdown."
+arch=('any')
+url='http://www.freewisdom.org/projects/python-markdown/'
+license=('BSD')
+depends=('python3')
+source=("http://pypi.python.org/packages/source/M/$_pkgbasename/$_pkgbasename-$pkgver.tar.gz" 
+        "markdown.py3.patch")
+md5sums=('28dd4f54894b3af2615b08f50d2ce4bf'
+         '9214dd7d53070d122e492ed89a53752d')
+
+build() {
+  cp -r $_pkgbasename-$pkgver "$srcdir/python2-markdown"
+  cd "$srcdir/python2-markdown"
+  find "$srcdir/python2-markdown" -name '*.py' | xargs sed -i 's|#!/usr/bin/env python|#!/usr/bin/env python2|'
+}
+
+package() {
+  cd $_pkgbasename-$pkgver
+  patch -N markdown/__main__.py "$srcdir/markdown.py3.patch"
+  python3 setup.py install --root="$pkgdir" --optimize=0
+}
