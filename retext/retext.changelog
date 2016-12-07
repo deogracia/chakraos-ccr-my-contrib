@@ -1,3 +1,7 @@
+2016-12-07 Lionel Félicité <deogracia@free.fr>
+    * retext 6.0.2-1 :
+      New upstream release
+
 2016-05-29 Lionel Félicité <deogracia@free.fr>
     * retext 5.3.1-2 :
       deduplicate ops in postinstall
