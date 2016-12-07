@@ -3,7 +3,7 @@
 pkgname='python3-genty'
 _distname='genty'
 pkgver=1.3.2
-pkgrel=1
+pkgrel=2
 pkgdesc="Allows you to run a test with multiple data sets"
 arch=('any')
 license=('Apache')
@@ -11,6 +11,7 @@ url="https://github.com/box/genty"
 depends=('python3-six')
 makedepends=('python3-setuptools' 'python3-six' 'git')
 checkdepends=('python3-mock')
+changelog=${pkgname}.changelog
 source=("git+https://github.com/box/${_distname}.git#tag=v$pkgver")
 sha512sums=('SKIP')
 _PYTHON_CMD="python3"
