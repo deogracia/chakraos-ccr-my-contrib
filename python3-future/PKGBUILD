@@ -1,0 +1,36 @@
+# Maintainer: Lionel Félicité <deogracia@free.fr>
+
+pkgname=python3-future
+_distname='future'
+pkgver=0.16.0
+pkgrel=1
+pkgdesc="Easy, clean, reliable Python 2/3 compatibility"
+arch=('any')
+url="http://python-future.org/"
+license=('MIT')
+depends=('python3')
+makedepends=('python3-setuptools')
+checkdepends=('python3-requests')
+optdepends=('python3-setuptools: futurize and pasteurize scripts')
+provides=('futurize' 'pasteurize')
+changelog=${pkgname}.changelog
+source=("https://pypi.python.org/packages/00/2b/8d082ddfed935f3608cc61140df6dcbf0edea1bc3ab52fb6c29ae3e81e85/${_distname}-${pkgver}.tar.gz#md5=3e8e88a2bda48d54b1da7634d04760d7")
+sha256sums=('e39ced1ab767b5936646cedba8bcce582398233d6a627067d4c6a454c90cfedb')
+_PYTHON_CMD="python3"
+
+build() {
+  cd "${_distname}-$pkgver"
+  ${_PYTHON_CMD} setup.py build
+}
+
+check() {
+  cd "${_distname}-$pkgver"
+  PYTHONPATH="${PWD}/build/lib/:$PYTHONPATH" ${_PYTHON_CMD} setup.py test
+}
+
+package() {
+  cd "${_distname}-$pkgver"
+  ${_PYTHON_CMD} setup.py install --root="${pkgdir}" --optimize=1
+
+  install -D -m644 LICENSE.txt "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.txt"
+}
