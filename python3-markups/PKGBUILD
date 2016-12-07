@@ -1,23 +1,38 @@
-# Maintainer: Jakub Kozisek <nodevel at gmail dot com>
+# Maintainer: Lionel Félicité <deogracia@free.fr>
+# Contributor: Jakub Kozisek <nodevel at gmail dot com>
 
 pkgname=python3-markups
-pkgver=0.6.0
-pkgrel=2
-_libname=Markups
+_distname=pymarkups
+pkgver=2.0.0
+pkgrel=1
 pkgdesc='Wrapper around various text markups'
-url='http://launchpad.net/python-markups'
+url="https://github.com/retext-project/pymarkups"
 depends=('python3')
 optdepends=('python3-markdown: markdown support'
             'python3-docutils: reST support')
 makedepends=('python3-setuptools')
 license=('BSD')
 arch=('any')
-source=(http://pypi.python.org/packages/source/${_libname:0:1}/$_libname/$_libname-$pkgver.tar.gz)
+changelog=${pkgname}.changelog
+source=(https://github.com/retext-project/${_distname}/archive/${pkgver}.tar.gz)
+sha256sums=('0d1ac398ecde6ec3904ec842abee7538d58a3a2d51ac2e61584a822dc6d73a06')
+_PYTHON_CMD="python3"
 
-sha256sums=('e601e9a9fff58403b4e2de3b8e8c34ce33a8604549c2344c569d815ae0e803f1')
+build() {
+  cd "${srcdir}/${_distname}-${pkgver}"
+  ${_PYTHON_CMD} setup.py build
+}
+
+check() {
+  cd "${srcdir}/${_distname}-${pkgver}"
+  pyvenv venv
+  ./venv/bin/python3 setup.py develop test
+}
 
 package () {
-    cd "$srcdir/$_libname-$pkgver"
-    python3 setup.py install --root="$pkgdir"
+  cd "${srcdir}/${_distname}-${pkgver}"
+  ${_PYTHON_CMD} setup.py install --root="${pkgdir}" --optimize=1
+
+  install -D -m644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
 }
 
