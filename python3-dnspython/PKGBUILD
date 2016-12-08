@@ -1,0 +1,36 @@
+# Maintainer: Lionel Félicité <deogracia@free.fr>
+
+pkgname='python3-dnspython'
+_distname='dnspython'
+pkgver='1.15.0'
+pkgrel=1
+pkgdesc="a powerful DNS toolkit for python"
+arch=('any')
+url="http://www.dnspython.org/"
+license=('custom:ISC')
+depends=('python3')
+makedepends=('python3-setuptools')
+checkdepends=()
+optdepends=('python3-nose')
+changelog=${pkgname}.changelog
+source=("https://github.com/rthalley/${_distname}/archive/v${pkgver}.tar.gz")
+sha256sums=('760078a8a87d85452177a406203681aaee9bfb8cbba2843425883709cd5b2af5')
+_PYTHON_CMD="python3"
+
+
+build() {
+  cd "${_distname}-${pkgver}"
+  ${_PYTHON_CMD} setup.py build
+}
+
+check() {
+  cd "${_distname}-${pkgver}/tests"
+  nosetests3
+}
+
+package() {
+  cd "${_distname}-${pkgver}"
+  ${_PYTHON_CMD} setup.py install --root=${pkgdir} --optimize=1
+
+  install -D -m644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}
