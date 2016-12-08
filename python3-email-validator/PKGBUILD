@@ -1,0 +1,39 @@
+# Maintainer: Lionel Félicité <deogracia@free.fr>
+
+pkgname='python3-email-validator'
+_distname='python-email-validator'
+pkgver=1.0.1
+_commit='6b7e3e362eaeb2b1ae4281f4d18421bd31dad3fb'
+pkgrel=1
+pkgdesc="A robust email syntax and deliverability validation library for Python 2.x/3.4+."
+arch=('any')
+url="https://github.com/JoshData/${_distname}"
+license=('custom:CC0')
+depends=('python3-dnspython' 'python3-idna')
+makedepends=('git' 'python3-setuptools' 'python3-dnspython' 
+             'python3-idna' )
+changelog=${pkgname}.changelog
+source=("git+https://github.com/JoshData/${_distname}.git#commit=${_commit}")
+sha256sums=('SKIP')
+_PYTHON_CMD="python3"
+
+build() {
+  cd "$srcdir"/python-email-validator
+  ${_PYTHON_CMD} setup.py build
+}
+
+check() {
+  export LC_CTYPE=en_US.UTF-8
+
+  cd "$srcdir"/python-email-validator
+  ${_PYTHON_CMD} email_validator/__init__.py --tests < test_pass.txt
+}
+
+package() {
+  cd "$srcdir"/python-email-validator
+
+  ${_PYTHON_CMD} setup.py install --root="$pkgdir/" --optimize=1
+  install -Dm644 "LICENSE" "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+}
+
+# vim:set ts=2 sw=2 et:
