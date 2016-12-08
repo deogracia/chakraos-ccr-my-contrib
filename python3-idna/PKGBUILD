@@ -1,0 +1,36 @@
+# Maintainer: Lionel Félicité <deogracia@free.fr>
+
+pkgname='python3-idna'
+_distname='idna'
+pkgver='2.1'
+pkgrel=1
+pkgdesc="IDNA 2008 and UTS #46 for Python"
+arch=('any')
+url="https://github.com/kjd/idna"
+license=('BSD')
+depends=('python3')
+makedepends=('python3-setuptools')
+checkdepends=()
+optdepends=('python3-nose')
+changelog=${pkgname}.changelog
+source=("https://github.com/kjd/${_distname}/archive/v${pkgver}.tar.gz")
+sha256sums=('25a3dadf365b8cc2c2c262170c5de67c9195f3270cdb47a0ae459b4ebad11914')
+_PYTHON_CMD="python3"
+
+
+build() {
+  cd "${_distname}-${pkgver}"
+  ${_PYTHON_CMD} setup.py build
+}
+
+check() {
+  cd "${_distname}-${pkgver}"
+  ${_PYTHON_CMD} setup.py test
+}
+
+package() {
+  cd "${_distname}-${pkgver}"
+  ${_PYTHON_CMD} setup.py install --root=${pkgdir} --optimize=1
+
+  install -D -m644 LICENSE.rst "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.rst"
+}
