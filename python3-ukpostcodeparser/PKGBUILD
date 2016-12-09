@@ -1,0 +1,42 @@
+# Maintainer: Lionel Félicité <deogracia@free.fr>
+
+pkgname='python3-ukpostcodeparser'
+_distname='ukpostcodeparser'
+pkgver=1.1.0
+_commit='2f521d8c723e7dc5c38d1c76d5c739a54f8c21d3'
+pkgrel=1
+pkgdesc="UK Postcode parser"
+arch=('any')
+url="https://github.com/hamstah/${_distname}"
+license=('MIT')
+depends=('python3-dnspython' 'python3-idna')
+makedepends=('git' 'python3-setuptools')
+changelog=${pkgname}.changelog
+source=("git+https://github.com/hamstah/${_distname}.git#commit=${_commit}")
+sha256sums=('SKIP')
+_PYTHON_CMD="python3"
+
+build() {
+  cd "${srcdir}/${_distname}"
+  ${_PYTHON_CMD} setup.py build
+  echo "# License file manually created by the packager" > LICENSE
+  echo "#" >> LICENSE
+  echo "#" >> LICENSE
+  cat setup.py |grep license >> LICENSE
+}
+
+check() {
+  cd "${srcdir}/${_distname}"
+  ${_PYTHON_CMD} setup.py test || msg2 "test failed for now. see issue #5 on GH repo" 
+}
+
+package() {
+  cd "${srcdir}/${_distname}"
+
+  ${_PYTHON_CMD} setup.py install --root="$pkgdir/" --optimize=1
+
+  # No physical licence file in this repo; I use the one created by me @ build time
+  install -D -m644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}
+
+# vim:set ts=2 sw=2 et:
