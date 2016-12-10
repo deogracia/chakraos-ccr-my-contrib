@@ -1,0 +1,40 @@
+# Maintainer: Lionel Félicité <deogracia@free.fr>
+
+pkgname='python2-pep8'
+_distname='pycodestyle'
+pkgver=1.7.0
+pkgrel=1
+pkgdesc="A simple program which checks Python source files for errors."
+arch=('any')
+url="https://github.com/PyCQA/pep8"
+license=('MIT')
+depends=('python2' 'python2-setuptools')
+makedepends=('python2-setuptools')
+checkdepends=('python2-setuptools')
+changelog=${pkgname}.changelog
+source=("https://github.com/PyCQA/${_distname}/archive/${pkgver}.tar.gz")
+sha256sums=('3f62d19b5cbcbdcb7810f967dcc2fbdd090256e090c32b457e2580a841d118ef')
+_PYTHON_CMD="python2"
+
+build() {
+  cd "${srcdir}/${_distname}-${pkgver}"
+  sed -i "s|#!/usr/bin/env python$|#!/usr/bin/env python2|" pep8.py
+  ${_PYTHON_CMD} setup.py build
+}
+
+check() {
+  cd "${srcdir}/${_distname}-${pkgver}"
+  ${_PYTHON_CMD} setup.py test
+}
+
+package() {
+  cd "${srcdir}/${_distname}-${pkgver}"
+
+  ${_PYTHON_CMD} setup.py install --root="$pkgdir/" --optimize=1
+  mv ${pkgdir}/usr/bin/pep8{,-python2}
+
+  # No physical licence file in this repo; I use the one created by me @ build time
+  install -D -m644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}
+
+# vim:set ts=2 sw=2 et:
