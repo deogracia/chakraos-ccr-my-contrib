@@ -1,0 +1,39 @@
+# Maintainer: Lionel Félicité <deogracia@free.fr>
+
+pkgname='python3-pycodestyle'
+_distname='pycodestyle'
+pkgver=2.2.0
+pkgrel=1
+pkgdesc="A simple program which checks Python source files for errors."
+arch=('any')
+url="https://github.com/PyCQA/pycodestyle"
+license=('MIT')
+depends=('python3' 'python3-setuptools')
+makedepends=('python3-setuptools')
+checkdepends=('python3-setuptools')
+changelog=${pkgname}.changelog
+source=("https://github.com/PyCQA/${_distname}/archive/${pkgver}.tar.gz")
+sha256sums=('aa663451c9de97d00eff396eeffe1095fd1597491341ca3c0be54983b25b1a7d')
+_PYTHON_CMD="python3"
+
+build() {
+  cd "${srcdir}/${_distname}-${pkgver}"
+  sed -i "s|#!/usr/bin/env python$|#!/usr/bin/env python3|" pycodestyle.py
+  ${_PYTHON_CMD} setup.py build
+}
+
+check() {
+  cd "${srcdir}/${_distname}-${pkgver}"
+  ${_PYTHON_CMD} setup.py test
+}
+
+package() {
+  cd "${srcdir}/${_distname}-${pkgver}"
+
+  ${_PYTHON_CMD} setup.py install --root="$pkgdir/" --optimize=1
+
+  # No physical licence file in this repo; I use the one created by me @ build time
+  install -D -m644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}
+
+# vim:set ts=2 sw=2 et:
