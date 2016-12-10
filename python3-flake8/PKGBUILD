@@ -1,0 +1,40 @@
+# Maintainer: Lionel Félicité <deogracia@free.fr>
+
+pkgname='python3-flake8'
+_distname='flake8'
+pkgver=3.2.1
+_commit='a981fe34ed5d02c762e40e1ed2d6f309290035b3'
+pkgrel=1
+pkgdesc="A simple program which checks Python source files for errors."
+arch=('any')
+url="https://gitlab.com/PyCQA/${_distname}"
+license=('MIT')
+depends=('python3' 'python3-setuptools' 'python3-pyflakes'
+             'python3-mccabe' 'python3-pycodestyle')
+makedepends=('python3-setuptools')
+checkdepends=('python3-setuptools')
+changelog=${pkgname}.changelog
+source=("https://gitlab.com/pycqa/${_distname}/repository/archive.tar.gz?ref=${pkgver}")
+sha256sums=('e217ee8789a09cfc16e4bfe56687d73f881ae4617dc92777bef180f07d0cfa04')
+_PYTHON_CMD="python3"
+
+build() {
+  cd "${srcdir}/${_distname}-${pkgver}-${_commit}"
+  ${_PYTHON_CMD} setup.py build
+}
+
+check() {
+  cd "${srcdir}/${_distname}-${pkgver}-${_commit}"
+  ${_PYTHON_CMD} setup.py test
+}
+
+package() {
+  cd "${srcdir}/${_distname}-${pkgver}-${_commit}"
+
+  ${_PYTHON_CMD} setup.py install --root="$pkgdir/" --optimize=1
+
+  # No physical licence file in this repo; I use the one created by me @ build time
+  install -D -m644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}
+
+# vim:set ts=2 sw=2 et:
