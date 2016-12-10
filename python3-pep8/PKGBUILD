@@ -3,7 +3,7 @@
 pkgname='python3-pep8'
 _distname='pycodestyle'
 pkgver=1.7.0
-pkgrel=1
+pkgrel=2
 pkgdesc="A simple program which checks Python source files for errors."
 arch=('any')
 url="https://github.com/PyCQA/pep8"
@@ -34,6 +34,9 @@ package() {
 
   # No physical licence file in this repo; I use the one created by me @ build time
   install -D -m644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+
+  warning "Since 2.0.0, pep8 is named pycodestyle!"
+  warning "This package won't be updated anymore."
 }
 
 # vim:set ts=2 sw=2 et:
