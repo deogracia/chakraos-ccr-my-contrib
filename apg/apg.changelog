@@ -1,3 +1,8 @@
+2016-12-31 Lionel Félicité <deogracia@free.fr>
+    * apg 2.2.3-5 :
+     * upstream website is down
+       rebuilt an archive from Debian Archive
+
 2016-01-13 Lionel Félicité <deogracia@free.fr>
     * apg 2.2.3-4 :
       earlier package maintener was :
