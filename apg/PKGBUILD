@@ -5,15 +5,15 @@
 
 pkgname=apg
 pkgver=2.2.3
-pkgrel=4
+pkgrel=5
 pkgdesc="Automated Password Generator."
 arch=(i686 x86_64)
 url="http://www.adel.nursat.kz/apg/index.shtml"
 license=('custom')
 depends=('glibc')
 changelog=$pkgname.changelog
-source=(http://www.adel.nursat.kz/apg/download/$pkgname-$pkgver.tar.gz)
-md5sums=('3b3fc4f11e90635519fe627c1137c9ac')
+source=(https://github.com/deogracia/orphaned-stuff/raw/master/${pkgname}/${pkgname}-${pkgver}.tar.gz)
+sha512sums=('acc1a1cca5f4a210f26fdf8c30704212a09bacc8cd1d4b294ddc129af9fd3e8ceb4dfebad70ba37fd09685df9009b8953b691fc014dc20c575544f71b08a81e3')
 
 build() {
   cd $srcdir/$pkgname-$pkgver
