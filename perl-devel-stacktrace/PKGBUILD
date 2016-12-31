@@ -2,7 +2,7 @@
 
 pkgname=perl-devel-stacktrace
 _distname=Devel-StackTrace
-pkgver=2.01
+pkgver=2.02
 pkgrel=1
 pkgdesc='An object representing a stack trace'
 arch=('any')
@@ -10,12 +10,12 @@ url="https://metacpan.org/release/Devel-StackTrace"
 license=('PerlArtistic' 'GPL')
 depends=('perl>=5.6')
 options=('!emptydirs')
-changelog=$pkgname.changelog
-source=("http://search.cpan.org/CPAN/authors/id/D/DR/DROLSKY/$_distname-$pkgver.tar.gz")
-sha256sums=('055d35b5dbe62b88af7a15b347f7759cacb376dda345e0bd092a549384c30c13')
+changelog=${pkgname}.changelog
+source=("http://search.cpan.org/CPAN/authors/id/D/DR/DROLSKY/${_distname}-${pkgver}.tar.gz")
+sha256sums=('cbbd96db0ecf194ed140198090eaea0e327d9a378a4aa15f9a34b3138a91931f')
 
 build() {
-  cd "${srcdir}"/$_distname-$pkgver
+  cd "${srcdir}"/${_distname}-${pkgver}
 
   export PERL_MM_USE_DEFAULT=1 PERL_AUTOINSTALL=--skipdeps
   unset PERL5LIB PERL_MM_OPT
@@ -24,7 +24,7 @@ build() {
 }
 
 check() {
-  cd "${srcdir}"/$_distname-$pkgver
+  cd "${srcdir}"/${_distname}-${pkgver}
 
   export PERL_MM_USE_DEFAULT=1
   unset PERL5LIB
@@ -32,7 +32,7 @@ check() {
 }
 
 package() {
-  cd "${srcdir}"/$_distname-$pkgver
+  cd "${srcdir}"/${_distname}-${pkgver}
 
   make install INSTALLDIRS=vendor DESTDIR="${pkgdir}"
 
