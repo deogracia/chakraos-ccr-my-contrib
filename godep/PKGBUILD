@@ -2,44 +2,47 @@
 
 pkgname='godep'
 pkgver=75
-pkgrel=1
+pkgrel=2
 pkgdesc="dependency tool for go"
 arch=('x86_64' 'i686')
-url="https:/github.com/tools/$pkgname"
+url="https:/github.com/tools/${pkgname}"
 license=('custom')
-makedepends=('go' 'glibc')
+makedepends=('go' 'glibc' 'help2man')
 depends=('glibc')
 options=('!strip' '!emptydirs')
-changelog=$pkgname.changelog
-source=("https://github.com/tools/$pkgname/archive/v$pkgver.tar.gz")
+changelog=${pkgname}.changelog
+source=("https://github.com/tools/${pkgname}/archive/v${pkgver}.tar.gz")
 sha256sums=('a9508db6a792170f9815864b70a70a8e0e66ca0bf57f1a9cc087d811ec105494')
 
 prepare() {
  export GOPATH="${srcdir}"
- my_srcdir="$GOPATH/src/github.com/tools"
+ my_srcdir="${GOPATH}/src/github.com/tools"
 
  go get golang.org/x/tools/go/vcs
  go get github.com/kr/fs
- mkdir -p $GOPATH/src/github.com/tools
- mv ${srcdir}/$pkgname-$pkgver $my_srcdir/$pkgname
+ mkdir -p ${GOPATH}/src/github.com/tools
+ mv ${srcdir}/${pkgname}-${pkgver} ${my_srcdir}/${pkgname}
 
 }
 
 build() {
  export GOPATH="${srcdir}"
- my_srcdir="$GOPATH/src/github.com/tools"
+ my_srcdir="${GOPATH}/src/github.com/tools"
 
- cd "$my_srcdir/$pkgname"
+ cd "${my_srcdir}/${pkgname}"
 
  go build
+ # generate man page
+ help2man godep --no-discard-stderr --version-option=version --no-info> godep.1
 }
 
 package() {
- my_srcdir="$GOPATH/src/github.com/tools/$pkgname"
- cd "$my_srcdir"
+ my_srcdir="${GOPATH}/src/github.com/tools/${pkgname}"
+ cd "${my_srcdir}"
 
- install -Dm755 "$pkgname" "$pkgdir/usr/bin/$pkgname"
- install -Dm644 License "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+ install -Dm755 "${pkgname}"   "${pkgdir}/usr/bin/${pkgname}"
+ install -Dm644 License        "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+ install -Dm644 "${pkgname}.1" "${pkgdir}/usr/share/man/man1/${pkgname}.1"
 }
 
 # vim:set ts=2 sw=2 et:
