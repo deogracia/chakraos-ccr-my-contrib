@@ -1,0 +1,42 @@
+# Maintainer: Lionel Félicité <deogracia@free.fr>
+
+pkgname=terraform
+pkgver=0.8.7
+pkgrel=1
+pkgdesc="It's a tool for building, changing, and combining infrastructure safely and efficiently"
+arch=('i686' 'x86_64')
+_go_pkg_name="github.com/hashicorp"
+url="https://${_go_pkg_name}/${pkgname}"
+license=('MPL2.0')
+depends=('glibc')
+makedepends=('go' 'govendor' 'gox' 'help2man')
+options=('!strip' '!emptydirs')
+changelog=${pkgname}.changelog
+source=("${pkgname}::git+https://${_go_pkg_name}/${pkgname}.git#tag=v${pkgver}")
+sha256sums=('SKIP')
+
+prepare() {
+  mkdir -p gopath/src/${_go_pkg_name}
+  mv "$pkgname" gopath/src/${_go_pkg_name}/${pkgname}
+
+  msg2 "Fetching GO dependancies"
+  export GOPATH="${srcdir}/gopath"
+  go get -u golang.org/x/tools/cmd/stringer
+}
+
+build() {
+  msg2 "Building..."
+  export GOPATH="${srcdir}/gopath"
+  cd gopath/src/${_go_pkg_name}/${pkgname}
+  PATH=${GOPATH}/bin:$PATH TF_DEV=1 make bin
+  msg2 "Building man page..."
+  help2man --no-discard-stderr --no-info --name="Terraform is a tool for building, changing, and combining infrastructure safely and efficiently" ./bin/terraform --output terraform.1
+}
+
+package() {
+  cd gopath/src/${_go_pkg_name}/${pkgname}
+
+  install -Dm755  "bin/${pkgname}" "$pkgdir/usr/bin/${pkgname}"
+  install -Dm644 "${pkgname}.1"    "${pkgdir}/usr/share/man/man1/${pkgname}.1"
+  install -Dm644 "LICENSE"         "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
