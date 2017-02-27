@@ -1,0 +1,5 @@
+2017-02-27 Lionel Félicité <deogracia@free.fr>
+    * rapidjson 1.1.0-1 :
+      Initial release
+      Taken from Archlinux repo
+       Work of Jonathan Steel <jsteel at archlinux.org>
