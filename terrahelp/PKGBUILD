@@ -1,0 +1,41 @@
+# Maintainer: Lionel Félicité <deogracia@free.fr>
+
+pkgname=terrahelp
+pkgver=0.6.3
+pkgrel=1
+pkgdesc="Terraform helper, Terrahelp, is as a command line utility written in Go and is aimed at providing supplementary functionality which can sometimes prove useful when working with Terraform."
+arch=('i686' 'x86_64')
+_go_pkg_name="github.com/opencredo"
+url="https://${_go_pkg_name}/${pkgname}"
+license=('APACHE')
+depends=('glibc')
+makedepends=('go' 'govendor' 'help2man')
+options=('!strip' '!emptydirs')
+changelog=${pkgname}.changelog
+source=("${pkgname}::git+https://${_go_pkg_name}/${pkgname}.git#tag=v${pkgver}")
+sha256sums=('SKIP')
+
+prepare() {
+  mkdir -p gopath/src/${_go_pkg_name}
+  mv "${pkgname}" gopath/src/${_go_pkg_name}/${pkgname}
+}
+
+build() {
+  msg2 "Building..."
+  export GOPATH="${srcdir}/gopath"
+  cd ${GOPATH}/src/${_go_pkg_name}/${pkgname}
+  govendor sync
+  go install
+  msg2 "Building man page..."
+  help2man --no-discard-stderr --no-info --name="${pkgdesc}" ${GOPATH}/bin/terrahelp --output ${pkgname}.1
+}
+
+package() {
+  export GOPATH="${srcdir}/gopath"
+
+  cd ${GOPATH}/src/${_go_pkg_name}/${pkgname}
+
+  install -Dm755  "${GOPATH}/bin/${pkgname}" "${pkgdir}/usr/bin/${pkgname}"
+  install -Dm644 "${pkgname}.1"              "${pkgdir}/usr/share/man/man1/${pkgname}.1"
+  install -Dm644 "LICENSE"                   "${pkgdir}/usr/share/licenses/$pkgname/LICENSE"
+}
