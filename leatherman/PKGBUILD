@@ -1,0 +1,50 @@
+# Maintainer: Lionel Félicité <deogracia@free.fr>
+
+pkgname=leatherman
+pkgver=0.11.0
+pkgrel=1
+pkgdesc="Collection of C++ and CMake utility libraries"
+arch=('i686' 'x86_64')
+url="https://github.com/puppetlabs/leatherman"
+license=('APACHE')
+makedepends=('boost' 'cmake' 'rapidjson')
+checkdepends=('ruby')
+depends=('python2')
+changelog=${pkgname}.changelog
+source=(${pkgname}-${pkgver}.tar.gz::https://github.com/puppetlabs/leatherman/archive/${pkgver}.tar.gz
+        ruby-2.4.patch)
+sha256sums=('b625b7e7c54495f60a9166e7da85d2fd70a877b3e4cd81bba9e67da51dd261cd'
+            '5ea4cf5530c4de9a47c7a7d0929ccf378dc48c3f146d5541c1f64e6810cd064e')
+
+prepare() {
+  cd ${pkgname}-${pkgver}
+
+  # Ruby 2.3 fix: replace rb_data_object_alloc symbol with rb_data_object_wrap
+  sed -i 's/rb_data_object_alloc/rb_data_object_wrap/g' \
+    $( grep -rl rb_data_object_alloc ruby )
+
+  # (LTH-124) Fix for ruby-2.4 related API changes
+  patch -p1 -i ../ruby-2.4.patch
+}
+
+build() {
+  cd ${pkgname}-${pkgver}
+
+  cmake -DCMAKE_INSTALL_PREFIX=/usr .
+
+  make
+}
+
+check() {
+  cd ${pkgname}-${pkgver}
+
+  LANG=C make test
+}
+
+package() {
+  cd ${pkgname}-${pkgver}
+
+  make install DESTDIR="${pkgdir}"
+
+  install -Dm644 LICENSE "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE
+}
