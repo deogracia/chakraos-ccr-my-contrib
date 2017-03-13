@@ -1,18 +1,28 @@
 # Maintainer: Lionel Félicité <deogracia@free.fr>
 
 pkgname=facter
-pkgver=3.1.3
-pkgrel=2
+pkgver=3.1.8
+pkgrel=1
 pkgdesc="Collect and display system facts"
 arch=('i686' 'x86_64')
 url="http://puppetlabs.com/facter"
 license=('APACHE')
 depends=('ruby' 'yaml-cpp' 'boost-libs' 'curl')
-makedepends=('boost' 'cmake')
+makedepends=('boost' 'cmake' 'leatherman')
+optdepends=('java-environment: jruby support')
+checkdepends=('ruby-bundler')
 replaces=('cfacter')
 changelog=$pkgname.changelog
 source=(http://downloads.puppetlabs.com/$pkgname/$pkgname-$pkgver.tar.gz)
-md5sums=('0a07f8f88ac8c1f2ed7566a51dc775bc')
+md5sums=('8e0789eb1d452388fdba9c2e46df9d54')
+
+prepare() {
+  cd $pkgname-$pkgver
+  # Replace rb_data_object_alloc symbol with rb_data_object_wrap
+  # https://tickets.puppetlabs.com/browse/FACT-1291
+  sed -i 's/rb_data_object_alloc/rb_data_object_wrap/g' \
+    $( grep -rl rb_data_object_alloc lib/src/ruby )
+}
 
 build() {
   cd $pkgname-$pkgver
@@ -20,6 +30,14 @@ build() {
   cmake -DCMAKE_INSTALL_PREFIX=/usr
 
   make
+}
+
+check () {
+  cd $pkgname-$pkgver
+  pushd lib
+  bundle install --path vendor/bundle
+  popd
+  make test
 }
 
 package() {
