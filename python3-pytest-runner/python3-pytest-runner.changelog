@@ -1,0 +1,5 @@
+2017-05-04 Lionel Félicité <deogracia@free.fr>
+    * python3-pytest-runner 2.11.1 :
+      Initial release
+      Taken from Archlinux repo
+       Thanks to Felix Yan
