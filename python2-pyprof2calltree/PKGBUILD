@@ -1,0 +1,32 @@
+# Maintainer: Lionel Félicité <deogracia@free.fr>
+
+pkgname=python2-pyprof2calltree
+pkgver=1.4.0
+pkgrel=1
+pkgdesc="Help visualize profiling data from cProfile with kcachegrind"
+url="https://pypi.python.org/pypi/pyprof2calltree/"
+arch=('any')
+license=('BSD')
+depends=('python2' 'python2-setuptools')
+makedepends=('python2-setuptools')
+changelog=$pkgname.changelog
+source=("https://pypi.io/packages/source/p/pyprof2calltree/pyprof2calltree-$pkgver.tar.gz")
+sha1sums=('df2068f94a4f9259f6dda2741338798878ba6478')
+
+prepare() {
+  sed -n '/# Copyright/,/# THE SOFTWARE\./p' pyprof2calltree-$pkgver/pyprof2calltree.py > LICENSE
+  sed -i "s|#!/usr/bin/env python$|#!/usr/bin/env python2|" pyprof2calltree-$pkgver/pyprof2calltree.py
+}
+
+build() {
+  cd "$srcdir"/pyprof2calltree-$pkgver
+  python2 setup.py build
+}
+
+package() {
+  cd pyprof2calltree-$pkgver
+  python2 setup.py install --prefix=/usr --root="$pkgdir" --optimize=1
+  install -D -m644 ../LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+
+  mv "$pkgdir/usr/bin/pyprof2calltree"{,2}
+}
