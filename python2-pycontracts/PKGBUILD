@@ -1,0 +1,33 @@
+# Maintainer: Lionel Félicité <deogracia@free.fr>
+
+pkgname=python2-pycontracts
+pkgver=1.7.15
+pkgrel=2
+pkgdesc='Declare constraints on function parameters and return values'
+arch=('any')
+url="https://andreacensi.github.io/contracts"
+license=('GPL')
+depends=('python2-pyparsing' 'python2-decorator' 'python2-six')
+makedepends=('python2-setuptools' 'python2-pyparsing'
+             'python2-decorator' 'python2-six')
+checkdepends=('python2-nose')
+changelog=$pkgname.changelog
+source=("https://pypi.io/packages/source/P/PyContracts/PyContracts-$pkgver.tar.gz")
+sha256sums=('24bf3ab5cfd61d0e296af82fb8b73ba875ea09733a8ca562f53016cf980dc469')
+
+build() {
+  cd "$srcdir"/PyContracts-$pkgver
+  python2 setup.py build
+}
+
+check() {
+  cd "$srcdir"/PyContracts-$pkgver
+  rm -r src/contracts-py3k-test
+  python2 setup.py nosetests
+}
+
+package() {
+
+  cd PyContracts-$pkgver
+  python2 setup.py install --root="$pkgdir" --optimize=1
+}
