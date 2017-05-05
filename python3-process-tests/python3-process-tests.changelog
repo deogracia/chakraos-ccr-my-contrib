@@ -1,0 +1,8 @@
+2017-05-05 Lionel Félicité <deogracia@free.fr>
+    * python-process-tests 1.2.1-3 :
+      Fix wrong release number
+
+    * python-process-tests 1.2.1-1 :
+      Initial release
+       Taken from arch repo
+       Thanks to Felix Yan <felixonmars@archlinux.org>
