@@ -1,0 +1,5 @@
+2017-05-05 Lionel Félicité <deogracia@free.fr>
+    * python2-pyparsing 2.2.0-1 :
+      Initial release
+       Taken from arch repo
+       Thanks to Felix Yan <felixonmars@archlinux.org>
