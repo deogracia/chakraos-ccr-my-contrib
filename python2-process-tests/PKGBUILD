@@ -1,0 +1,27 @@
+# Maintainer: Lionel Félicité <deogracia@free.fr>
+
+pkgname='python2-process-tests'
+pkgver=1.2.1
+pkgrel=2
+pkgdesc="Tools for testing processes"
+arch=('any')
+url="https://pypi.python2.org/pypi/process-tests"
+license=('BSD')
+depends=('python2')
+makedepends=('python2-setuptools')
+changelog=$pkgname.changelog
+source=("https://pypi.io/packages/source/p/process-tests/process-tests-$pkgver.tar.gz")
+md5sums=('97d523a15befaaf5f846b7b1a88d8e2c')
+
+build() {
+  cd "$srcdir"/process-tests-$pkgver
+  python2 setup.py build
+}
+
+package() {
+  cd process-tests-$pkgver
+  python2 setup.py install --root="$pkgdir/" --optimize=1
+  install -Dm644 LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+}
+
+# vim:set ts=2 sw=2 et:
