@@ -1,0 +1,5 @@
+2017-05-06 Lionel Félicité <deogracia@free.fr>
+    * python3-tornado 4.5.1-1 :
+      Initial release
+       Taken from arch repo
+       Thanks to Felix Yan <felixonmars@archlinux.org>

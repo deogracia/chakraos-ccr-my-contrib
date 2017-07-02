@@ -1,0 +1,44 @@
+# Maintainer: Your Name <youremail@domain.com>
+pkgname='python3-pytest-incremental'
+_distname="pytest-incremental"
+pkgver='0.4.2'
+pkgrel=1
+pkgdesc="an incremental test runner"
+arch=()
+url="https://pypi.python.org/pypi/pytest-incremental/"
+license=('MIT')
+depends=('python3-pytest' 'pyhton3-six' 'python3-doit')
+checkdepends=()
+optdepends=()
+provides=()
+conflicts=()
+replaces=()
+backup=()
+options=()
+install=
+changelog=
+source=("https://github.com/pytest-dev/${_distname}/archive/${pkgver}.tar.gz")
+noextract=()
+sha256sums=('1638363d03c58e1ed5ac2542966354f5bdaf0e51ef241b17d64bf55b480aa6b2')
+validpgpkeys=()
+
+prepare() {
+	cd "$pkgname-$pkgver"
+	patch -p1 -i "$srcdir/$pkgname-$pkgver.patch"
+}
+
+build() {
+	cd "$pkgname-$pkgver"
+	./configure --prefix=/usr
+	make
+}
+
+check() {
+	cd "$pkgname-$pkgver"
+	make -k check
+}
+
+package() {
+	cd "$pkgname-$pkgver"
+	make DESTDIR="$pkgdir/" install
+}
