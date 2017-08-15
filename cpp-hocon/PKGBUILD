@@ -1,0 +1,35 @@
+# Maintainer: Lionel Félicité <deogracia@free.fr>
+
+pkgname=cpp-hocon
+pkgver=0.1.5
+pkgrel=1
+pkgdesc="C++ port of the Typesafe Config library"
+arch=('i686' 'x86_64')
+url="https://github.com/puppetlabs/cpp-hocon"
+license=('APACHE')
+makedepends=('boost' 'cmake' 'leatherman')
+changelog=$pkgname.changelog
+source=(${pkgname}-${pkgver}.tar.gz::https://github.com/puppetlabs/${pkgname}/archive/${pkgver}.tar.gz)
+sha512sums=('9f579f2de0b128c2d9c04957340a48e77c27eddd43dbe29f850aa4931af14b2a6307a5730cd3fe16191b1a7b11a43db1f3c1e98b6e7939f291311e86eb6260fc')
+
+build() {
+  cd ${pkgname}-${pkgver}
+
+  cmake -DCMAKE_INSTALL_PREFIX=/usr
+
+  make
+}
+
+check() {
+  cd ${pkgname}-${pkgver}
+
+  make test
+}
+
+package() {
+  cd ${pkgname}-${pkgver}
+
+  make install DESTDIR="${pkgdir}"
+
+  install -Dm644 LICENSE "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE
+}
