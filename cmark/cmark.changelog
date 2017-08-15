@@ -1,0 +1,5 @@
+2017-08-15 Lionel Félicité <deogracia@free.fr>
+    * cmark 0.28.0-1:
+      Initial release
+      Taken from Archlinux repo
+       Thanks, Felix Yan <felixonmars@archlinux.org>
