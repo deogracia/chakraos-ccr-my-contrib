@@ -1,7 +1,7 @@
 # Maintainer: Lionel Félicité <deogracia@free.fr>
 
 pkgname=leatherman
-pkgver=0.11.0
+pkgver=0.11.2
 pkgrel=1
 pkgdesc="Collection of C++ and CMake utility libraries"
 arch=('i686' 'x86_64')
@@ -13,7 +13,7 @@ depends=('python2')
 changelog=${pkgname}.changelog
 source=(${pkgname}-${pkgver}.tar.gz::https://github.com/puppetlabs/leatherman/archive/${pkgver}.tar.gz
         ruby-2.4.patch)
-sha256sums=('b625b7e7c54495f60a9166e7da85d2fd70a877b3e4cd81bba9e67da51dd261cd'
+sha256sums=('a0d3b2308aaddfb31ed4d4bcccb52206c4ad7d5da332b5254d1a6c3223ae980b'
             '5ea4cf5530c4de9a47c7a7d0929ccf378dc48c3f146d5541c1f64e6810cd064e')
 
 prepare() {
