@@ -1,22 +1,28 @@
 # Maintainer: Lionel Félicité <deogracia@free.fr>
 
 pkgname=evolus-pencil-git
-pkgver=v3.0.0.rc.1.r2.g02df19b
-pkgrel=2
+_pkgname=pencil
+pkgver=v3.0.4.r0.g592faba
+pkgrel=1
 pkgdesc="Sketching and GUI prototyping tool"
 arch=('i686' 'x86_64')
 url="http://code.google.com/p/evoluspencil/"
 license=('GPL2')
-depends=('alsa-lib' 'gconf' 'gtk2' 'libnotify' 'libxtst' 'libxss' 'nss')
-makedepends=('desktop-file-utils' 'firefox-kde' 'gendesk' 'git' 'nodejs' 'npm' 'prelink')
+depends=('alsa-lib' 'gconf' 'gtk2' 'libnotify' 'libxtst' 'libxss' 'nss' 'xdg-utils')
+makedepends=('desktop-file-utils' 'firefox-kde' 'gendesk' 'git' 'nodejs' 'npm' 'prelink' 'jq')
 provides=('pencil')
 conflicts=('pencil')
-changelog=$pkgname.changelog
-source=('git+https://github.com/evolus/pencil.git#commit=02df19b77dab3cd5ff582180a1630fbf0595123a')
-sha1sums=('SKIP')
+install=${pkgname}.install
+changelog=${pkgname}.changelog
+_pencil_commit="592fabac248cfdd362efdea54529999b66cea00c"
+_pencil_mime_file=evolus-pencil-mime.xml
+source=("git+https://github.com/evolus/pencil.git#commit=${_pencil_commit}"
+        "${_pencil_mime_file}")
+sha1sums=('SKIP'
+          '975e4818189aa041bfe4df6e20c69d82cd130298')
 
 pkgver() {
-  cd "$srcdir/pencil"
+  cd "${srcdir}/${_pkgname}"
   ( set -o pipefail
     git describe --long 2>/dev/null | sed 's/\([^-]*-g\)/r\1/;s/-/./g' ||
     printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
@@ -24,10 +30,10 @@ pkgver() {
 }
 
 prepare() {
- cd "$srcdir/pencil"
+ cd "${srcdir}/${_pkgname}"
  cp build/icon.png ./Pencil.png
 
- gendesk --pkgname Pencil --name "Pencil" --pkgdesc "$pkgdesc" --exec pencil
+ gendesk --pkgname Pencil --name "Pencil" --pkgdesc "${pkgdesc}" --exec pencil
 
  sed --in-place '/Encoding/d'   Pencil.desktop
  sed --in-place '/Categories/d' Pencil.desktop
@@ -37,10 +43,10 @@ prepare() {
 }
 
 build() {
- cd "$srcdir/pencil"
+ cd "${srcdir}/${_pkgname}"
  npm install
 
-  case $CARCH in
+  case ${CARCH} in
     'i686')
       _myarch="ia32"
     ;;
@@ -49,31 +55,47 @@ build() {
     ;;
   esac
 
- ./node_modules/electron-packager-tf/cli.js ./app --platform=linux --arch=${_myarch} --asar --prune
+  # rewrite package.json to change .build.linux.target
+  cat package.json| jq '.build.linux.target = "dir"'> newpackage.json
+  mv -f newpackage.json package.json
 
- # suppress namcap  ELF file has executable stack error
- execstack -c ./Pencil-linux-x64/Pencil
+  # run build
+  ./node_modules/.bin/build --linux --${_myarch}
 }
 
 package() {
- _pencil_build_dir="$srcdir/pencil/Pencil-linux-x64"
+
+ _pencil_build_dir="$srcdir/${_pkgname}/dist/linux-unpacked"
  cd ${_pencil_build_dir}
 
- install -d "${pkgdir}/usr/share/pencil"
- cp -a "${_pencil_build_dir}/." "${pkgdir}/usr/share/pencil"
- chmod 644 "${pkgdir}/usr/share/pencil/libnode.so"
- rm "${pkgdir}/usr/share/pencil/LICENSE"
- rm "${pkgdir}/usr/share/pencil/LICENSES.chromium.html"
+ install -d "${pkgdir}/usr/share/${_pkgname}"
+ cp -a "${_pencil_build_dir}/." "${pkgdir}/usr/share/${_pkgname}"
+ chmod 644 "${pkgdir}/usr/share/${_pkgname}/libnode.so"
+ rm ${pkgdir}/usr/share/${_pkgname}/LICENSE*
 
  install -d "${pkgdir}/usr/bin"
- ln -s "/usr/share/pencil/Pencil" "${pkgdir}/usr/bin/pencil"
+ ln -s "/usr/share/${_pkgname}/${_pkgname}" "${pkgdir}/usr/bin/${_pkgname}"
 
- install -Dm644 "${_pencil_build_dir}/LICENSE" "${pkgdir}/usr/share/licenses/pencil/LICENSE"
- install -Dm644 "${_pencil_build_dir}/LICENSES.chromium.html" "${pkgdir}/usr/share/licenses/pencil/LICENSES.chromium.html"
+ install -Dm644 "${srcdir}/${_pkgname}/LICENSE.md" "${pkgdir}/usr/share/licenses/${_pkgname}/LICENSE.md"
+ install -Dm644 "${_pencil_build_dir}/LICENSE.electron.txt" "${pkgdir}/usr/share/licenses/${_pkgname}/LICENSE.electron.txt"
+ install -Dm644 "${_pencil_build_dir}/LICENSES.chromium.html" "${pkgdir}/usr/share/licenses/${_pkgname}/LICENSES.chromium.html"
 
- cd "${srcdir}/pencil"
+ cd "${srcdir}/${_pkgname}"
 
- install -Dm644 "Pencil.png" "$pkgdir/usr/share/pixmaps/Pencil.png"
+ install -Dm644 "Pencil.png" "${pkgdi}r/usr/share/pixmaps/Pencil.png"
 
  desktop-file-install Pencil.desktop --dir ${pkgdir}/usr/share/applications/
+
+ # install icons
+ install -Dm644 "build/icons/128x128.png" "${pkgdir}/usr/share/icons/hicolor/128x128/apps/${_pkgname}.png"
+ install -Dm644 "build/icons/16x16.png"   "${pkgdir}/usr/share/icons/hicolor/16x16/apps/${_pkgname}.png"
+ install -Dm644 "build/icons/24x24.png"   "${pkgdir}/usr/share/icons/hicolor/24x24/apps/${_pkgname}.png"
+ install -Dm644 "build/icons/256x256.png" "${pkgdir}/usr/share/icons/hicolor/256x256/apps/${_pkgname}.png"
+ install -Dm644 "build/icons/32x32.png"   "${pkgdir}/usr/share/icons/hicolor/32x32/apps/${_pkgname}.png"
+ install -Dm644 "build/icons/48x48.png"   "${pkgdir}/usr/share/icons/hicolor/48x48/apps/${_pkgname}.png"
+ install -Dm644 "build/icons/64x64.png"   "${pkgdir}/usr/share/icons/hicolor/64x64/apps/${_pkgname}.png"
+ install -Dm644 "build/icons/96x96.png"   "${pkgdir}/usr/share/icons/hicolor/96x96/apps/${_pkgname}.png"
+
+ # mime type
+ install -Dm644 "${srcdir}/${_pencil_mime_file}" "${pkgdir}/usr/share/mime/packages/${_pencil_mime_file}"
 }
