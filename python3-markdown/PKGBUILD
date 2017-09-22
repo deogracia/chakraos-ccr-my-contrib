@@ -3,7 +3,7 @@
 pkgname=python3-markdown
 _distname='Python-Markdown'
 pkgver=2.6.7
-pkgrel=1
+pkgrel=2
 pkgdesc="Python implementation of John Gruber's Markdown."
 arch=('any')
 url='http://www.freewisdom.org/projects/python-markdown/'
@@ -12,21 +12,21 @@ depends=('python3')
 checkdepends=('python3-nose')
 changelog=${pkgname}.changelog
 source=("https://github.com/waylan/${_distname}/archive/${pkgver}-final.tar.gz")
-sha256sums=('31287f97286d365d7be056e2388904a13c29926abc275e3d31a3e4035c67122b')
+sha256sums=('8cb510bc881e8a1dfeeb149a20cfcc0d61141029d7c6fe56510e567d7af50d16')
 _PYTHON_CMD="python3"
 
 build() {
-  cd ${_distname}-${pkgver}-final
+  cd markdown-${pkgver}-final
   ${_PYTHON_CMD} setup.py build
 }
 
 check() {
-  cd ${_distname}-${pkgver}-final
+  cd markdown-${pkgver}-final
   nosetests3
 }
 
 package() {
-  cd ${_distname}-${pkgver}-final
+  cd markdown-${pkgver}-final
   ${_PYTHON_CMD} setup.py install --root="${pkgdir}" --optimize=1
 
   install -D -m644 LICENSE.md "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.md"

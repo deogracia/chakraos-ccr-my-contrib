@@ -1,3 +1,7 @@
+2017-09-22 Lionel Félicité <deogracia@free.fr>
+    * python3-markdown 2.6.7-2 :
+      update change in sha256sum
+
 2016-12-07 Lionel Félicité <deogracia@free.fr>
     * python3-markdown 2.6.7-1 :
       Initial release
