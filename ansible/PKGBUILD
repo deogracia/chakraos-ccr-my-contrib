@@ -1,7 +1,7 @@
 # Maintainer: Lionel Félicité <deogracia@free.fr>
 
 pkgname=ansible
-pkgver=2.2.0.0
+pkgver=2.4.0.0
 pkgrel=1
 pkgdesc='Radically simple IT automation platform'
 arch=('any')
@@ -13,7 +13,7 @@ makedepends=('asciidoc' 'fakeroot')
 backup=('etc/ansible/ansible.cfg')
 changelog=$pkgname.changelog
 source=(http://releases.ansible.com/ansible/ansible-${pkgver}.tar.gz)
-sha256sums=('d9f198d293394ce0f8ba802561b21368888e3301036a706b5584641b49408586')
+sha256sums=('1a276fee7f72d4e6601a7994879e8467edb763dacc3e215258cfe71350b77c76')
 
 build() {
   cd ${pkgname}-${pkgver}
