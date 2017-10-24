@@ -1,3 +1,7 @@
+2017-10-24 Lionel Félicité <deogracia@free.fr>
+    * retext 7.0.0-2 :
+      Use qtchooser-git instead of qtchooser
+
 2017-09-22 Lionel Félicité <deogracia@free.fr>
     * retext 7.0.0-1 :
       New upstream release
