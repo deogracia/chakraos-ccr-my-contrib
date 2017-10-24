@@ -3,15 +3,15 @@
 pkgname='qtchooser-git'
 _distname='qtchooser'
 pkgver=r63.13a3d08
-pkgrel=2
+pkgrel=3
 pkgdesc="Wrap the other Qt tools by searching for different instances of Qt on the system"
 arch=('i686' 'x86_64')
-url="http://code.qt.io/cgit/qt/qtchooser.git/"
+url="https://code.qt.io/cgit/qtsdk/qtchooser.git/"
 license=('GPL')
 depends=('gcc-libs')
 makedepends=('git') # 'bzr', 'git', 'mercurial' or 'subversion'
 provides=("${_distname}")
-conflicts=("${distname}")
+conflicts=("${_distname}")
 backup=('etc/xdg/qtchooser/default.conf')
 changelog=${pkgname}.changelog
 source=("git://code.qt.io/qtsdk/${_distname}.git#commit=13a3d083f10c8e1e088281b8231b0cf02976a51f"
