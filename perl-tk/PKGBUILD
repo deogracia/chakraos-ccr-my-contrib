@@ -1,18 +1,18 @@
 # Maintainer: Lionel Félicité <deogracia@free.fr>
 
 pkgname=perl-tk
-pkgver=804.033
+pkgver=804.034
 pkgrel=1
 pkgdesc="A graphical user interface toolkit for Perl"
 arch=('i686' 'x86_64')
-url="http://search.cpan.org/dist/Tk"
+url="https://metacpan.org/release/Tk"
 license=('PerlArtistic' 'GPL' 'custom')
 depends=('libpng' 'libjpeg' 'perl' 'tk')
 checkdepends=('xorg-server-xvfb' 'perl-devel-leak' 'perl-test-pod')
 options=('!emptydirs' '!strip')
 changelog=$pkgname.changelog
 source=(http://www.cpan.org/authors/id/S/SR/SREZIC/Tk-${pkgver}.tar.gz)
-sha1sums=('3a6c9eaab585218d01c06d12d4ea1b89a2ad1ffe')
+sha256sums=('fea6b144c723528a2206c8cd9175844032ee9c14ee37791f0f151e5e5b293fe2')
 
 build() {
   cd Tk-$pkgver
