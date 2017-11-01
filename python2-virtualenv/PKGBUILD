@@ -1,49 +1,43 @@
 # Maintainer: Lionel Félicité <deogracia@free.fr>
 
 pkgname=('python2-virtualenv')
-pkgver=15.0.2
-pkgrel=2
+_distname="virtualenv"
+pkgver=15.1.0
+pkgrel=1
 pkgdesc="Virtual Python Environment builder"
 url="https://virtualenv.pypa.io/"
 arch=('any')
 license=('MIT')
 makedepends=('python2' 'python2-sphinx')
 depends=('python2')
-replaces=('virtualenv')
-conflicts=('virtualenv')
-changelog=$pkgname.changelog
-source=("https://pypi.python.org/packages/5c/79/5dae7494b9f5ed061cff9a8ab8d6e1f02db352f3facf907d9eb614fb80e9/virtualenv-$pkgver.tar.gz#md5=0ed59863994daf1292827ffdbba80a63"
-        "fix-shinx-build-name.patch")
-sha256sums=('fab40f32d9ad298fba04a260f3073505a16d52539a84843cf8c8369d4fd17167'
-            '6a4cfbfd96f607e8f5f1e3739118258fcde09bf9567f527b488ac3436e889e8d')
-
-prepare() {
-
-  cd "$srcdir/virtualenv-$pkgver"
-  pushd docs
-  patch -p0 < ../../fix-shinx-build-name.patch 
-}
+replaces=(${_distname})
+conflicts=(${_distname})
+changelog=${pkgname}.changelog
+source=("https://pypi.python.org/packages/d4/0c/9840c08189e030873387a73b90ada981885010dd9aea134d6de30cd24cb8/${_distname}-${pkgver}.tar.gz#md5=44e19f4134906fe2d75124427dc9b716")
+sha256sums=('02f8102c2436bb03b3ee6dede1919d1dac8a427541652e5ec95171ec8adbc93a')
 
 package() {
 
-  cd "$srcdir/virtualenv-$pkgver"
+  cd "${srcdir}/${_distname}-${pkgver}"
 
   # should report this upstream as still not fixed...
   sed -i "s|#!/usr/bin/env python$|#!/usr/bin/env python2|" virtualenv.py
 
   python2 setup.py build
-  python2 setup.py install --prefix=/usr --root="$pkgdir" --optimize=1
+  python2 setup.py install --prefix=/usr --root="${pkgdir}" --optimize=1
 
   # Generate man page
-  pushd "$srcdir/virtualenv-$pkgver/docs"
+  pushd "${srcdir}/virtualenv-${pkgver}/docs"
+  # use sphinx-build2
+  sed -i "s|SPHINXBUILD\ \ \ =\ sphinx-build$|SPHINXBUILD\ \ \ =\ sphinx-build2|" Makefile
   make man
 
   install -Dm644 "_build/man/virtualenv.1" "${pkgdir}/usr/share/man/man1/virtualenv2.1"
   popd
 
   # move this "old" version out of the way
-  mv "$pkgdir/usr/bin/virtualenv" "$pkgdir/usr/bin/virtualenv2"
+  mv "${pkgdir}/usr/bin/virtualenv" "${pkgdir}/usr/bin/virtualenv2"
 
   install -D -m644 LICENSE.txt \
-    "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+    "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
 }

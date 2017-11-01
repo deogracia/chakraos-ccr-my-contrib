@@ -1,3 +1,7 @@
+2017-11-01 Lionel Félicité <deogracia@free.fr>
+    * python2-virtualenv 15.1.0-1 :
+      New upstream release
+
 2016-11-05 Lionel Félicité <deogracia@free.fr>
     * python2-virtualenv 15.0.2-2 :
       Fix sphinx-build name
