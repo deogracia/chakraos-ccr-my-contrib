@@ -1,7 +1,8 @@
 # Maintainer: Lionel Félicité <deogracia@free.fr>
 
 pkgname=('python3-virtualenv')
-pkgver=15.0.2
+_distname="virtualenv"
+pkgver=15.1.0
 pkgrel=1
 pkgdesc="Virtual Python Environment builder"
 url="https://virtualenv.pypa.io/"
@@ -12,11 +13,11 @@ depends=('python3')
 replaces=('virtualenv')
 conflicts=('virtualenv')
 changelog=$pkgname.changelog
-source=("https://pypi.python.org/packages/5c/79/5dae7494b9f5ed061cff9a8ab8d6e1f02db352f3facf907d9eb614fb80e9/virtualenv-$pkgver.tar.gz#md5=0ed59863994daf1292827ffdbba80a63")
-sha256sums=('fab40f32d9ad298fba04a260f3073505a16d52539a84843cf8c8369d4fd17167')
+source=("https://pypi.python.org/packages/d4/0c/9840c08189e030873387a73b90ada981885010dd9aea134d6de30cd24cb8/${_distname}-${pkgver}.tar.gz#md5=44e19f4134906fe2d75124427dc9b716")
+sha256sums=('02f8102c2436bb03b3ee6dede1919d1dac8a427541652e5ec95171ec8adbc93a')
 
 package() {
-  cd "$srcdir/virtualenv-$pkgver"
+  cd "${srcdir}/${_distname}-${pkgver}"
   sed -i "s|#!/usr/bin/env python$|#!/usr/bin/env python3|" virtualenv.py
   LANG='en_US.UTF-8' python3 setup.py build
   LANG='en_US.UTF-8' python3 setup.py install --prefix=/usr --root="$pkgdir" --optimize=1
