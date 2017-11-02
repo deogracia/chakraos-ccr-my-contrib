@@ -1,3 +1,7 @@
+2017-11-02 Lionel Félicité <deogracia@free.fr>
+    * godep 79-2:
+      Fix man generation
+
 2017-10-08 Lionel Félicité <deogracia@free.fr>
     * godep 79-1:
        New upstream release

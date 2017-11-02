@@ -2,7 +2,7 @@
 
 pkgname='godep'
 pkgver=79
-pkgrel=1
+pkgrel=2
 pkgdesc="dependency tool for go"
 arch=('x86_64' 'i686')
 url="https:/github.com/tools/${pkgname}"
@@ -33,7 +33,7 @@ build() {
 
  go build
  # generate man page
- help2man godep --no-discard-stderr --version-option=version --no-info> godep.1
+ help2man ./godep --no-discard-stderr --version-option=version --no-info> godep.1
 }
 
 package() {
