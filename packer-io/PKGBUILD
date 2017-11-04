@@ -2,51 +2,75 @@
 
 pkgname='packer-io'
 _distname='packer'
-pkgver=0.10.1
-pkgrel=1
+pkgver=1.1.1
+pkgrel=2
 pkgdesc="Packer is a tool for creating identical machine images for multiple platforms from a single source configuration"
 arch=('x86_64' 'i686')
 url="http://www.packer.io/"
 license=('custom')
-makedepends=('go' 'godep' 'help2man')
+makedepends=('go' 'govendor' 'help2man' 'gox')
 depends=('glibc')
 options=('!strip' '!emptydirs')
-changelog=$pkgname.changelog
-source=("https://github.com/mitchellh/$_distname/archive/v$pkgver.tar.gz"
-        "packer.1")
-sha256sums=('6a31c8c74b2370a748e3117db70e491a96fb86f1fbee9fa128d3f73c08230279'
-            '45fe779bd281b9633fdbf61da5f489ada4c6f36478ecaeb2d11694c0653a0806')
+changelog=${pkgname}.changelog
+source=("https://github.com/hashicorp/${_distname}/archive/v${pkgver}.tar.gz")
+sha256sums=('5c3eb3ee17e10c7fcb9c0bef6d325a98ca341d6af6bb13d698984ae44316cba2')
+
+_golang_namespace=github.com/hashicorp/${_distname}
 
 prepare() {
- mkdir -p $srcdir/{bin,pkg,src}
- mkdir -p $srcdir/src/github.com/mitchellh/
- mv packer-$pkgver/ src/github.com/mitchellh/packer
+ mkdir -p ${srcdir}/{bin,pkg,src}
+ mkdir -p ${srcdir}/src/github.com/hashicorp/
+ mv packer-${pkgver}/ src/${_golang_namespace}
 }
 
 build() {
- export GOPATH=$srcdir
+  export GOPATH=${srcdir}
 
- my_srcdir=$srcdir/src/github.com/mitchellh/packer
- cd "$my_srcdir"
+  go get golang.org/x/tools/cmd/stringer
 
-  godep go install
+  my_srcdir=${srcdir}/src/${_golang_namespace}
+  cd "${my_srcdir}"
 
- #build man page
- 
+  govendor sync
+
+  case $CARCH in
+    'i686')
+      _myarch="386"
+    ;;
+    'x86_64')
+      _myarch="amd64"
+    ;;
+  esac
+
+  GIT_DIRTY=$(test -n "`git status --porcelain`" && echo "+CHANGES" || true)
+  GIT_COMMIT=$(git rev-parse --short HEAD)
+  GIT_IMPORT=${_golang_namespace}/version
+  GOLDFLAGS=-"X ${GIT_IMPORT}.GitCommit=${GIT_COMMIT}${GIT_DIRTY}"
+  
+  #make releasebin
+  gox \
+      -os="linux" \
+      -arch="${_myarch}" \
+      -osarch="!darwin/arm !darwin/arm64" \
+      -ldflags "${GOLDFLAGS}" \
+      -output "pkg/${_distname}" \
+      .
+
+  #build man page
+  help2man pkg/${_distname} --no-info > ${_distname}.1 
 }
 
 package() {
- export GOPATH=$srcdir
+  export GOPATH=${srcdir}
 
- my_srcdir=$srcdir/src/github.com/mitchellh/packer
- pushd "$my_srcdir"
+  my_srcdir=${srcdir}/src/${_golang_namespace}
+  pushd "${my_srcdir}"
 
- install -Dm755 "$GOPATH/bin/$_distname" "$pkgdir/usr/bin/$_distname"
- install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  install -Dm755 "${GOPATH}/src/${_golang_namespace}/pkg/${_distname}" "${pkgdir}/usr/bin/${_distname}"
+  install -Dm644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+  popd
 
- popd
-
- install -Dm644 "$_distname.1" "${pkgdir}/usr/share/man/man1/$_distname.1"
+  install -Dm644 "${GOPATH}/src/${_golang_namespace}/${_distname}.1" "${pkgdir}/usr/share/man/man1/${_distname}.1"
 }
 
 # vim:set ts=2 sw=2 et:
