@@ -1,7 +1,7 @@
 # Maintainer: Lionel Félicité <deogracia@free.fr>
 
 pkgname='python3-six'
-pkgver=1.10.0
+pkgver=1.11.0
 pkgrel=1
 pkgdesc="Python 3 compatibility utilities"
 arch=('any')
@@ -12,7 +12,7 @@ checkdepends=('python3-pytest' 'tk')
 depends=('python3')
 changelog=$pkgname.changelog
 source=("https://pypi.io/packages/source/s/six/six-$pkgver.tar.gz")
-sha256sums=('105f8d68616f8248e24bf0e9372ef04d3cc10104f1980f54d57b2ce73a5ad56a')
+sha256sums=('70e8a77beed4562e7f14fe23a786b54f6296e34344c23bc42f07b15018ff98e9')
 
 check() {
   cd "$srcdir"/six-$pkgver
