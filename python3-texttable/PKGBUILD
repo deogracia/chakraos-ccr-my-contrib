@@ -1,7 +1,8 @@
 # Maintainer: Lionel Félicité <deogracia@free.fr>
 
 pkgname=python3-texttable
-pkgver=0.8.4
+_distname=texttable
+pkgver=1.1.1
 pkgrel=1
 pkgdesc="Generate a formatted text table using ASCII characters"
 arch=('any')
@@ -9,23 +10,16 @@ url="https://pypi.python.org/pypi/texttable/"
 license=('LGPL')
 depends=('python3')
 makedepends=('python3')
-changelog=$pkgname.changelog
-source=("https://pypi.python.org/packages/source/t/texttable/texttable-${pkgver}.tar.gz"
-        "texttable_set-python3.patch")
-sha512sums=('18c128da721f25d4cf8b2f2d740c9ce2ded81135d2843e1d46d3e230b59820a7d6d1f7b3e0245cbc6208f3e16ac9181e0b1f56206e53acd9966616e539e91639'
-            'a9927aef9d4a719388e4f61652f21411db8c9f960040dd84b2d3f905984a6520ea49926a887f8db1a7fc901b13fda4f6837ae34fc110bde250ab9be5edbfa02f')
-prepare(){
-  cd "$srcdir/texttable-$pkgver"
-  patch -p0 < ../texttable_set-python3.patch
+changelog=${pkgname}.changelog
+source=("https://pypi.python.org/packages/74/81/a1a1cd1bb26df1d5eef1887dd9c887aa100e065fe6708eb93ee96291befd/${_distname}-${pkgver}.tar.gz#md5=ac77a029cd590548b4fa9f5fc260e63d")
+sha512sums=('ed51b0bd4483af4ee10f9662286e271667b212f848f7ece44dd5adc053394ad9c3b6cfafa7519c8b1dd53728571298551ae501d0575d91922e257aa4ab8d5f2d')
 
-}
 build() {
-  cd "$srcdir/texttable-$pkgver"
+  cd "${srcdir}/${_distname}-${pkgver}"
   python3 setup.py build
 }
 
 package() {
-
-  cd "$srcdir/texttable-$pkgver"
+  cd "${srcdir}/${_distname}-${pkgver}"
   python3 setup.py install --root="$pkgdir/" --optimize=1
 }
