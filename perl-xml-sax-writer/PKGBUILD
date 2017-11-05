@@ -1,20 +1,21 @@
 # Maintainer: Lionel Félicité <deogracia@free.fr>
 
 pkgname=perl-xml-sax-writer
-pkgver=0.56
+_distname="XML-SAX-Writer"
+pkgver=0.57
 pkgrel=1
 pkgdesc="XML-SAX-Writer perl module (SAX2 writer)"
 arch=("any")
-url="http://search.cpan.org/dist/XML-SAX-Writer/"
+url="https://metacpan.org/release/XML-SAX-Writer"
 license=("PerlArtistic")
 depends=('perl' 'perl-text-iconv' 'perl-xml-filter-buffertext')
 options=(!emptydirs)
-changelog=$pkgname.changelog
-source=(http://search.cpan.org/CPAN/authors/id/P/PE/PERIGRIN/XML-SAX-Writer-$pkgver.tar.gz)
-md5sums=('e5fa5e2b2f6867b1aca9b5b43e1ce361')
+changelog=${pkgname}.changelog
+source=(https://cpan.metacpan.org/authors/id/P/PE/PERIGRIN/${_distname}-${pkgver}.tar.gz)
+sha512sums=('8a6e8befdd91278b6e1dbce8ef62a630675f43e2debfb5833809fc46707d449c779d792e7aff44089f0509f9c3f8f10d576570ab0b8255f9f793802be92ad94f')
 
 build() {
-  cd $srcdir/XML-SAX-Writer-${pkgver}
+  cd $srcdir/${_distname}-${pkgver}
   # Install module into the vendor directories.
   perl Makefile.PL INSTALLDIRS=vendor
   make
@@ -22,7 +23,7 @@ build() {
 }
 
 package() {
-  cd $srcdir/XML-SAX-Writer-${pkgver}
+  cd $srcdir/${_distname}-${pkgver}
   make DESTDIR=$pkgdir install
 
   # Remove .packlist and perllocal.pod files.

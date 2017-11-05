@@ -1,3 +1,8 @@
+2017-11-05 Lionel Félicité <deogracia@free.fr>
+    * perl-xml-sax-writer 0.57-1 :
+      New upstream release
+      Use metacpan.org now
+
 2016-01-07 Lionel Félicité <deogracia@free.fr>
     * perl-xml-sax-writer 0.56-1 :
       Initial import from archlinux
