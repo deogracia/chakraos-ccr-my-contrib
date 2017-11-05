@@ -1,41 +1,42 @@
 # Maintainer: Lionel Félicité <deogracia@free.fr>
 
 pkgname='python3-websocket-client'
-pkgver=0.37.0
+_distname=websocket_client
+pkgver=0.44.0
 pkgrel=1
 pkgdesc="WebSocket client library for Python"
 arch=(any)
-url="https://github.com/liris/websocket-client"
+url="https://github.com/websocket-client/websocket-client"
 license=('LGPL')
 makedepends=('python3-setuptools' 'python3-six')
 depends=('python3-six')
 changelog=$pkgname.changelog
-source=(http://pypi.python.org/packages/source/w/websocket-client/websocket_client-$pkgver.tar.gz
-        use-system-ca.patch)
-sha256sums=('678b246d816b94018af5297e72915160e2feb042e0cde1a9397f502ac3a52f41'
+source=("https://pypi.python.org/packages/06/19/f00725a8aee30163a7f257092e356388443034877c101757c1466e591bf8/${_distname}-${pkgver}.tar.gz#md5=73d87aa16a2212da448b30aca9c5bf3b"
+        "use-system-ca.patch")
+sha256sums=('15f585566e2ea7459136a632b9785aa081093064391878a448c382415e948d72'
             'd888e0d0f8b1cc424b5b452e267135b598857b52c2bbbed3a8803614d9523d16')
 
 prepare() {
-  (cd websocket_client-$pkgver; patch -p1 -i ../use-system-ca.patch)
-  rm websocket_client-$pkgver/websocket/cacert.pem
-
+  cd ${_distname}-${pkgver}
+  patch -p1 -i ../use-system-ca.patch
+  rm ${srcdir}/${_distname}-${pkgver}/websocket/cacert.pem
+  sed -i "s/'backports.ssl_match_hostname'//" ${srcdir}/${_distname}-${pkgver}/setup.py
 }
 
 build() {
-  cd "$srcdir"/websocket_client-$pkgver
+  cd "${srcdir}"/${_distname}-${pkgver}
   python3 setup.py build
 }
 
 check() {
-  cd "$srcdir"/websocket_client-$pkgver
+  cd "${srcdir}"/${_distname}-${pkgver}
   python3 setup.py test
 }
 
 package() {
-
-  cd websocket_client-$pkgver
-  python3 setup.py install --root="$pkgdir" --optimize=1
-  install -Dm644 LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+  cd "${srcdir}"/${_distname}-${pkgver}
+  python3 setup.py install --root="${pkgdir}" --optimize=1
+  install -Dm644 LICENSE "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE
 }
 
 # vim:set ts=2 sw=2 ft=sh et:
