@@ -1,0 +1,6 @@
+2017-11-11 Lionel Félicité <deogracia@free.fr>
+    * perl-dbd-pg 3.7.0-2 :
+      Re order dependencies
+
+    * perl-dbd-pg 3.7.0-1 :
+      Initial release

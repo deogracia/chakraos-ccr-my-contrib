@@ -1,0 +1,39 @@
+# Maintainer: Lionel Félicité <deogracia@free.fr>
+pkgname=perl-dbd-pg
+_distname=DBD-Pg
+pkgver=3.7.0
+pkgrel=2
+pkgdesc="DBI PostgreSQL interface"
+arch=('i686' 'x86_64')
+url="https://metacpan.org/release/DBD-Pg"
+license=('GPL' 'PerlArtistic')
+depends=('perl-dbi' 'perl-time-hires' )
+makedepends=('perl-dbi' 'perl-test-simple' 'postgresql-libs')
+options=('!emptydirs')
+changelog=${pkgname}.changelog
+source=("https://cpan.metacpan.org/authors/id/T/TU/TURNSTEP/${_distname}-${pkgver}.tar.gz")
+sha512sums=('edd4d3448dac1b563899c5fd4a1bad6cb810afdbbbf57b558bbe6710aa3e58530a6cf0932e35c3316c7f4f59763764d75ce1049f13c8c13deeb2e8a7c60ff73e')
+
+build() {
+  ( export PERL_MM_USE_DEFAULT=1 PERL5LIB=""                 \
+      PERL_AUTOINSTALL=--skipdeps                            \
+      PERL_MM_OPT="INSTALLDIRS=vendor DESTDIR='${pkgdir}'"     \
+      PERL_MB_OPT="--installdirs vendor --destdir '${pkgdir}'" \
+      MODULEBUILDRC=/dev/null
+  )
+
+  cd ${_distname}-${pkgver}
+  perl Makefile.PL
+  make
+}
+
+check() {
+  cd ${_distname}-${pkgver}
+  export PERL_MM_USE_DEFAULT=1 PERL5LIB=""
+  make test
+}
+
+package() {
+  cd ${_distname}-${pkgver}
+  make DESTDIR="$pkgdir/" install
+}
