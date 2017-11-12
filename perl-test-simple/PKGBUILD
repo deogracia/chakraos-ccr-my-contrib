@@ -1,0 +1,39 @@
+# Maintainer: Lionel Félicité <deogracia@free.fr>
+pkgname=perl-test-simple
+_distname=Test-Simple
+pkgver=1.302106
+pkgrel=1
+pkgdesc="Test2, Test::More, Test::Simple and Test::Builder Perl modules for writing tests"
+arch=('any')
+url="https://metacpan.org/release/${_distname}"
+license=('GPL' 'PerlArtistic')
+depends=()
+makedepends=()
+options=('!emptydirs')
+changelog=${pkgname}.changelog
+source=("https://cpan.metacpan.org/authors/id/E/EX/EXODIST/${_distname}-${pkgver}.tar.gz")
+sha512sums=('e19bfb729f622567bca636e420fad58de99f370f1a004fc094b4fb4eb96834fdd4b45ad8b591c62aa233f7bd779306a616d34edbc8b80807dad10b9c5904ac72')
+
+build() {
+  ( export PERL_MM_USE_DEFAULT=1 PERL5LIB=""                 \
+      PERL_AUTOINSTALL=--skipdeps                            \
+      PERL_MM_OPT="INSTALLDIRS=vendor DESTDIR='${pkgdir}'"     \
+      PERL_MB_OPT="--installdirs vendor --destdir '${pkgdir}'" \
+      MODULEBUILDRC=/dev/null
+  )
+
+  cd ${_distname}-${pkgver}
+  perl Makefile.PL
+  make
+}
+
+check() {
+  cd ${_distname}-${pkgver}
+  export PERL_MM_USE_DEFAULT=1 PERL5LIB=""
+  make test
+}
+
+package() {
+  cd ${_distname}-${pkgver}
+  make DESTDIR="$pkgdir/" install
+}
