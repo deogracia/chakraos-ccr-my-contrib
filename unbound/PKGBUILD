@@ -1,54 +1,58 @@
-# $Id$
-# Maintainer: Gaetan Bisson <bisson@archlinux.org>
+# Maintainer: Lionel Félicité <deogracia@free.fr>
+# Contributor: Gaetan Bisson <bisson@archlinux.org>
 # Contributor: Hisato Tatekura <hisato_tatekura@excentrics.net>
 # Contributor: Massimiliano Torromeo <massimiliano DOT torromeo AT google mail service>
 
 pkgname=unbound
-pkgver=1.4.20
+pkgver=1.6.7
 pkgrel=1
 pkgdesc='Validating, recursive, and caching DNS resolver'
 url='http://unbound.net/'
 license=('custom:BSD')
 arch=('i686' 'x86_64')
 options=('!libtool')
-depends=('openssl' 'ldns')
+depends=('openssl' 'ldns' 'fstrm' 'protobuf-c' 'systemd')
 makedepends=('expat')
 optdepends=('expat: unbound-anchor')
 backup=('etc/unbound/unbound.conf')
+changelog=${pkgname}.changelog
 source=("http://unbound.net/downloads/${pkgname}-${pkgver}.tar.gz"
         'unbound.service'
         'unbound.conf'
         'rc.d')
-sha1sums=('1752976533be2a4f0c9cdbab9d2cbb67d4f27c43'
-          'a2493cb105ff6aa23d756514badb13b02d37f319'
-          '5d473ec2943fd85367cdb653fcd58e186f07383f'
-          'dc96e772f467b32555df21d16fdb15e98194c228')
-
 install=install
+sha512sums=('6e3d1a057081252183343d0d1b8ace742ab15e8f5244e61287340f49289d7449bed93fbfdaa3194c0e99ca23948f4b33038f75af5c5b26c938004d06fc3031e0'
+            '661e574d8433f5c4d338d70f5eed3237463d239bcdd7d55f01eb68de11227b8fb136310bfb98d71e65c5bc8bddfb57ef1dc914bddd1a8dcc3b4766b220c21e19'
+            'cb21a4c70ee62e7191bd833d32d97ab032d1fe2ee5de2ef76bb841dd18bd5cd4c68223d5796a4fbf285e434b5494de59d9a76e19e6e4493cf04ac840f366590d'
+            '3e756b63bc81ee71311d714bb21cb834fc1766a49d40cf869555a09a7f4943d725c61de77d21f931a1d2bfb59622ed6fc536a26664d296b17755230566f06e4f')
+
 
 build() {
-	cd "${srcdir}/${pkgname}-${pkgver}"
+  cd "${srcdir}/${pkgname}-${pkgver}"
 
-	./configure \
-		--prefix=/usr \
-		--sysconfdir=/etc \
-		--localstatedir=/var \
-		--enable-static=no \
-		--disable-rpath \
-		--with-conf-file=/etc/unbound/unbound.conf \
-		--with-pidfile=/run/unbound.pid \
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --enable-pie \
+    --enable-systemd \
+    --enable-dnstap \
+    --enable-static=no \
+    --disable-rpath \
+    --with-conf-file=/etc/unbound/unbound.conf \
+    --with-pidfile=/run/unbound.pid \
 
-	make
+  make
 }
 
 package() {
-	cd "${srcdir}/${pkgname}-${pkgver}"
+  cd "${srcdir}/${pkgname}-${pkgver}"
 
-	make DESTDIR="${pkgdir}" install
+  make DESTDIR="${pkgdir}" install
 
-	install -D -m644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
-	install -D -m755 ../rc.d "${pkgdir}/etc/rc.d/${pkgname}"
-	install -D -m644 ../unbound.conf "${pkgdir}/etc/unbound/unbound.conf"
-	install -D -m644 doc/example.conf.in "${pkgdir}/etc/unbound/unbound.conf.example"
-	install -D -m644 ../unbound.service "${pkgdir}/usr/lib/systemd/system/unbound.service"
+  install -D -m644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+#  install -D -m755 ../rc.d "${pkgdir}/etc/rc.d/${pkgname}"
+  install -D -m644 ../unbound.conf "${pkgdir}/etc/unbound/unbound.conf"
+  install -D -m644 doc/example.conf.in "${pkgdir}/etc/unbound/unbound.conf.example"
+  install -D -m644 ../unbound.service "${pkgdir}/usr/lib/systemd/system/unbound.service"
 }
