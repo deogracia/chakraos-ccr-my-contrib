@@ -1,0 +1,33 @@
+# Maintainer: Lionel Félicité <deogracia@free.fr>
+
+pkgname=fstrm
+pkgver=0.3.2
+pkgrel=1
+pkgdesc="A C implementation of the Frame Streams data transport protocol"
+arch=('x86_64')
+url="https://github.com/farsightsec/fstrm"
+license=('Apache')
+depends=('libevent')
+changelog=${pkgname}.changelog
+source=(${pkgname}-${pkgver}.tar.gz::"${url}/archive/v${pkgver}.tar.gz")
+sha256sums=('16112cda18aece363e32a04cd2265174b09944f3f3dcffa5c8312a293ec93737')
+
+build() {
+  cd ${pkgname}-${pkgver}
+  ./autogen.sh
+  ./configure --prefix=/usr
+  make
+}
+
+check() {
+  cd ${pkgname}-${pkgver}
+  make -k check
+}
+
+package() {
+  cd ${pkgname}-${pkgver}
+  make DESTDIR="${pkgdir}" install
+
+  install -Dm644 LICENSE -t "${pkgdir}"/usr/share/licenses/${pkgname}/
+}
+
