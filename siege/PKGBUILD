@@ -1,7 +1,7 @@
 # Maintainer: Lionel Félicité <deogracia@free.fr>
 
 pkgname=siege
-pkgver=4.0.2
+pkgver=4.0.4
 pkgrel=1
 arch=('i686' 'x86_64')
 license=('GPL')
@@ -10,7 +10,7 @@ url="https://www.joedog.org/siege-home/"
 depends=('openssl')
 changelog=$pkgname.changelog
 source=("http://download.joedog.org/siege/siege-${pkgver}.tar.gz")
-sha256sums=('7efb81f9547bef0e693bdd51348a205ad691e1d72c36041f4608099ba0326c47')
+sha256sums=('8f7dcf18bd722bb9cc92bc3ea4b59836b4a2f8d8f01d4a94c8d181f56d91ea6f')
 backup=(etc/siegerc etc/urls.txt)
 
 build() {
