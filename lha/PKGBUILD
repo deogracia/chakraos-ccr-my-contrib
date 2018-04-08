@@ -1,18 +1,25 @@
+# Maintainer: Lionel Félicité <deogracia@free.fr>
+
 pkgname=lha
 pkgver=1.17
-pkgrel=3
-pkgdesc="lha is a compression and archive utility for LH-7 format archives"
+pkgrel=4
+pkgdesc="A compression and archive utility for LH-7 format archives"
 arch=('i686' 'x86_64')
-url="http://www.infor.kanazawa-it.ac.jp/~ishii/lhaunix/"
+url="https://web.archive.org/web/20121108013555/http://www.infor.kanazawa-it.ac.jp/~ishii/lhaunix/"
 license=('custom')
+_waybacktime="20111102061426"
 depends=('glibc')
-source=(http://www.infor.kanazawa-it.ac.jp/~ishii/lhaunix/linux/${pkgname}117.tar.gz LICENSE lha.man.en)
-md5sums=('7896188203cfaf5782d153c4dcd19f57' 'be11a6fd915099970126b23d683937dd'\
-         '558fa922133507817137ed4b27764cc8')
+source=("https://web.archive.org/web/${_waybacktime}/http://www.infor.kanazawa-it.ac.jp/~ishii/${pkgname}unix/linux/${pkgname}117.tar.gz"
+        "LICENSE"
+        "lha.man.en")
+changelog=${pkgname}.changelog
+sha256sums=('c2af8966cd724740bca85475f5d0ed04e68d4f5705d3a31c8fb9e9ab4764b9e6'
+            'b166daff91f697b38c039a08eaf60f639c1d64587b755411b6b3d859c8d4a210'
+            'a13a355596c106e795d24a1108543d1ea6dc8b780ba0653a6d3cb10c31f2845d')
 
-build() {
-  install -D -m755 $srcdir/lha $pkgdir/usr/bin/lha
-  install -D -m644 $srcdir/lha.man $pkgdir/usr/share/man/ja/man1/lha.1
-  install -D -m644 $srcdir/lha.man.en $pkgdir/usr/share/man/man1/lha.1
+package() {
+  install -D -m755 ${srcdir}/lha ${pkgdir}/usr/bin/lha
+  install -D -m644 ${srcdir}/lha.man ${pkgdir}/usr/share/man/ja/man1/lha.1
+  install -D -m644 ${srcdir}/lha.man.en ${pkgdir}/usr/share/man/man1/lha.1
   install -D -m644 ${srcdir}/LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
