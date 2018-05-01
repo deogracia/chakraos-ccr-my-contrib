@@ -1,0 +1,34 @@
+# Maintainer: Lionel Félicité <deogracia@free.fr>
+
+pkgname=ruby-thor
+_distname=thor
+pkgver=0.20.0
+pkgrel=1
+pkgdesc="toolkit for building powerful command-line interfaces"
+arch=('any')
+url="http://whatisthor.com/"
+license=('MIT')
+depends=('ruby' 'ruby-bundler>=1.7.2')
+makedepends=('rubygems')
+options=('!emptydirs')
+changelog=${pkgname}.changelog
+source=(https://rubygems.org/downloads/${_distname}-${pkgver}.gem)
+noextract=(${_distname}-${pkgver}.gem)
+sha256sums=('b47dad86e151c08921cf935c1ad2be4d9982e435784d6bc223530b62a4bfb85a')
+
+package() {
+  cd "${srcdir}"
+
+  local _rvm=$(env |grep rvm|wc -l)
+
+  if [[ ${_rvm} -ne 0 ]] ; then
+    . ~/.profile
+    rvm use system
+  fi
+
+  local _gemdir="$(ruby -rubygems -e'puts Gem.default_dir')"
+
+  gem install --no-user-install --ignore-dependencies -i "${pkgdir}${_gemdir}" -n "${pkgdir}/usr/bin" "${_distname}-${pkgver}.gem"
+
+  install -Dm644 "${pkgdir}/${_gemdir}/gems/${_distname}-${pkgver}/"LICENSE.md "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE.md
+}
