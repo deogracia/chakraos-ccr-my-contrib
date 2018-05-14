@@ -1,0 +1,31 @@
+# Maintainer: Lionel Félicité <deogracia@free.fr>
+
+pkgname=geckodriver
+pkgver=0.20.0
+pkgrel=1
+pkgdesc="Proxy for using W3C WebDriver-compatible clients to interact with Gecko-based browsers."
+arch=("x86_64")
+url="https://github.com/mozilla/geckodriver"
+license=("MPL")
+makedepends=("rust" "gcc-libs")
+source=("https://github.com/mozilla/geckodriver/archive/v${pkgver}.tar.gz")
+changelog=${pkgname}.changelog
+sha256sums=('0bfd25ca4ee396fbb1d9685decb9c68890b9e8997d1e7c35f1da40f7a232aaf2')
+
+build() {
+  cd "${pkgname}-${pkgver}"
+  cargo build --release
+  wget https://www.mozilla.org/media/MPL/2.0/index.815ca599c9df.txt -O LICENSE
+}
+
+check() {
+  cd "${pkgname}-${pkgver}"
+  cargo test 
+}
+
+package() {
+  cd "${pkgname}-${pkgver}"
+  install -Dm755 target/release/${pkgname} "${pkgdir}"/usr/bin/${pkgname}
+  ln -sf /usr/bin/${pkgname} "${pkgdir}"/usr/bin/wires
+  install -D -m 644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}

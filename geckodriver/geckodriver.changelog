@@ -1,0 +1,7 @@
+2018-05-14 Lionel Félicité <deogracia@free.fr>
+    * geckodriver 0.20.1-1 :
+      Initial release
+      Taken from arch repo
+      work of :
+       Jelle van der Waa <jelle@archlinux.org>
+       kevku <kevku@gmx.com>
