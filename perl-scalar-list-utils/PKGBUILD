@@ -1,0 +1,31 @@
+# Maintainer: Lionel Félicité <deogracia@free.fr>
+pkgname=perl-test-simple
+_distname=Test-Simple
+pkgver=1.302106
+pkgrel=1
+pkgdesc="Test2, Test::More, Test::Simple and Test::Builder Perl modules for writing tests"
+arch=('any')
+url="https://metacpan.org/release/${_distname}"
+license=('GPL' 'PerlArtistic')
+depends=('perl-dbi')
+makedepends=('perl-dbi' 'perl-test-more' 'perl-time-hires')
+options=('!emptydirs')
+changelog=${pkgname}.changelog
+source=("https://cpan.metacpan.org/authors/id/E/EX/EXODIST/${_distname}-${pkgver}.tar.gz")
+sha512sums=('edd4d3448dac1b563899c5fd4a1bad6cb810afdbbbf57b558bbe6710aa3e58530a6cf0932e35c3316c7f4f59763764d75ce1049f13c8c13deeb2e8a7c60ff73e')
+
+build() {
+	cd "$pkgname-$pkgver"
+	./configure --prefix=/usr
+	make
+}
+
+check() {
+	cd "$pkgname-$pkgver"
+	make -k check
+}
+
+package() {
+	cd "$pkgname-$pkgver"
+	make DESTDIR="$pkgdir/" install
+}

@@ -1,0 +1,35 @@
+# Maintainer: Adrian Piotrowicz <nexces+chakraos@nxstudio.pl>
+
+pkgname=vagrant-deb
+pkgver=2.0.0
+pkgrel=1
+pkgdesc="Vagrant from official DEB package."
+arch=(i686 x86_64)
+url="http://www.vagrantup.com/"
+license=('MIT')
+depends=()
+makedepends=('binutils')
+optdepends=('virtualbox: default VM provider')
+provides=('vagrant')
+conflicts=('vagrant' 'vagrant-git')
+replaces=('vagrant')
+options=(!strip staticlibs)
+source=(https://releases.hashicorp.com/vagrant/${pkgver}/vagrant_${pkgver}_x86_64.deb)
+sha512sums=('9a90a87ee2be3b2af4000ba63da48936fb1b21852f6e1380370ac8ec94ab9b0a8323d7cfe1a2265316011310f2cab6773f6e21b95279650be1c7f73b42e13952')
+
+prepare() {
+	cd "$srcdir"
+	ar p vagrant_${pkgver}_x86_64.deb control.tar.gz | tar xzf -
+	ar p vagrant_${pkgver}_x86_64.deb data.tar.gz | tar xzf -
+}
+
+check() {
+	cd "$srcdir"
+	md5sum -c md5sums || return 1
+}
+
+package() {
+	cd "$srcdir"
+	mv opt "$pkgdir/"
+	mv usr "$pkgdir/"
+}

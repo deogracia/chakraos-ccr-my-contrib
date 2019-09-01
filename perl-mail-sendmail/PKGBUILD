@@ -1,20 +1,20 @@
 # Maintainer: Lionel Félicité <deogracia@free.fr>
 
 pkgname=perl-mail-sendmail
-pkgver=0.79
+pkgver=0.80
 pkgrel=1
 pkgdesc='Simple platform independent mailer'
 _dist='Mail-Sendmail'
 arch=('any')
-url="https://metacpan.org/release/$_dist"
+url="https://metacpan.org/release/${_dist}"
 license=('GPL' 'PerlArtistic')
 options=('!emptydirs' 'purge')
-changelog=$pkgname.changelog
-source=("https://cpan.metacpan.org/authors/id/M/MI/MIVKOVIC/$_dist-$pkgver.tar.gz")
-sha256sums=('8a5eb39d3b9a3a4219c6d6051328c62bd51e9b53723ee5b42cd66e8672e681b9')
+changelog=${pkgname}.changelog
+source=("https://cpan.metacpan.org/authors/id/N/NE/NEILB/${_dist}-${pkgver}.tar.gz")
+sha256sums=('5b8a98cb5cc39d80441a38aab010885ddf80e6fcd8e6e0314392cb23e7c268e4')
 
 build() {
-  cd "$srcdir/$_dist-$pkgver"
+  cd "${srcdir}/${_dist}-${pkgver}"
   unset PERL5LIB PERL_MM_OPT PERL_LOCAL_LIB_ROOT
   export PERL_MM_USE_DEFAULT=1 PERL_AUTOINSTALL=--skipdeps
   /usr/bin/perl Makefile.PL
@@ -22,14 +22,14 @@ build() {
 }
 
 check() {
-  cd "$srcdir/$_dist-$pkgver"
+  cd "${srcdir}/${_dist}-${pkgver}"
   unset PERL5LIB PERL_MM_OPT PERL_LOCAL_LIB_ROOT
   export PERL_MM_USE_DEFAULT=1
   make test
 }
 
 package() {
-  cd "$srcdir/$_dist-$pkgver"
+  cd "${srcdir}/${_dist}-${pkgver}"
   unset PERL5LIB PERL_MM_OPT PERL_LOCAL_LIB_ROOT
-  make install INSTALLDIRS=vendor DESTDIR="$pkgdir"
+  make install INSTALLDIRS=vendor DESTDIR="${pkgdir}"
 }

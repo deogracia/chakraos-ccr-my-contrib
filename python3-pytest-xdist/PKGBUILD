@@ -1,0 +1,38 @@
+pkgbase=python3-pytest-xdist
+pkgname='python3-pytest-xdist'
+pkgver=1.16.0
+pkgrel=1
+pkgdesc='py.test xdist plugin for distributed testing and loop-on-failing modes'
+arch=('any')
+license=('MIT')
+url='https://bitbucket.org/pytest-dev/pytest-xdist'
+depends=('python3-pytest' 'python3-execnet')
+makedepends=('python3-pytest' 'python3-setuptools-scm' 'python3-execnet')
+source=("$pkgbase-$pkgver.tar.gz::https://github.com/pytest-dev/pytest-xdist/archive/v$pkgver.tar.gz")
+sha512sums=('d9803cc4c0fe3ef35f5e7a494971f141daf7c6b91219b7363a90abbab5af572918ce6b17ab2b6a7df3dbc1781b46925f94e4592025659676bff189fbfc5a807e')
+
+prepare() {
+  export SETUPTOOLS_SCM_PRETEND_VERSION=$pkgver
+}
+
+build() {
+  cd "$srcdir"/pytest-xdist-$pkgver
+  python3 setup.py build
+}
+
+check() {
+  # Hack entry points by installing it
+  _PYV=`python3 -c "import sys;t='{v[0]}.{v[1]}'.format(v=list(sys.version_info[:2]));sys.stdout.write(t)";`
+
+  cd "$srcdir"/pytest-xdist-$pkgver
+  python3 setup.py install --root="$PWD/tmp_install" --optimize=1
+  PYTHONPATH="$PWD/tmp_install/usr/lib/python{_PYV}/site-packages:$PYTHONPATH" py.test || warning "Tests failed"
+}
+
+package() {
+  cd pytest-xdist-$pkgver
+  python3 setup.py install --root="$pkgdir" --optimize=1
+  install -D -m644 LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+}
+
+# vim:set ts=2 sw=2 et:

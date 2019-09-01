@@ -3,7 +3,7 @@
 pkgname='python3-pyflakes'
 _distname='pyflakes'
 pkgver=1.3.0
-pkgrel=1
+pkgrel=2
 pkgdesc="A simple program which checks Python source files for errors."
 arch=('any')
 url="https://github.com/PyCQA/pyflakes"
@@ -14,6 +14,9 @@ checkdepends=('python3-setuptools')
 changelog=${pkgname}.changelog
 source=("https://github.com/PyCQA/${_distname}/archive/${pkgver}.tar.gz")
 sha256sums=('7370356f3e20b537e61dfbcaf1ce7bf60aa7147e9e3e639e6401b445acfa3228')
+provides=("${_distname}")
+replaces=("${_distname}")
+conflicts=("${_distname}")
 _PYTHON_CMD="python3"
 
 build() {

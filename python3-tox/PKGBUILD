@@ -1,7 +1,7 @@
 # Maintainer: Lionel Félicité <deogracia@free.fr>
 
 pkgname='python3-tox'
-pkgver=2.4.1
+pkgver=2.9.1
 pkgrel=1
 pkgdesc='Python virtualenv management and testing tool'
 arch=('any')
@@ -13,7 +13,7 @@ checkdepends=('python3-pytest-runner')
 depends=('python3-py' 'python3-virtualenv' 'python3-setuptools' 'python3-pluggy')
 changelog=$pkgname.changelog
 source=("https://pypi.io/packages/source/t/tox/tox-${pkgver}.tar.gz")
-sha256sums=('6673571a3c4b1561b564e2b1cce55bddfb4f3efdb387ba4eb0a3688bbe2496db')
+sha256sums=('752f5ec561c6c08c5ecb167d3b20f4f4ffc158c0ab78855701a75f5cef05f4b8')
 
 build() {
   cd "$srcdir"/tox-$pkgver

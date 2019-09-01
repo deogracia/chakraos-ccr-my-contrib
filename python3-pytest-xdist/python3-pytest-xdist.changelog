@@ -1,0 +1,5 @@
+2017-04-14 Lionel Félicité <deogracia@free.fr>
+    * python3-pytest-xdist 1.16.0-1 :
+      Initial release
+       Taken from arch repo
+       Thanks to Felix Yan <felixonmars@archlinux.org>

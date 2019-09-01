@@ -1,7 +1,7 @@
 # Maintainer: Lionel Félicité <deogracia@free.fr>
 
 pkgname=leatherman
-pkgver=0.11.2
+pkgver=1.0.0
 pkgrel=1
 pkgdesc="Collection of C++ and CMake utility libraries"
 arch=('i686' 'x86_64')
@@ -9,12 +9,9 @@ url="https://github.com/puppetlabs/leatherman"
 license=('APACHE')
 makedepends=('boost' 'cmake' 'rapidjson')
 checkdepends=('ruby')
-depends=('python2')
 changelog=${pkgname}.changelog
-source=(${pkgname}-${pkgver}.tar.gz::https://github.com/puppetlabs/leatherman/archive/${pkgver}.tar.gz
-        ruby-2.4.patch)
-sha256sums=('a0d3b2308aaddfb31ed4d4bcccb52206c4ad7d5da332b5254d1a6c3223ae980b'
-            '5ea4cf5530c4de9a47c7a7d0929ccf378dc48c3f146d5541c1f64e6810cd064e')
+source=(${pkgname}-${pkgver}.tar.gz::https://github.com/puppetlabs/leatherman/archive/${pkgver}.tar.gz)
+sha256sums=('4bcb8eaf08429e9e62cc6fcbfc1f216bd2eff800f751dbacabbec7d714ed21a2')
 
 prepare() {
   cd ${pkgname}-${pkgver}
@@ -22,9 +19,6 @@ prepare() {
   # Ruby 2.3 fix: replace rb_data_object_alloc symbol with rb_data_object_wrap
   sed -i 's/rb_data_object_alloc/rb_data_object_wrap/g' \
     $( grep -rl rb_data_object_alloc ruby )
-
-  # (LTH-124) Fix for ruby-2.4 related API changes
-  patch -p1 -i ../ruby-2.4.patch
 }
 
 build() {

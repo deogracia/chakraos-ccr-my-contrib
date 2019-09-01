@@ -7,7 +7,7 @@ pkgdesc="Rapid multi-Python deployment"
 arch=('any')
 license=('MIT')
 url="http://codespeak.net/execnet"
-makedepends=('python3-setuptools' 'python3-apipkg')
+makedepends=('python3-setuptools' 'python3-apipkg' 'python3-setuptools-scm')
 checkdepends=('python3-pytest-timeout' 'procps-ng' 'openssh' 'pypy')
 depends=('python3-apipkg')
 changelog=$pkgname.changelog
@@ -21,7 +21,8 @@ check() {
 
 build() {
   cd "$srcdir/execnet-${pkgver}"
-  grep -rl -e "\#\!\ \/usr\/bin\/env\ python" . |xargs sed -i "s|#! /usr/bin/env python$|#!/usr/bin/env python3|"
+#  grep -rl -e "\#\!\ \/usr\/bin\/env\ python" . |xargs sed -i "s|#! /usr/bin/env python$|#!/usr/bin/env python3|"
+  find . -type f -name '*.py' -exec sed -i 's|#! /usr/bin/env python$|#!/usr/bin/env python3|' {} \;
   python3 setup.py build
 }
 

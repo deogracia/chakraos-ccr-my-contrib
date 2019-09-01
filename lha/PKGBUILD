@@ -1,23 +1,41 @@
 # Maintainer: Lionel Félicité <deogracia@free.fr>
 
 pkgname=lha
-pkgver=1.17
-pkgrel=4
+pkgver=r930.6f6cbc1
+pkgrel=1
 pkgdesc="A compression and archive utility for LH-7 format archives"
 arch=('i686' 'x86_64')
-url="https://web.archive.org/web/20121108013555/http://www.infor.kanazawa-it.ac.jp/~ishii/lhaunix/"
+url="https://github.com/jca02266/${pkgname}.git"
 license=('custom')
-_waybacktime="20111102061426"
 depends=('glibc')
-source=("https://web.archive.org/web/${_waybacktime}/http://www.infor.kanazawa-it.ac.jp/~ishii/${pkgname}unix/linux/${pkgname}117.tar.gz"
-        "LICENSE"
-        "lha.man.en")
+makedepends=('git')
+source=("git+https://github.com/jca02266/${pkgname}.git")
 changelog=${pkgname}.changelog
-sha256sums=('c2af8966cd724740bca85475f5d0ed04e68d4f5705d3a31c8fb9e9ab4764b9e6'
-            'b166daff91f697b38c039a08eaf60f639c1d64587b755411b6b3d859c8d4a210'
-            'a13a355596c106e795d24a1108543d1ea6dc8b780ba0653a6d3cb10c31f2845d')
+sha256sums=('SKIP')
+
+pkgver() {
+  cd ${srcdir}/${pkgname}
+
+  # Git, no tags available
+  printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+build() {
+  cd ${srcdir}/${pkgname}
+
+  autoreconf --force --install --symlink
+  ./configure && make
+}
+
+check() {
+  cd ${srcdir}/${pkgname}
+  make check
+
+  exit 1
+}
 
 package() {
+  cd ${srcdir}/${pkgname}
   install -D -m755 ${srcdir}/lha ${pkgdir}/usr/bin/lha
   install -D -m644 ${srcdir}/lha.man ${pkgdir}/usr/share/man/ja/man1/lha.1
   install -D -m644 ${srcdir}/lha.man.en ${pkgdir}/usr/share/man/man1/lha.1

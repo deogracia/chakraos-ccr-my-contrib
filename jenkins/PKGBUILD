@@ -1,64 +1,38 @@
-#Contributor: Xiao Hanyu <xiaohanyu1988@gmail.com>
-#Contributor: Yahya Mohajer < yaya_2013 At yahoo Dot com >
-#tested and ported from AUR by xiaohanyu
+# Maintainer: Lionel Félicité <deogracia@free.fr>
 
-pkgname=jenkins
-pkgver=1.480
+pkgname='jenkins'
+pkgver='2.73.3'
 pkgrel=1
-_wrapver=3.5.14
-pkgdesc="Extensible Continuous Integration Server. Hudson forks"
-url="http://jenkins-ci.org/"
-arch=('i686' 'x86_64')
+pkgdesc="Build great things at any scale. LTS version"
+arch=('any')
+url="https://jenkins.io/"
 license=('MIT')
-depends=('openjdk' 'ttf-dejavu' 'libcups' )
-optdepends=('apache: a full featured webserver'
-    'maven: a java project management and project comprehension tool')
+depends=('java-runtime' 'libcups' 'ttf-dejavu')
+optdepends=()
+provides=("${pkgname}")
+backup=('etc/conf.d/jenkins')
+install=${pkgname}.install
+changelog=${pkgname}.changelog
+source=("${pkgname}-${pkgver}.war::http://mirrors.jenkins.io/war-stable/${pkgver}/${pkgname}.war"
+         #Rename to jenkins-${pkgver}.war to force download on new version
+        "https://github.com/jenkinsci/jenkins/raw/master/LICENSE.txt"
+        "${pkgname}.conf"
+        "${pkgname}.service"
+        "${pkgname}.sysusers"
+        "${pkgname}.tmpfiles")
+noextract=("${pkgname}-${pkgver}.war")
+sha256sums=('fcfb932a84ce03795abbf51ae7799439278155b0d42242d1d79a187034649fc8'
+            '0599d996b7b64a61ff60fabb4b69dc807b6d396abbc6d2ddb43c3dc36204b89d'
+            '13b6e06de1dedff96bdb8e43f6830bbd954dc58df9d4ed5583693d2a6f8427f4'
+            '01b84f584a1bfea3ad5411a380ca6954aed2d47fa4a08b92b23b87c5d31e5e1d'
+            '13f81f3aa069114f4b24a7ff045d8aa142df9a114b6038890fd5c16e2f39f686'
+            '41a016deda65f04ab4eaa40e4becd83660e8374b68fa0bb114f842927c108350')
 
-conflicts=('jenkins')
-provides=('jenkins')
-options=(!strip !docs )
-
-install=jenkins.install
-backup=(opt/jenkins/conf/wrapper.conf)
-source=(http://updates.jenkins-ci.org/download/war/${pkgver}/jenkins.war
-    http://wrapper.tanukisoftware.org/download/$_wrapver/wrapper-delta-pack-$_wrapver.tar.gz
-    'wrapper.conf'
-    'jenkins')	
-
-noextract=(jenkins.war)
-
-md5sums=('7671e843339b01d7a4c3828117ed5aad'
-    '1636c4b1960c404c3e2eecb23f19834f'
-    'f81c36c4b4af84ca647775e0f3e21729'
-    '65ec4b39356076e7b438184962d007a1')
-
-build() {
-    cd ${srcdir}
-
-	# Create directory
-    install -dm755 $pkgdir/opt/jenkins
-    install -dm755 $pkgdir/opt/jenkins/bin
-    install -dm755 $pkgdir/opt/jenkins/lib
-    install -dm755 $pkgdir/opt/jenkins/conf
-    install -dm755 $pkgdir/opt/jenkins/logs
-    install -dm755 $pkgdir/opt/jenkins/tmp
-
-	# prepare wrapper
-    if [ $CARCH = 'x86_64' ]; then
-        install -Dm755  $srcdir/wrapper-delta-pack-$_wrapver/bin/wrapper-linux-x86-64    $pkgdir/opt/jenkins/bin/wrapper
-        install -Dm644 $srcdir/wrapper-delta-pack-$_wrapver/lib/libwrapper-linux-x86-64.so $pkgdir/opt/jenkins/lib/
-    elif [ $CARCH = 'i686' ]; then
-        install -Dm755  $srcdir/wrapper-delta-pack-$_wrapver/bin/wrapper-linux-x86-32 $pkgdir/opt/jenkins/bin/wrapper
-        install -Dm644  $srcdir/wrapper-delta-pack-$_wrapver/lib/libwrapper-linux-x86-32.so $pkgdir/opt/jenkins/lib/
-    fi
-    install -Dm644 $srcdir/wrapper-delta-pack-$_wrapver/lib/wrapper.jar $pkgdir/opt/jenkins/lib/
-    install -Dm644 $srcdir/wrapper-delta-pack-$_wrapver/logs/wrapper.log $pkgdir/opt/jenkins/logs/
-
-    install -Dm644 $srcdir/jenkins.war $pkgdir/opt/jenkins/lib/
-
-    install -Dm644 $srcdir/wrapper.conf $pkgdir/opt/jenkins/conf/
-    install -Dm755 $srcdir/jenkins $pkgdir/opt/jenkins/bin/
-
-    mkdir -p $pkgdir/var/lib/jenkins
-    mkdir -p $pkgdir/opt/jenkins/run
+package() {
+  install -Dm444 "LICENSE.txt" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.txt"
+  install -Dm444 "${pkgname}-${pkgver}.war" "${pkgdir}/usr/share/java/${pkgname}/${pkgname}.war"
+  install -Dm644 "${pkgname}.service" "${pkgdir}/usr/lib/systemd/system/${pkgname}.service"
+  install -Dm644 "${pkgname}.tmpfiles" "${pkgdir}/usr/lib/tmpfiles.d/${pkgname}.conf"
+  install -Dm644 "${pkgname}.sysusers" "${pkgdir}/usr/lib/sysusers.d/${pkgname}.conf"
+  install -Dm644 "${pkgname}.conf" "${pkgdir}/etc/conf.d/${pkgname}"
 }

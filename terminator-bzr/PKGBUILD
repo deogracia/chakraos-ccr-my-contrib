@@ -9,7 +9,7 @@ pkgdesc="A tool for arranging multiple terminals in a single window"
 arch=('any')
 url="http://www.tenshu.net/terminator/"
 license=('GPL2')
-depends=('hicolor-icon-theme' 'pygtk' 'vte' 'xdg-utils')
+depends=('hicolor-icon-theme' 'pygtk' 'vte' 'xdg-utils' 'python-keybinder' 'python-notify')
 makedepends=('bzr' 'desktop-file-utils' 'gettext' 'intltool')
 optdepends=('gnome-python: gnome-terminal profile support')
 provides=('terminator=0.13')

@@ -1,7 +1,7 @@
 # Maintainer: KsenZ <aksenzov@gmail.com>
 
 pkgname=tigervnc
-pkgver=1.2.0
+pkgver=1.4.3
 pkgrel=1
 _xorgver=1.13.2
 pkgdesc="suite of VNC servers and clients. VNC 4 branch of TightVNC."
@@ -17,42 +17,35 @@ makedepends=('cmake' 'nasm' 'xorg-font-utils' 'xorg-util-macros' 'bigreqsproto'
 	     'xtrans' 'mesa' 'glproto' 'dri2proto' 'imagemagick' 'librsvg')
 options=(!libtool)
 conflicts=('tightvnc')
-source=(http://downloads.sourceforge.net/tigervnc/${pkgname}-${pkgver}.tar.gz
+source=(https://github.com/TigerVNC/${pkgname}/archive/v${pkgver}.tar.gz
 	ftp://ftp.freedesktop.org/pub/xorg/individual/xserver/xorg-server-${_xorgver}.tar.bz2
 	vncserver.service
-	vncviewer.desktop
-	xorg111.patch
-	xorg112.patch
-	xorg113.patch
-	xserver113.patch
-	glx.patch
-	gnutls.patch
-	gethomedir.patch
-	cmakelists.patch)
-md5sums=('3a5755b4ed600a81c3a17976c6f8420d'
-         '553fd7902e1156115f15cc1656f46a6f'
-         'a2a7cb0c6afc3778dfad8ae214fc0f6d'
-         '15c0405f920c3dac250692e8922578d1'
-         'b680b55f7f9f569cd26ac0b330012a8b'
-         'c8a3fae637f62c799262d32327caecdc'
-         '09879aaa2f176f9dda332362b62a080c'
-         'af9272d27226779dcb6384fa5e5071af'
-         '7151b2d465e9af38ba1bd5e759986f61'
-         'e310e6fbf4c21c7449be79285fe1ef31'
-         'a3e0b4502e8e9ca614ca082e0723c088'
-         '6ef923c71cc0e79c4b37eb3b124eea75')
+	vncviewer.desktop)
+#	xorg111.patch
+#	xorg112.patch
+#	xorg113.patch
+#	xserver113.patch
+#	glx.patch
+#	gnutls.patch
+#	gethomedir.patch
+#	cmakelists.patch)
+
+sha256sums=('0b2603db2b32dfd6e48f6f59618bd9819d187bfbb0c16218637d074a69756824'
+            '3850adb89e9170ad85aea39d240279494c07779e50cd3cd60126028681209408'
+            '5803952f879737226e4d6de8e6717c792a24a82754ffa799b3148d70e6a52d02'
+            '1d1bed9148b7b4587b9e6d6e654359280c156053cf8e54914ac359c5caf3056c')
 
 build() {
   cd ${srcdir}/${pkgname}-${pkgver}
 
   cp -r ${srcdir}/xorg-server-${_xorgver}/* unix/xserver
-  patch -Np1 -i ${srcdir}/gnutls.patch
-  patch -Np1 -i ${srcdir}/gethomedir.patch
-  patch -Np1 -i ${srcdir}/cmakelists.patch
-  patch -Np1 -i ${srcdir}/xorg111.patch
-  patch -Np1 -i ${srcdir}/xorg112.patch
-  patch -Np1 -i ${srcdir}/xorg113.patch
-  patch -Np1 -i ${srcdir}/glx.patch
+#  patch -Np1 -i ${srcdir}/gnutls.patch
+#  patch -Np1 -i ${srcdir}/gethomedir.patch
+#  patch -Np1 -i ${srcdir}/cmakelists.patch
+#  patch -Np1 -i ${srcdir}/xorg111.patch
+#  patch -Np1 -i ${srcdir}/xorg112.patch
+#  patch -Np1 -i ${srcdir}/xorg113.patch
+#  patch -Np1 -i ${srcdir}/glx.patch
 
   cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=/usr -DUSE_INCLUDED_FLTK=yes
   make

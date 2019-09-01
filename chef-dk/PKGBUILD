@@ -1,0 +1,46 @@
+pkgname=chef-dk
+pkgver='2.0.28'
+pkgrel=1
+pkgdesc="The Chef development kit contains all the tools you need to develop and test your infrastructure, built by the awesome Chef community"
+arch=('x86_64')
+url="https://downloads.chef.io/chefdk/stable"
+license=('Apache')
+depends=('ruby')
+makedepends=()
+checkdepends=()
+conflicts=('chef' 'chef-solo')
+changelog=${pkgname}.changelog
+source=("https://github.com/chef/${pkgname}/archive/v${pkgver}.tar.gz")
+sha256sums=('534de79d44c3d14f973763b1154015d97476d48c9f2721757661a285f9a45871')
+
+
+build() {
+  cd "$pkgname-$pkgver"
+  local _gemdir="$(ruby -rubygems -e'puts Gem.default_dir')"
+
+  local __tempdir=$(mktemp -d)
+  mkdir -p ${__tempdir}/usr/bin
+
+  unset GEM_HOME
+  unset GEM_PATH
+
+  gem install --no-user-install -i "${__tempdir}${_gemdir}" -n "${__tempdir}/usr/bin" bundler
+  gem install --no-user-install -i "${__tempdir}${_gemdir}" -n "${__tempdir}/usr/bin" github_changelog_generator
+
+  pushd omnibus
+  # build locally
+  sed -i "s|# base_dir './local|base_dir './local|" omnibus.rb
+  sed -i "s|use_s3_caching true|use_s3_caching false|" omnibus.rb
+
+  GEM_PATH="${__tempdir}${_gemdir}" bundle install --without development --path ./vendor
+
+  GEM_PATH="${__tempdir}${_gemdir}" bundle exec omnibus build chefdk
+
+  exit 1
+}
+
+
+package() {
+  cd "$pkgname-$pkgver"
+  make DESTDIR="$pkgdir/" install
+}

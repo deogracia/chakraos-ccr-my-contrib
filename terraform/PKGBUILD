@@ -1,7 +1,7 @@
 # Maintainer: Lionel Félicité <deogracia@free.fr>
 
 pkgname=terraform
-pkgver=0.8.7
+pkgver=0.11.3
 pkgrel=1
 pkgdesc="It's a tool for building, changing, and combining infrastructure safely and efficiently"
 arch=('i686' 'x86_64')
@@ -16,12 +16,19 @@ source=("${pkgname}::git+https://${_go_pkg_name}/${pkgname}.git#tag=v${pkgver}")
 sha256sums=('SKIP')
 
 prepare() {
+  exit 1
   mkdir -p gopath/src/${_go_pkg_name}
   mv "$pkgname" gopath/src/${_go_pkg_name}/${pkgname}
 
   msg2 "Fetching GO dependancies"
   export GOPATH="${srcdir}/gopath"
-  go get -u golang.org/x/tools/cmd/stringer
+#  go get -u golang.org/x/tools/cmd/stringer
+  cd gopath/src/${_go_pkg_name}/${pkgname}
+  govendor sync
+
+  echo $GOPATH
+
+ exit 1
 }
 
 build() {

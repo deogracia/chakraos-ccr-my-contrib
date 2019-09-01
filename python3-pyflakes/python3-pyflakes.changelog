@@ -1,3 +1,9 @@
+2017-03-20 Lionel Félicité <deogracia@free.fr>
+    * python3-pyflakes 1.3.0-2 :
+      Add provide, replaces and conflicts tag, since it's intended
+       to replace to old ccr 'pyflakes' package
+       Thanks to tetris4's feedback
+
 2016-12-10 Lionel Félicité <deogracia@free.fr>
     * python3-pyflakes 1.3.0-1 :
       Initial release

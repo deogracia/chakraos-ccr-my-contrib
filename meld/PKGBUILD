@@ -1,38 +1,41 @@
-# Maintainer: Gaetan Bisson <bisson@archlinux.org>
+# Maintainer: Lionel Félicité <deogracia@free.fr>
+# Contributor: Gaetan Bisson <bisson@archlinux.org>
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 # Contributor: Douglas Soares de Andrade <douglas@archlinux.org>
 # Maintainer (Chakra): msx <archlinux.us: msx>
 
 pkgname=meld
-pkgver=1.8.2
+pkgver=3.18.0
 pkgrel=1
 pkgdesc='Visual diff and merge tool'
 url='http://meldmerge.org/'
 screenshot="http://meldmerge.org/images/meld-mary.png"
 license=('GPL')
 arch=('any')
-makedepends=('intltool' 'gnome-doc-utils')
-depends=('pygtk' 'hicolor-icon-theme' 'desktop-file-utils')
-optdepends=('pygtksourceview2: syntax highlighting'
-            'python2-dbus: open a new tab in an already running instance'
-            'python2-gconf: gnome integration')
-source=("http://ftp.gnome.org/pub/gnome/sources/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
-sha1sums=('da6e4430ea3e56ec649b53f96c485de13a52627f')
-install=${pkgname}.install
+makedepends=('intltool' 'itstool' 'libxml2' )
+depends=('python3' 'gtk3' 'glib2' 'pygobject-devel' 'gtksourceview3' 'python3-cairo' 'dconf' 'gconf' 'desktop-file-utils' 'gsettings-desktop-schemas' 'python3-gobject')
+#optdepends=('pygtksourceview2: syntax highlighting'
+#            'python2-dbus: open a new tab in an already running instance'
+#            'python2-gconf: gnome integration')
+source=("https://git.gnome.org/browse/${pkgname}/snapshot/${pkgname}-${pkgver}.tar.xz")
+sha256sums=('24126e5caaecf49e3ce232dea9284a421c976f252053d71667d47a7575264f5a')
+#sha256sums=('547f59d0c82d324c75d17f4c3fbb2219629d86b7689161233a36a67ed1a2e43e')
+#	install=${pkgname}.install
+changelog=${pkgname}.changelog
 options=('!emptydirs')
 
 prepare() {
-	cd "${pkgname}-${pkgver}"
-	sed -i 's/update-/#update-/' Makefile
-	sed -i 's/env python/env python2/' bin/meld
+  cd "${pkgname}-${pkgver}"
 }
 
 build() {
-	cd "${pkgname}-${pkgver}"
-	make PYTHON=/usr/bin/python2 prefix=/usr
+  cd "${pkgname}-${pkgver}"
+  python3 setup.py build
 }
 
 package() {
-	cd "${pkgname}-${pkgver}"
-	make PYTHON=/usr/bin/python2 prefix=/usr DESTDIR="${pkgdir}" install
+  cd "${pkgname}-${pkgver}"
+  #GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1 python3 setup.py --no-compile-schemas --no-update-icon-cache install \
+  GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1 python3 setup.py --no-compile-schemas --no-update-icon-cache install \
+    --prefix=/usr --root="${pkgdir}" --optimize=1
 }
